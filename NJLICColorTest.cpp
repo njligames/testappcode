@@ -7,8 +7,7 @@
 
 #include "NJLICColorTest.h"
 
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
+#include "GraphicsPlatform.h"
 
 NJLICColorTest::NJLICColorTest() { printf("NJLICColorTest\n"); }
 NJLICColorTest::~NJLICColorTest() { printf("~NJLICColorTest\n"); }

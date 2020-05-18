@@ -9,7 +9,7 @@
 #define NJLICColorTest_h
 
 #include "Color.h"
-#include "thirdparty/includes/NJLICEngine/NJLICGame.h"
+#include "NJLICGame.h"
 
 class NJLICColorTest : public NJLICGame {
     Color mColor;
