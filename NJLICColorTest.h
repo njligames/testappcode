@@ -9,7 +9,7 @@
 #define NJLICColorTest_h
 
 #include "Color.h"
-#include "NJLICGame.h"
+#include "thirdparty/includes/NJLICEngine/NJLICGame.h"
 
 class NJLICColorTest : public NJLICGame {
     Color mColor;
@@ -20,29 +20,29 @@ class NJLICColorTest : public NJLICGame {
 
     virtual void update(double step) override;
     virtual void render()const override;
-    virtual void resize(unsigned int w, unsigned int h)const override;
+    virtual void resize(unsigned int w, unsigned int h) override;
     virtual void init(int argc, char *argv[]) override;
     virtual void unInit() override;
-    virtual void start()const override;
-    virtual void stop()const override;
+    virtual void start() override;
+    virtual void stop() override;
 
     virtual void mouse(int button, int eventType, float x, float y,
-                       int clicks)const override;
+                       int clicks) override;
     virtual void keyDown(const std::string &keycodeName, bool withCapsLock,
                          bool withControl, bool withShift, bool withAlt,
-                         bool withGui)const override;
+                         bool withGui) override;
     virtual void keyUp(const std::string &keycodeName, bool withCapsLock,
                        bool withControl, bool withShift, bool withAlt,
-                       bool withGui)const override;
+                       bool withGui) override;
     virtual void touch(int touchDevId, int pointerFingerId, int eventType,
                        float x, float y, float dx, float dy,
-                       float pressure)const override;
+                       float pressure) override;
     virtual void vRCameraRotation(float m11, float m12, float m13, float m21,
                                   float m22, float m23, float m31, float m32,
-                                  float m33)const override;
+                                  float m33) override;
 
     virtual void vRCameraRotationYPR(float yaw, float pitch,
-                                     float roll)const override;
+                                     float roll) override;
 };
 
 #endif /* NJLICColorTest_h */

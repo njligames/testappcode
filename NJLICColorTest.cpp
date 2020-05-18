@@ -25,7 +25,7 @@ void NJLICColorTest::render() const{
     glClearColor(mColor.red(), mColor.green(), mColor.blue(), 1.0f);
 }
 
-void NJLICColorTest::resize(unsigned int w, unsigned int h) const{
+void NJLICColorTest::resize(unsigned int w, unsigned int h) {
     printf("resize\n");
 }
 void NJLICColorTest::init(int argc, char *argv[]) {
@@ -38,32 +38,32 @@ void NJLICColorTest::init(int argc, char *argv[]) {
 }
 void NJLICColorTest::unInit() { printf("unInit\n"); }
 
-void NJLICColorTest::start()const { printf("start\n"); }
+void NJLICColorTest::start() { printf("start\n"); }
 
-void NJLICColorTest::stop()const { printf("stop\n"); }
+void NJLICColorTest::stop() { printf("stop\n"); }
 void NJLICColorTest::mouse(int button, int eventType, float x, float y,
-                           int clicks)const {
+                           int clicks) {
 //    printf("mouse\n");
 }
 void NJLICColorTest::keyDown(const std::string &keycodeName, bool withCapsLock,
                              bool withControl, bool withShift, bool withAlt,
-                             bool withGui)const {
+                             bool withGui) {
 //    printf("keyDown\n");
 }
 void NJLICColorTest::keyUp(const std::string &keycodeName, bool withCapsLock,
                            bool withControl, bool withShift, bool withAlt,
-                           bool withGui)const {
+                           bool withGui) {
 //    printf("keyUp\n");
 }
 
 void NJLICColorTest::touch(int touchDevId, int pointerFingerId, int eventType,
                            float x, float y, float dx, float dy,
-                           float pressure)const {
+                           float pressure) {
     printf("touch\n");
 }
 
 void NJLICColorTest::vRCameraRotation(float m11, float m12, float m13,
                                       float m21, float m22, float m23,
-                                      float m31, float m32, float m33)const {}
+                                      float m31, float m32, float m33) {}
 
-void NJLICColorTest::vRCameraRotationYPR(float yaw, float pitch, float roll)const {}
+void NJLICColorTest::vRCameraRotationYPR(float yaw, float pitch, float roll) {}
