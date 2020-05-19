@@ -6,5 +6,11 @@ list(REMOVE_ITEM NEW_LIST game)
 add_library(game SHARED ${SRCS} ${HDRS})
 target_compile_definitions(game PUBLIC ${TARGET_DEFINITIONS})
 target_link_libraries( game ${NEW_LIST})
-set_target_properties(game PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${TARGET_INCLUDE_DIRS}")
-include_directories(${TARGET_INCLUDE_DIRS})
+set_target_properties(
+    game PROPERTIES
+    OUTPUT_NAME "game"
+    INCLUDE_DIRECTORIES "${TARGET_INCLUDE_DIRS}"
+    INTERFACE_INCLUDE_DIRECTORIES "${TARGET_INCLUDE_DIRS}"
+    POSITION_INDEPENDENT_CODE ON
+    )
+# include_directories(${TARGET_INCLUDE_DIRS})
