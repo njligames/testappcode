@@ -7,7 +7,7 @@
 
 #include "NJLICColorTest.h"
 
-#include "GraphicsPlatform.h"
+#include "/Users/jamesfolk/Work/SDLSkeleton_Platform_Android/src/game-src/android/GraphicsPlatform.h"
 
 NJLICColorTest::NJLICColorTest() { printf("NJLICColorTest\n"); }
 NJLICColorTest::~NJLICColorTest() { printf("~NJLICColorTest\n"); }
