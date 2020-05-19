@@ -14,4 +14,4 @@ set_target_properties(
 
  # include_directories(${GAME_INCLUDE_DIRS})
 
- message(FATAL_ERROR "GAME_INCLUDE_DIRS ${GAME_INCLUDE_DIRS}")
+ # message(FATAL_ERROR "GAME_INCLUDE_DIRS ${GAME_INCLUDE_DIRS}")
