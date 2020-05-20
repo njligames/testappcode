@@ -1,10 +1,11 @@
-list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
+list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
+list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
 
 list(APPEND GAME_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
 
 add_library(game STATIC ${SRCS} ${HDRS})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(game PUBLIC ${GAME_DEFINITIONS})
 
@@ -20,12 +21,3 @@ install(TARGETS game EXPORT gameTargets
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION archive
     RUNTIME DESTINATION bin)
-
-# set(INCLUDE_FILES "")
-# foreach(include_dir ${GAME_INCLUDE_DIRS})
-#     set(_INCLUDE_FILES "")
-#     file(GLOB _INCLUDE_FILES ${include_dir}/*.h*)
-#     list(APPEND INCLUDE_FILES ${INCLUDE_FILES})
-# endforeach()
-
-# install(FILES ${INCLUDE_FILES} DESTINATION include/game)

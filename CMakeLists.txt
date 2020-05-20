@@ -18,9 +18,12 @@ set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
 
 file(GLOB SRCS ${SRC_DIR}/*.c*)
-file(GLOB HDRS ${SRC_DIR}/*.h)
+file(GLOB HDRS ${SRC_DIR}/include/*.h)
+file(GLOB PUBLIC_HDRS ${SRC_DIR}/public_include/*.h)
 
-set(GAME_INCLUDE_DIRS ${SRC_DIR})
+set(GAME_INCLUDE_DIRS ${SRC_DIR}/include)
+list(APPEND GAME_INCLUDE_DIRS ${SRC_DIR}/public_include)
+
 list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
 list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
 
@@ -88,11 +91,10 @@ if(NOT DEFINED ${TARGET_PLATFORM})
 endif()
 
 set(PLATFORM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/platform/${TARGET_PLATFORM}")
-file(GLOB PLATFORM_HDRS ${PLATFORM_DIR}/*.h)
 
-set(GAME_PUBLIC_HEADER ${HDRS} ${PLATFORM_HDRS})
+file(GLOB PLATFORM_PUBLIC_HDRS ${PLATFORM_DIR}/public_include/*.h)
+
+set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 
 add_subdirectory(platform)
-
-
 
