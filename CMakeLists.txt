@@ -98,3 +98,6 @@ set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 
 add_subdirectory(platform)
 
+include_directories(${PLATFORM_DIR}/public_include)
+include_directories(${SRC_DIR}/public_include)
+
