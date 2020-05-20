@@ -92,14 +92,13 @@ if(NOT DEFINED ${TARGET_PLATFORM})
     endif()
 endif()
 
-set(PLATFORM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/platform/${TARGET_PLATFORM}")
+set(PLATFORM_DIR "${SRC_DIR}/platform/${TARGET_PLATFORM}")
 
 file(GLOB PLATFORM_PUBLIC_HDRS ${PLATFORM_DIR}/public_include/*.h)
 
 set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 
-
-
+set(GAME_PUBLIC_DIRS ${PLATFORM_DIR}/public_include ${SRC_DIR}/public_include)
 
 if(BUILT_GTEST)
 # Download and unpack googletest at configure time
@@ -130,5 +129,5 @@ if(BUILT_GTEST)
 endif()
 
 
-add_subdirectory(platform)
+add_subdirectory(src/platform)
 
