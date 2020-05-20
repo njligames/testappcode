@@ -4,6 +4,8 @@ list(APPEND TARGET_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
 
 add_library(game STATIC ${SRCS} ${HDRS})
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 target_compile_definitions(game PUBLIC ${TARGET_DEFINITIONS})
 
 set(NEW_LIST ${TARGET_LIBRARIES})
