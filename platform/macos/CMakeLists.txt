@@ -6,7 +6,10 @@ add_library(game STATIC ${SRCS} ${HDRS})
 
 target_compile_definitions(game PUBLIC ${TARGET_DEFINITIONS})
 
-target_link_libraries( game ${TARGET_LIBRARIES})
+set(NEW_LIST ${TARGET_LIBRARIES})
+list(REMOVE_ITEM NEW_LIST game)
+
+target_link_libraries( game ${NEW_LIST})
 
 set_property(TARGET game PROPERTY INCLUDE_DIRECTORIES ${TARGET_INCLUDE_DIRS})
 set_property(TARGET game PROPERTY OUTPUT_NAME "${TARGET_EXECUTABLE_NAME}")
