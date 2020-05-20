@@ -14,15 +14,15 @@ else()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
+set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
 
 file(GLOB SRCS ${SRC_DIR}/*.c*)
 file(GLOB HDRS ${SRC_DIR}/*.h)
 
 message(FATAL_ERROR "SRC_DIR ${SRC_DIR}")
 
-set(TARGET_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
+set(TARGET_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
 list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
 
