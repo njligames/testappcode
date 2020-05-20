@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.12.2.4988404)
 
-project(game)
+project(game VERSION 1.0.0.0)
+
+MESSAGE("VERSION (${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK})")
 
 include(CheckCXXCompilerFlag)
 
@@ -105,9 +107,9 @@ if(BUILT_GTEST)
     configure_file(googletest.cmake.in
             googletest-download/CMakeLists.txt)
     execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
     execute_process(COMMAND ${CMAKE_COMMAND} --build .
-            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
 
 # Prevent GoogleTest from overriding our compiler/linker options
 # when building with Visual Studio
@@ -116,8 +118,8 @@ if(BUILT_GTEST)
 # Add googletest directly to our build. This adds
 # the following targets: gtest, gtest_main, gmock
 # and gmock_main
-    add_subdirectory(${CMAKE_BINARY_DIR}/game-googletest-src
-            ${CMAKE_BINARY_DIR}/game-googletest-build)
+    add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+            ${CMAKE_CURRENT_BINARY_DIR}/googletest-build)
 
 # The gtest/gmock targets carry header search path
 # dependencies automatically when using CMake 2.8.11 or
