@@ -87,6 +87,7 @@ if(NOT DEFINED ${TARGET_PLATFORM})
     endif()
 endif()
 
+message(FATAL_ERROR "SRCS ${SRCS}")
 add_subdirectory(platform)
 
 
