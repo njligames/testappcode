@@ -20,6 +20,8 @@ set(THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
 file(GLOB SRCS ${SRC_DIR}/*.c*)
 file(GLOB HDRS ${SRC_DIR}/*.h)
 
+message(FATAL_ERROR "SRC_DIR ${SRC_DIR}")
+
 set(TARGET_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
 list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
 list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
@@ -87,7 +89,6 @@ if(NOT DEFINED ${TARGET_PLATFORM})
     endif()
 endif()
 
-message(FATAL_ERROR "SRCS ${SRCS}")
 add_subdirectory(platform)
 
 
