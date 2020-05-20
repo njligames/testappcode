@@ -17,8 +17,8 @@ endif()
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
 
-file(GLOB_RECURSE SRCS ${SRC_DIR}/*.c*)
-file(GLOB_RECURSE HDRS ${SRC_DIR}/*.h)
+file(GLOB SRCS ${SRC_DIR}/*.c*)
+file(GLOB HDRS ${SRC_DIR}/*.h)
 
 set(TARGET_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
 list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
