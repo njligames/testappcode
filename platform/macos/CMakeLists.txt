@@ -5,7 +5,7 @@ list(APPEND GAME_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
 
 add_library(game STATIC ${SRCS} ${HDRS})
 
-include_directories(${GAME_INCLUDE_DIRS})
+# include_directories(${GAME_INCLUDE_DIRS})
 
 target_compile_definitions(game PUBLIC ${GAME_DEFINITIONS})
 
