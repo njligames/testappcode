@@ -1,29 +1,92 @@
 cmake_minimum_required(VERSION 2.8.8)
 
-project(game-test)
+project(game)
 
+include(CheckCXXCompilerFlag)
+
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
-set(GAME_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
 
-file(GLOB_RECURSE SRCS ${CMAKE_SOURCE_DIR}/*.c*)
-file(GLOB_RECURSE HDRS ${CMAKE_SOURCE_DIR}/*.h)
+file(GLOB_RECURSE SRCS ${SRC_DIR}/*.c*)
+file(GLOB_RECURSE HDRS ${SRC_DIR}/*.h)
 
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
+set(TARGET_INCLUDE_DIRS ${CMAKE_SOURCE_DIR})
+list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
+list(APPEND TARGET_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
 
-#if( DEFINED ${TARGET_PLATFORM})
-#
-#    add_subdirectory(${TARGET_PLATFORM})
-#else()
-#    add_library(game STATIC ${SRCS} ${HDRS})
-#
-#    set_target_properties(
-#        game PROPERTIES
-#        OUTPUT_NAME "game"
-#        POSITION_INDEPENDENT_CODE ON
-#        INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
-#     )
-#endif()
+if(NOT DEFINED ${TARGET_PLATFORM})
+    if(EMSCRIPTEN)
+        set(BUILT_GTEST TRUE)
 
-add_subdirectory(${TARGET_PLATFORM})
+        set(TARGET_PLATFORM "emscripten")
+        list(APPEND TARGET_DEFINITIONS "__EMSCRIPTEN__=1")
+        if(VR)
+            list(APPEND TARGET_DEFINITIONS "__VR__=1")
+        endif()
+    elseif(WIN32)
+        set(BUILT_GTEST TRUE)
+
+        if(ARCH_64)
+            set(TARGET_PLATFORM "windows64")
+            list(APPEND TARGET_DEFINITIONS "__WINDOWS64__=1")
+            if(OCULUS)
+                list(APPEND TARGET_DEFINITIONS "__VR__=1")
+            endif()
+        else()
+            set(TARGET_PLATFORM "windows32")
+            list(APPEND TARGET_DEFINITIONS "__WINDOWS32__=1")
+            if(OCULUS)
+                list(APPEND TARGET_DEFINITIONS "__VR__=1")
+            endif()
+        endif()
+    elseif(APPLE)
+        if(IOS)
+            set(TARGET_PLATFORM "ios")
+            list(APPEND TARGET_DEFINITIONS "__IPHONEOS__=1")
+            if(VR)
+                list(APPEND TARGET_DEFINITIONS "__VR__=1")
+            endif()
+        elseif(TVOS)
+            set(TARGET_PLATFORM "appletvos")
+            list(APPEND TARGET_DEFINITIONS "__APPLETVOS__=1")
+        else()
+            set(BUILT_GTEST TRUE)
+
+            set(TARGET_PLATFORM "macos")
+            list(APPEND TARGET_DEFINITIONS "__MACOS__=1")
+            if(OCULUS)
+                list(APPEND TARGET_DEFINITIONS "__VR__=1")
+            endif()
+        endif()
+    elseif(UNIX AND NOT APPLE AND NOT ANDROID)
+        set(BUILT_GTEST TRUE)
+
+        if(LINUX)
+            set(TARGET_PLATFORM "linux")
+            list(APPEND TARGET_DEFINITIONS "__LINUX__=1")
+            if(OCULUS)
+                list(APPEND TARGET_DEFINITIONS "__VR__=1")
+            endif()
+        elseif(UNIX)
+            set(TARGET_PLATFORM "unix")
+            list(APPEND TARGET_DEFINITIONS "__UNIX__=1")
+        endif()
+    elseif(ANDROID)
+        set(TARGET_PLATFORM "android")
+        list(APPEND TARGET_DEFINITIONS "__ANDROID__=1")
+    endif()
+endif()
+
+add_subdirectory(platform)
+
 
