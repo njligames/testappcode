@@ -26,8 +26,42 @@ file(GLOB PUBLIC_HDRS ${SRC_DIR}/public_include/*.h)
 set(GAME_INCLUDE_DIRS ${SRC_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${SRC_DIR}/public_include)
 
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
+# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
+# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 set(BUILT_GTEST FALSE)
 
@@ -103,6 +137,26 @@ set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 set(GAME_PUBLIC_DIRS ${SRC_DIR}/public_include)
 set(GAME_PLATFORM_PUBLIC_DIRS ${PLATFORM_DIR}/public_include)
 
+
+
+add_library(SDL2 UNKNOWN IMPORTED)
+set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_DIR}/platform/${TARGET_PLATFORM}/libSDL2.a")
+list(APPEND GAME_LIBRARIES SDL2)
+set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_DIR}/includes/SDL2)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/SDL2)
+
+# add_library(curl UNKNOWN IMPORTED)
+# set_property(TARGET curl APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_DIR}/platform/${TARGET_PLATFORM}/libcurl.dylib")
+# list(APPEND GAME_LIBRARIES curl)
+# set_target_properties(curl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_DIR}/includes/curl)
+# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/curl)
+
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/rapidjson)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/nlohmann)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/stb)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
+
 if(BUILT_GTEST)
 # Download and unpack googletest at configure time
     configure_file(googletest.cmake.in
@@ -131,6 +185,11 @@ if(BUILT_GTEST)
     endif()
 endif()
 
+
+file(GLOB_RECURSE SRCS_TEST_CPP ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
+file(GLOB_RECURSE SRCS_TEST_C ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c)
+file(GLOB_RECURSE HDRS_TEST ${CMAKE_CURRENT_SOURCE_DIR}/test/*.h)
+set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
 add_subdirectory(src/platform)
 add_subdirectory(doc)

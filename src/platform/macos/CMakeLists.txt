@@ -4,10 +4,17 @@ list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
 list(APPEND GAME_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
 
 add_library(game STATIC ${SRCS} ${HDRS})
-
-# include_directories(${GAME_INCLUDE_DIRS})
-
 target_compile_definitions(game PUBLIC ${GAME_DEFINITIONS})
+
+list(APPEND GAME_LIBRARIES "-framework CoreVideo")
+list(APPEND GAME_LIBRARIES "-framework Cocoa")
+list(APPEND GAME_LIBRARIES "-framework IOKit")
+list(APPEND GAME_LIBRARIES "-framework ForceFeedback")
+list(APPEND GAME_LIBRARIES "-framework Carbon")
+list(APPEND GAME_LIBRARIES "-framework CoreAudio")
+list(APPEND GAME_LIBRARIES "-framework AudioToolbox")
+list(APPEND GAME_LIBRARIES "-framework Metal")
+list(APPEND GAME_LIBRARIES "-framework OpenGL")
 
 target_link_libraries( game ${GAME_LIBRARIES})
 
@@ -21,3 +28,15 @@ install(TARGETS game EXPORT gameTargets
     LIBRARY DESTINATION game/lib
     ARCHIVE DESTINATION game/archive
     RUNTIME DESTINATION game/bin)
+
+
+set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
+add_custom_target(
+    clang-format
+    COMMAND ${CLANG_FORMAT_BIN} -style=file -i ${SRCS} ${HDRS} -verbose
+    SOURCES
+    "${CMAKE_SOURCE_DIR}/.clang-format"
+    )
+
+enable_testing()
+add_subdirectory(test)

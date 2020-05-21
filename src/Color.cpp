@@ -157,37 +157,34 @@ void Color::setHSV(const float fH, const float fS, const float fV) {
     mRGBColor = glm::vec4(fR, fG, fB, mRGBColor.a);
 }
 
-void Color::setHSV(const glm::vec4 &rgb){
-    
-}
+void Color::setHSV(const glm::vec4 &rgb) {}
 
 void Color::setRGB(const float fR, const float fG, const float fB) {
     mRGBColor = glm::vec4(fR, fG, fB, mRGBColor.a);
 }
 
-void Color::setRGB(const std::string &hex){
+void Color::setRGB(const std::string &hex) {
     std::string _hex(hex);
-    while(_hex.size() < 6) {
+    while (_hex.size() < 6) {
         _hex.append("0");
     }
-    
+
     int r, g, b;
     sscanf(_hex.c_str(), "%02x%02x%02x", &r, &g, &b);
     mRGBColor.r = r / 255.f;
     mRGBColor.g = g / 255.f;
     mRGBColor.b = b / 255.f;
-    
 }
-void Color::setRGB(const int hex){
-    mRGBColor.r = ((hex >> 16) & 0xFF) / 255.0;  // Extract the RR byte
-    mRGBColor.g = ((hex >> 8) & 0xFF) / 255.0;   // Extract the GG byte
-    mRGBColor.b = ((hex) & 0xFF) / 255.0;        // Extract the BB byte
+void Color::setRGB(const int hex) {
+    mRGBColor.r = ((hex >> 16) & 0xFF) / 255.0; // Extract the RR byte
+    mRGBColor.g = ((hex >> 8) & 0xFF) / 255.0;  // Extract the GG byte
+    mRGBColor.b = ((hex)&0xFF) / 255.0;         // Extract the BB byte
 }
-void Color::setRGB(const glm::vec4 &rgb){
-    mRGBColor.r = (rgb.r > 1.f)?1.f:(rgb.r < 0.f)?0.f:rgb.r;
-    mRGBColor.g = (rgb.g > 1.f)?1.f:(rgb.g < 0.f)?0.f:rgb.g;
-    mRGBColor.b = (rgb.b > 1.f)?1.f:(rgb.b < 0.f)?0.f:rgb.b;
-    mRGBColor.a = (rgb.a > 1.f)?1.f:(rgb.a < 0.f)?0.f:rgb.a;
+void Color::setRGB(const glm::vec4 &rgb) {
+    mRGBColor.r = (rgb.r > 1.f) ? 1.f : (rgb.r < 0.f) ? 0.f : rgb.r;
+    mRGBColor.g = (rgb.g > 1.f) ? 1.f : (rgb.g < 0.f) ? 0.f : rgb.g;
+    mRGBColor.b = (rgb.b > 1.f) ? 1.f : (rgb.b < 0.f) ? 0.f : rgb.b;
+    mRGBColor.a = (rgb.a > 1.f) ? 1.f : (rgb.a < 0.f) ? 0.f : rgb.a;
 }
 
 glm::vec4 Color::getHSV() const {
@@ -197,22 +194,10 @@ glm::vec4 Color::getHSV() const {
 }
 glm::vec4 Color::getRGB() const { return mRGBColor; }
 
-float Color::red()const{
-    return getRGB().x;
-}
-float Color::green()const{
-    return getRGB().y;
-}
-float Color::blue()const{
-    return getRGB().z;
-}
+float Color::red() const { return getRGB().x; }
+float Color::green() const { return getRGB().y; }
+float Color::blue() const { return getRGB().z; }
 
-float Color::hue()const{
-    return getHSV().x;
-}
-float Color::saturation()const{
-    return getHSV().y;
-}
-float Color::value()const{
-    return getHSV().z;
-}
+float Color::hue() const { return getHSV().x; }
+float Color::saturation() const { return getHSV().y; }
+float Color::value() const { return getHSV().z; }

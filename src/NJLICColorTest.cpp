@@ -7,7 +7,8 @@
 
 #include "NJLICColorTest.h"
 
-//#include "/Users/jamesfolk/Work/SDLSkeleton_Platform_Android/src/game-src/android/GraphicsPlatform.h"
+//#include
+//"/Users/jamesfolk/Work/SDLSkeleton_Platform_Android/src/game-src/android/GraphicsPlatform.h"
 #include "GraphicsPlatform.h"
 
 NJLICColorTest::NJLICColorTest() { printf("NJLICColorTest\n"); }
@@ -18,7 +19,7 @@ void NJLICColorTest::update(double step) {
     float h(std::numeric_limits<float>::denorm_min());
     mColor = Color::modifyHue(mColor, step);
 }
-void NJLICColorTest::render() const{
+void NJLICColorTest::render() const {
     //    printf("render\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -43,17 +44,17 @@ void NJLICColorTest::start() { printf("start\n"); }
 void NJLICColorTest::stop() { printf("stop\n"); }
 void NJLICColorTest::mouse(int button, int eventType, float x, float y,
                            int clicks) {
-//    printf("mouse\n");
+    //    printf("mouse\n");
 }
 void NJLICColorTest::keyDown(const std::string &keycodeName, bool withCapsLock,
                              bool withControl, bool withShift, bool withAlt,
                              bool withGui) {
-//    printf("keyDown\n");
+    //    printf("keyDown\n");
 }
 void NJLICColorTest::keyUp(const std::string &keycodeName, bool withCapsLock,
                            bool withControl, bool withShift, bool withAlt,
                            bool withGui) {
-//    printf("keyUp\n");
+    //    printf("keyUp\n");
 }
 
 void NJLICColorTest::touch(int touchDevId, int pointerFingerId, int eventType,
