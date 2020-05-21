@@ -1,5 +1,5 @@
 # first we can indicate the documentation build as an option and set it to ON by default
-option(BUILD_DOC "Build ${CMAKE_PROJECT_NAME} documentation" ON)
+option(BUILD_DOC "Build ${PROJECT_NAME} documentation" ON)
 
 # check if Doxygen is installed
 find_package(Doxygen)
@@ -15,7 +15,7 @@ if (DOXYGEN_FOUND)
     message(STATUS "Doxygen build started")
 
     # note the option ALL which allows to build the docs together with the application
-    add_custom_target( ${CMAKE_PROJECT_NAME}-documentation ALL
+    add_custom_target( ${PROJECT_NAME}-documentation ALL
         SOURCES ${CMAKE_BINARY_DIR}/Doxyfile
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
