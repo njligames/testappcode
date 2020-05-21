@@ -100,7 +100,8 @@ file(GLOB PLATFORM_PUBLIC_HDRS ${PLATFORM_DIR}/public_include/*.h)
 
 set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 
-set(GAME_PUBLIC_DIRS ${PLATFORM_DIR}/public_include ${SRC_DIR}/public_include)
+set(GAME_PUBLIC_DIRS ${SRC_DIR}/public_include)
+set(GAME_PLATFORM_PUBLIC_DIRS ${PLATFORM_DIR}/public_include)
 
 if(BUILT_GTEST)
 # Download and unpack googletest at configure time
@@ -132,4 +133,5 @@ endif()
 
 
 add_subdirectory(src/platform)
+add_subdirectory(doc)
 
