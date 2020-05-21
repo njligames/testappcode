@@ -42,7 +42,7 @@ add_test(NAME ${PROJECT_NAME}-test-static COMMAND ${PROJECT_NAME}-test-static)
 
 set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
 add_custom_target(
-    clang-format-test
+    ${PROJECT_NAME}-clang-format-test
     COMMAND ${CLANG_FORMAT_BIN} -style=file -i ${GAME_SOURCES_TEST} -verbose
     SOURCES
     "${CMAKE_SOURCE_DIR}/.clang-format"

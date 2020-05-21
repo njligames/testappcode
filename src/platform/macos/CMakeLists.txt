@@ -32,7 +32,7 @@ install(TARGETS ${PROJECT_NAME} EXPORT gameTargets
 
 set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
 add_custom_target(
-    clang-format
+    ${PROJECT_NAME}-clang-format
     COMMAND ${CLANG_FORMAT_BIN} -style=file -i ${SRCS} ${HDRS} -verbose
     SOURCES
     "${CMAKE_SOURCE_DIR}/.clang-format"
