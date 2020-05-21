@@ -17,7 +17,7 @@ else()
 endif()
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
+set(THIRDPARTY_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
 
 file(GLOB SRCS ${SRC_DIR}/*.c*)
 file(GLOB HDRS ${SRC_DIR}/include/*.h)
@@ -25,43 +25,6 @@ file(GLOB PUBLIC_HDRS ${SRC_DIR}/public_include/*.h)
 
 set(GAME_INCLUDE_DIRS ${SRC_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${SRC_DIR}/public_include)
-
-# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
-# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 set(BUILT_GTEST FALSE)
 
@@ -137,25 +100,19 @@ set(GAME_PUBLIC_HEADER ${PUBLIC_HDRS} ${PLATFORM_PUBLIC_HDRS})
 set(GAME_PUBLIC_DIRS ${SRC_DIR}/public_include)
 set(GAME_PLATFORM_PUBLIC_DIRS ${PLATFORM_DIR}/public_include)
 
-
+set(INCLUDE_DIRS ${GAME_PUBLIC_DIRS} ${GAME_PLATFORM_PUBLIC_DIRS})
 
 add_library(SDL2 UNKNOWN IMPORTED)
-set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_DIR}/platform/${TARGET_PLATFORM}/libSDL2.a")
+set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/${TARGET_PLATFORM}/libSDL2.a")
 list(APPEND GAME_LIBRARIES SDL2)
-set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_DIR}/includes/SDL2)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/SDL2)
+set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_INCLUDE_DIR}/includes/SDL2)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/SDL2)
 
-# add_library(curl UNKNOWN IMPORTED)
-# set_property(TARGET curl APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_DIR}/platform/${TARGET_PLATFORM}/libcurl.dylib")
-# list(APPEND GAME_LIBRARIES curl)
-# set_target_properties(curl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_DIR}/includes/curl)
-# list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/curl)
-
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/rapidjson)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/nlohmann)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/stb)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/glm)
-list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_DIR}/includes/NJLICEngine)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/rapidjson)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/nlohmann)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/stb)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/glm)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/NJLICEngine)
 
 if(BUILT_GTEST)
 # Download and unpack googletest at configure time
@@ -193,4 +150,82 @@ set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
 add_subdirectory(src/platform)
 add_subdirectory(doc)
+
+option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
+if(${PROJECT_NAME}_SWIG)
+
+    find_package(SWIG REQUIRED)
+    include(UseSWIG)
+
+    if(${SWIG_FOUND})
+        option(${PROJECT_NAME}_SWIG_LUA "Wrap it to lua" ON)
+        option(${PROJECT_NAME}_SWIG_PYTHON "Wrap it to python" ON)
+        option(${PROJECT_NAME}_SWIG_JAVA "Wrap it to java" OFF)
+        option(${PROJECT_NAME}_SWIG_GO "Wrap it to go" OFF)
+        option(${PROJECT_NAME}_SWIG_RUBY "Wrap it to ruby" OFF)
+        option(${PROJECT_NAME}_SWIG_OCTAVE "Wrap it to octave" OFF)
+        option(${PROJECT_NAME}_SWIG_CSHARP "Wrap it to csharp" OFF)
+        option(${PROJECT_NAME}_SWIG_JAVASCRIPT "Wrap it to javascript (node)" OFF)
+        option(${PROJECT_NAME}_SWIG_PHP "Wrap it to php" OFF)
+        option(${PROJECT_NAME}_SWIG_PERL "Wrap it to php" OFF)
+
+        MESSAGE(STATUS "SWIG_FOUND ${SWIG_FOUND}")
+        MESSAGE(STATUS "SWIG_DIR ${SWIG_DIR}")
+        MESSAGE(STATUS "SWIG_EXECUTABLE ${SWIG_EXECUTABLE}")
+        MESSAGE(STATUS "SWIG_VERSION ${SWIG_VERSION}")
+
+        include(${SWIG_USE_FILE})
+
+        if(${PROJECT_NAME}_SWIG_LUA)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_lua.cmake)
+            LUA_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_PYTHON)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_python.cmake)
+            PYTHON_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_JAVA)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_java.cmake)
+            JAVA_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_GO)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_go.cmake)
+            GO_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_RUBY)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_ruby.cmake)
+            RUBY_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_OCTAVE)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_octave.cmake)
+            OCTAVE_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_CSHARP)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_csharp.cmake)
+            CSHARP_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_javascript.cmake)
+            JAVASCRIPT_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_PHP)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_php.cmake)
+            PHP_SWIG()
+        endif()
+
+        if(${PROJECT_NAME}_SWIG_PERL)
+            include(${CMAKE_SOURCE_DIR}/cmake/swig_perl.cmake)
+            PERL_SWIG()
+        endif()
+    endif()
+endif()
+
 
