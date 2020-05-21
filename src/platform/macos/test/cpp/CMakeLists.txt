@@ -11,13 +11,13 @@ file(GLOB_RECURSE HDRS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
 list(APPEND GAME_SOURCES_TEST ${SRCS} ${HDRS})
 
-set_source_files_properties( ${TARGET_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION ${CMAKE_PROJECT_NAME}/Contents/Resources/)
+# set_source_files_properties( ${TARGET_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION ${CMAKE_PROJECT_NAME}/Contents/Resources/)
 
-add_executable( ${CMAKE_PROJECT_NAME}-test-static ${GAME_SOURCES_TEST} ${TARGET_RESOURCES})
-# set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY XCODE_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
+add_executable( ${PROJECT_NAME}-test-static ${GAME_SOURCES_TEST} ${TARGET_RESOURCES})
+# set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY XCODE_STARTUP_PROJECT ${PROJECT_NAME})
 
 set_target_properties(
-    ${CMAKE_PROJECT_NAME}-test-static PROPERTIES
+    ${PROJECT_NAME}-test-static PROPERTIES
 
     MACOSX_BUNDLE TRUE
     RESOURCE "${TARGET_RESOURCES}"
@@ -34,11 +34,11 @@ set_target_properties(
     INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
     )
 
-target_compile_definitions( ${CMAKE_PROJECT_NAME} PUBLIC ${TARGET_DEFINITIONS})
-# target_link_libraries( ${CMAKE_PROJECT_NAME}-test-static ${CMAKE_PROJECT_NAME}-static gtest gmock_main ${TARGET_LIBRARIES})
-target_link_libraries( ${CMAKE_PROJECT_NAME}-test-static game gtest gmock_main ${TARGET_LIBRARIES})
+target_compile_definitions( ${PROJECT_NAME} PUBLIC ${TARGET_DEFINITIONS})
+# target_link_libraries( ${PROJECT_NAME}-test-static ${PROJECT_NAME}-static gtest gmock_main ${TARGET_LIBRARIES})
+target_link_libraries( ${PROJECT_NAME}-test-static ${PROJECT_NAME} gtest gmock_main ${TARGET_LIBRARIES})
 
-add_test(NAME ${CMAKE_PROJECT_NAME}-test-static COMMAND ${CMAKE_PROJECT_NAME}-test-static)
+add_test(NAME ${PROJECT_NAME}-test-static COMMAND ${PROJECT_NAME}-test-static)
 
 set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
 add_custom_target(
