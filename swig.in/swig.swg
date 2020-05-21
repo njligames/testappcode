@@ -1,6 +1,6 @@
 %{
-#include "evr-internals-api.h"
+#include "swig.h"
     %}
 
-#include "evr-internals-api.h"
+#include "swig.h"
 

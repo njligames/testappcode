@@ -2,9 +2,17 @@ cmake_minimum_required(VERSION 3.12.2.4988404)
 
 project(game VERSION 1.0.0.0)
 
+cmake_policy(SET CMP0078 NEW)
+cmake_policy(SET CMP0086 NEW)
+
+
 MESSAGE("VERSION (${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK})")
 
 include(CheckCXXCompilerFlag)
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# message(FATAL_ERROR "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
 
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
@@ -151,23 +159,27 @@ set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 add_subdirectory(src/platform)
 add_subdirectory(doc)
 
-option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
+option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
 if(${PROJECT_NAME}_SWIG)
 
     find_package(SWIG REQUIRED)
     include(UseSWIG)
 
     if(${SWIG_FOUND})
+        list(APPEND SWIG_WRAP_INCLUDE ${GAME_PUBLIC_DIRS})
+        list(APPEND SWIG_WRAP_LIBRARIES ${GAME_LIBRARIES} ${PROJECT_NAME})
+
         option(${PROJECT_NAME}_SWIG_LUA "Wrap it to lua" ON)
-        option(${PROJECT_NAME}_SWIG_PYTHON "Wrap it to python" ON)
         option(${PROJECT_NAME}_SWIG_JAVA "Wrap it to java" OFF)
+        option(${PROJECT_NAME}_SWIG_PHP "Wrap it to php" OFF)
+        option(${PROJECT_NAME}_SWIG_JAVASCRIPT "Wrap it to javascript (node)" OFF)
+
+        option(${PROJECT_NAME}_SWIG_PYTHON "Wrap it to python" OFF)
         option(${PROJECT_NAME}_SWIG_GO "Wrap it to go" OFF)
         option(${PROJECT_NAME}_SWIG_RUBY "Wrap it to ruby" OFF)
         option(${PROJECT_NAME}_SWIG_OCTAVE "Wrap it to octave" OFF)
         option(${PROJECT_NAME}_SWIG_CSHARP "Wrap it to csharp" OFF)
-        option(${PROJECT_NAME}_SWIG_JAVASCRIPT "Wrap it to javascript (node)" OFF)
-        option(${PROJECT_NAME}_SWIG_PHP "Wrap it to php" OFF)
-        option(${PROJECT_NAME}_SWIG_PERL "Wrap it to php" OFF)
+        option(${PROJECT_NAME}_SWIG_PERL "Wrap it to perl" OFF)
 
         MESSAGE(STATUS "SWIG_FOUND ${SWIG_FOUND}")
         MESSAGE(STATUS "SWIG_DIR ${SWIG_DIR}")
@@ -177,54 +189,47 @@ if(${PROJECT_NAME}_SWIG)
         include(${SWIG_USE_FILE})
 
         if(${PROJECT_NAME}_SWIG_LUA)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_lua.cmake)
-            LUA_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_lua.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_PYTHON)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_python.cmake)
-            PYTHON_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_python.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_JAVA)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_java.cmake)
-            JAVA_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_java.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_GO)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_go.cmake)
-            GO_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_go.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_RUBY)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_ruby.cmake)
-            RUBY_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_ruby.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_OCTAVE)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_octave.cmake)
-            OCTAVE_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_octave.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_CSHARP)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_csharp.cmake)
-            CSHARP_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_csharp.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_javascript.cmake)
-            JAVASCRIPT_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_javascript.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_PHP)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_php.cmake)
-            PHP_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_php.cmake)
         endif()
 
         if(${PROJECT_NAME}_SWIG_PERL)
-            include(${CMAKE_SOURCE_DIR}/cmake/swig_perl.cmake)
-            PERL_SWIG()
+            include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_perl.cmake)
         endif()
+
+        include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig.cmake)
+        include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/platform/${TARGET_PLATFORM}/swig.cmake)
     endif()
 endif()
 

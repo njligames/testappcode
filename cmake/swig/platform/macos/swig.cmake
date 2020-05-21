@@ -1,0 +1,12 @@
+if(DEFINED SWIG_WRAP_LANG)
+
+    target_include_directories(${SWIG_TARGET_NAME}
+        PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
+        PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
+        PRIVATE $<BUILD_INTERFACE:${GAME_INCLUDE_DIRS}>
+        )
+
+    target_link_libraries(${SWIG_TARGET_NAME} ${SWIG_WRAP_LIBRARIES})
+endif()
+
+

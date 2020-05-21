@@ -3,7 +3,7 @@
 
 %include "std_string.i"
 
-using namespace std;
+// using namespace std;
 
 %include "_Ignore.swg"
 
@@ -60,64 +60,64 @@ using namespace std;
 #endif
 
 #if defined(SWIGPYTHON)
-  // %import <python/argcargv.i>
-  // %import <python/attribute.i>
-  // %import <python/boost_shared_ptr.i>
-  // %import <python/carrays.i>
-  // %import <python/ccomplex.i>
-  // %import <python/cdata.i>
-  // %import <python/cmalloc.i>
-  // %import <python/cni.i>
-  // %import <python/complex.i>
-  // %import <python/cpointer.i>
-  // %import <python/cstring.i>
-  // %import <python/cwstring.i>
-  // %import <python/embed.i>
-  // %import <python/exception.i>
-  // %import <python/factory.i>
-  // %import <python/file.i>
-  // %import <python/implicit.i>
-  // %import <python/jstring.i>
-  // %import <python/pyabc.i>
-  // %import <python/pybuffer.i>
-  // %import <python/pyname_compat.i>
-  // %import <python/std_alloc.i>
-  // %import <python/std_array.i>
-  // %import <python/std_auto_ptr.i>
-  // %import <python/std_basic_string.i>
-  // %import <python/std_carray.i>
-  // %import <python/std_char_traits.i>
-  // %import <python/std_common.i>
-  // %import <python/std_complex.i>
-  // %import <python/std_container.i>
-  // %import <python/std_deque.i>
-  // %import <python/std_except.i>
-  // %import <python/std_ios.i>
-  // %import <python/std_iostream.i>
-  // %import <python/std_list.i>
-  // %import <python/std_map.i>
-  // %import <python/std_multimap.i>
-  // %import <python/std_multiset.i>
-  // %import <python/std_pair.i>
-  // %import <python/std_set.i>
-  // %import <python/std_shared_ptr.i>
-  // %import <python/std_sstream.i>
-  // %import <python/std_streambuf.i>
+  %import <python/argcargv.i>
+  %import <python/attribute.i>
+  %import <python/boost_shared_ptr.i>
+  %import <python/carrays.i>
+  //%import <python/ccomplex.i>
+  %import <python/cdata.i>
+  %import <python/cmalloc.i>
+  %import <python/cni.i>
+  %import <python/complex.i>
+  %import <python/cpointer.i>
+  %import <python/cstring.i>
+  %import <python/cwstring.i>
+  %import <python/embed.i>
+  %import <python/exception.i>
+  %import <python/factory.i>
+  %import <python/file.i>
+  %import <python/implicit.i>
+  %import <python/jstring.i>
+  %import <python/pyabc.i>
+  %import <python/pybuffer.i>
+  %import <python/pyname_compat.i>
+  %import <python/std_alloc.i>
+  %import <python/std_array.i>
+  %import <python/std_auto_ptr.i>
+  %import <python/std_basic_string.i>
+  %import <python/std_carray.i>
+  %import <python/std_char_traits.i>
+  %import <python/std_common.i>
+  %import <python/std_complex.i>
+  %import <python/std_container.i>
+  %import <python/std_deque.i>
+  %import <python/std_except.i>
+  %import <python/std_ios.i>
+  %import <python/std_iostream.i>
+  %import <python/std_list.i>
+  %import <python/std_map.i>
+  %import <python/std_multimap.i>
+  %import <python/std_multiset.i>
+  %import <python/std_pair.i>
+  %import <python/std_set.i>
+  //%import <python/std_shared_ptr.i>
+  %import <python/std_sstream.i>
+  %import <python/std_streambuf.i>
   %import <python/std_string.i>
-  // %import <python/std_unordered_map.i>
-  // %import <python/std_unordered_multimap.i>
-  // %import <python/std_unordered_multiset.i>
-  // %import <python/std_unordered_set.i>
-  // %import <python/std_vector.i>
-  // %import <python/std_vectora.i>
-  // %import <python/std_wios.i>
-  // %import <python/std_wiostream.i>
-  // %import <python/std_wsstream.i>
-  // %import <python/std_wstreambuf.i>
-  // %import <python/std_wstring.i>
-  // %import <python/stl.i>
-  // %import <python/typemaps.i>
-  // %import <python/wchar.i>
+  %import <python/std_unordered_map.i>
+  %import <python/std_unordered_multimap.i>
+  %import <python/std_unordered_multiset.i>
+  %import <python/std_unordered_set.i>
+  %import <python/std_vector.i>
+  %import <python/std_vectora.i>
+  %import <python/std_wios.i>
+  %import <python/std_wiostream.i>
+  %import <python/std_wsstream.i>
+  %import <python/std_wstreambuf.i>
+  %import <python/std_wstring.i>
+  %import <python/stl.i>
+  %import <python/typemaps.i>
+  %import <python/wchar.i>
 #endif
 
 #if defined(SWIGRUBY)
@@ -195,7 +195,8 @@ using namespace std;
 %{
   int native_function(lua_State*L) // my native code
   {
-      printf("native_function code")
+      printf("native_function code");
+      return 1;
   }
 %}
 #endif
@@ -210,15 +211,15 @@ using namespace std;
 // %}
 #endif
 
-#if defined(SWIGPYTHON)
-// %native(native_function) int native_function(lua_State*L);  // registers native_function() with SWIG
+// #if defined(SWIGPYTHON)
+// %native(native_function) int native_function();  // registers native_function() with SWIG
 // %{
-//   int native_function(lua_State*L) // my native code
+//   int native_function() // my native code
 //   {
-//       printf("native_function code")
+//       printf("native_function code");
 //   }
 // %}
-#endif
+// #endif
 
 #if defined(SWIGRUBY)
 // %native(native_function) int native_function(lua_State*L);  // registers native_function() with SWIG
