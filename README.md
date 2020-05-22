@@ -1,7 +1,5 @@
 # Game Template
 
-## File Locations
-
 ### {PLATFORM_NAME} - platform specific directory name. 
 One of: 
 * emscripten
@@ -13,6 +11,23 @@ One of:
 * linux
 * unix
 * android
+
+## Adding new files.
+
+### Source
+
+* Put the `.cpp` file into `./src/`
+* If you want it to be a part of the library interface put it `.h` into `./public_include/`
+    * If platform specific, put it `.h` into `./src/platform/${PLATFORM_NAME}/public_include/`
+* If you want it to only be a part of the build interface put `.h` into `./include/`
+    * If platform specific, put it `.h` into `./src/platform/${PLATFORM_NAME}/include/`
+* If you want it to be wrapped by swig, make sure to include it's header into `./swig.in/swig.h`
+
+### Third Party
+* Put the third party include into `./thirdparty/includes`
+* Put the third party libraries into `./thirdparty/platform/${PLATFORM_NAME}`
+
+## File Locations
 
 ### Game Source file locations
 * `./src/`
@@ -37,3 +52,13 @@ One of:
 ### Thirdparty library locations
 * `./thirdparty/`
     * The thirdparty include files and libraries. In the future, this will be downloaded.
+
+## Testing
+### Example Test files.
+* `./src/public_include/Color.h`
+    * The source file to be tested.
+* `./test/TestColor.h`
+    * GoogleTest class.
+* `./test/lua/main.lua`
+    * The Color class was included in `swig.in/swig.h`
+    * Testing for the lua wrapper. (lua module must be put into lua_path)
