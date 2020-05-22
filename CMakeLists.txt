@@ -156,7 +156,6 @@ file(GLOB_RECURSE SRCS_TEST_C ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c)
 file(GLOB_RECURSE HDRS_TEST ${CMAKE_CURRENT_SOURCE_DIR}/test/*.h)
 set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
-add_subdirectory(src/platform)
 # add_subdirectory(doc)
 
 option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
@@ -230,7 +229,9 @@ if(${PROJECT_NAME}_SWIG)
 
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig.cmake)
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/platform/${TARGET_PLATFORM}/swig.cmake)
+
+        list(APPEND GAME_LIBRARIES ${SWIG_TARGET_NAME})
     endif()
 endif()
 
-
+add_subdirectory(src/platform)
