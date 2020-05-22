@@ -14,42 +14,26 @@ One of:
 * unix
 * android
 
-### C++ Game Source file locations
-* ${ROOT}/src
-    * All source files go into this directory.
-* ${ROOT}/src/include
-    * All **PRIVATE** include files go into this directory.
-* ${ROOT}/src/public_include
-    * All **PUBLIC** include files go into this directory.
-* ${ROOT}/src/platform/${PLATFORM_NAME}/include
-    * All platform specific **PRIVATE** include files go into this directory.
-* ${ROOT}/src/platform/${PLATFORM_NAME}/public_include
-    * All platform specific **PUBLIC** include files go into this directory.
+### Game Source file locations
+* `./src/`
+    * Source files go into this directory.
+* `./src/include/`
+    * **PRIVATE** include files go into this directory.
+* `./src/public_include/`
+    * **PUBLIC** include files go into this directory.
+* `./src/platform/${PLATFORM_NAME}/include/`
+    * Platform specific **PRIVATE** include files go into this directory.
+* `./src/platform/${PLATFORM_NAME}/public_include/`
+    * Platform specific **PUBLIC** include files go into this directory.
 
-### C++ Unit-Test Game Source file locations
-* ${ROOT}/test
-    * All c++ compiled files go into this directory.
+### Unit-Test Game Source file locations
+* `./test/`
+    * Source and Header *test* files go into this directory. The tests should be testing what is in the ./src files only.
 
-### C++ Wrapped Game Source file locations
-* ${ROOT}/swig.in/swig.h
-    * All c++ compiled files go into this directory.
+### Wrapped Game Source file locations
+* `./swig.in/swig.h`
+    * The include files that are stored in the .src/public_include .
 
-* platform - Store platform specific source and header files.
-    PLATFORM - platform specific directory name. 
-    One of: 
-    * emscripten
-    * windows64
-    * windows32
-    * ios
-    * appletvos
-    * macos
-    * linux
-    * unix
-    * android
-        include - Store platform specific build include files.
-        public_include - Store public interface include files.
-* src - Store general source and header files.
-    include - Store platform specific build include files.
-    public_include - Store public interface include files.
-* thirdparty - Store thirdparty header and library files.
-
+### Thirdparty library locations
+* `./thirdparty/`
+    * The thirdparty include files and libraries. In the future, this will be downloaded.
