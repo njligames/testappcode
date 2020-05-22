@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.2.4988404)
+cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
