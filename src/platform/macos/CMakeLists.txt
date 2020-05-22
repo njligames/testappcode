@@ -29,7 +29,6 @@ install(TARGETS ${PROJECT_NAME} EXPORT gameTargets
     ARCHIVE DESTINATION ${PROJECT_NAME}/archive
     RUNTIME DESTINATION ${PROJECT_NAME}/bin)
 
-
 set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
 add_custom_target(
     ${PROJECT_NAME}-clang-format
