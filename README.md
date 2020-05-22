@@ -66,4 +66,4 @@ One of:
 ## Code Formatting
 All of the source code is formatted with the clang formatter. To change how the code will be formatted, edit: `./.clang-format`
 ## Code Documentation
-All of the source code is documentated using Doxygen. To change how the Doxygen file is run, edit: `doc/doxygen/Doxyfile.in`
+All of the source code is documentated using Doxygen. To change how the Doxygen file is run, edit: `./doc/doxygen/Doxyfile.in`
