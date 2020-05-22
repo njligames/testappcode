@@ -49,3 +49,8 @@ elseif ("${${CMAKE_PROJECT_NAME}_GRAPHICS_PLATFORM}" STREQUAL "opengl_3")
     add_definitions(-D__GL_3__)
 endif ()
 
+option(__GL_ES2__ "GLES2 include" ${GL_ES2})
+option(__GL_ES3__ "GLES3 include" ${GL_ES3})
+option(__GL_2__ "GL2 include" ${GL_2})
+option(__GL_3__ "GL3 include" ${GL_3})
+
