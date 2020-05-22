@@ -167,7 +167,7 @@ if(${PROJECT_NAME}_SWIG)
 
     if(${SWIG_FOUND})
         list(APPEND SWIG_WRAP_INCLUDE ${GAME_PUBLIC_DIRS})
-        list(APPEND SWIG_WRAP_LIBRARIES ${GAME_LIBRARIES} ${PROJECT_NAME})
+        list(APPEND SWIG_WRAP_LIBRARIES ${GAME_LIBRARIES} ${PROJECT_NAME}-static)
 
         option(${PROJECT_NAME}_SWIG_LUA "Wrap it to lua" ON)
         option(${PROJECT_NAME}_SWIG_JAVA "Wrap it to java" OFF)
@@ -228,6 +228,7 @@ if(${PROJECT_NAME}_SWIG)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_perl.cmake)
         endif()
 
+        set(${SWIG_WRAP_LANG}_WRAP_TEST_IN ${CMAKE_CURRENT_SOURCE_DIR}/test/${SWIG_WRAP_LANG}/main.${SWIG_WRAP_LANG})
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig.cmake)
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/platform/${TARGET_PLATFORM}/swig.cmake)
 
