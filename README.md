@@ -1,6 +1,6 @@
 # Game Template
 
-### {PLATFORM_NAME} - platform specific directory name. 
+### `{PLATFORM_NAME}` - platform specific directory name. 
 One of: 
 * emscripten
 * windows64
@@ -17,11 +17,11 @@ One of:
 ### Source
 
 * Put the `.cpp` file into `./src/`
-* If you want it to be a part of the library interface put it `.h` into `./public_include/`
-    * If platform specific, put it `.h` into `./src/platform/${PLATFORM_NAME}/public_include/`
-* If you want it to only be a part of the build interface put `.h` into `./include/`
-    * If platform specific, put it `.h` into `./src/platform/${PLATFORM_NAME}/include/`
-* If you want it to be wrapped by swig, make sure to include it's header into `./swig.in/swig.h`
+* If you want the header to be a part of the library interface put the `.h` into `./public_include/`
+    * If platform specific, put the `.h` into `./src/platform/${PLATFORM_NAME}/public_include/`
+* If you want the header to only be a part of the build interface put the `.h` into `./include/`
+    * If platform specific, put the `.h` into `./src/platform/${PLATFORM_NAME}/include/`
+* If you want the header to be wrapped by swig, make sure to include it's header into `./swig.in/swig.h`
 
 ### Third Party
 * Put the third party include into `./thirdparty/includes`
@@ -62,3 +62,8 @@ One of:
 * `./test/lua/main.lua`
     * The Color class was included in `swig.in/swig.h`
     * Testing for the lua wrapper. (lua module must be put into lua_path)
+
+## Code Formatting
+All of the source code is formatted with the clang formatter. To change how the code will be formatted, edit: `./.clang-format`
+## Code Documentation
+All of the source code is documentated using Doxygen. To change how the Doxygen file is run, edit: `doc/doxygen/Doxyfile.in`
