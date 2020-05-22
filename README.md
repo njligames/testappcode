@@ -16,7 +16,7 @@ One of:
 
 ### C++ Game Source file locations
 * ${ROOT}/src
-    All c++ compiled files go into this directory.
+    * All c++ compiled files go into this directory.
 * ${ROOT}/src/include
 * ${ROOT}/src/public_include
 * ${ROOT}/src/platform/${PLATFORM_NAME}/include
