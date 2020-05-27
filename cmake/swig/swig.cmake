@@ -11,6 +11,7 @@ if(DEFINED SWIG_WRAP_LANG)
     list(APPEND CMAKE_SWIG_FLAGS "-ignoremissing")
     # list(APPEND CMAKE_SWIG_FLAGS "-cpperraswarn")
     # list(APPEND CMAKE_SWIG_FLAGS "-DSWIG_TYPE_TABLE=myprojectname")
+    list(APPEND CMAKE_SWIG_FLAGS "-module" "${PROJECT_NAME}")
 
     set(SWIG_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/swig.in")
 
