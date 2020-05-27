@@ -19,15 +19,15 @@ _build_android()
 
     $CMAKE_BIN .. \
         ${CMAKE_LIB_OPTIONS} \
-        -DCMAKE_BUILD_TYPE=${MY_BUILD_TYPE} \
-        -DCMAKE_INSTALL_PREFIX=./BUILD/lib/${MY_BUILT_LIBRARY}/android/${MY_ANDROID_NATIVE_API_LEVEL}/${MY_BUILD_TYPE}/${MY_ABI}\
+        -DCMAKE_INSTALL_PREFIX=./BUILD/lib/${MY_BUILT_LIBRARY}/android/${MY_ANDROID_NATIVE_API_LEVEL}/Release/${MY_ABI}\
         -DANDROID_ABI=${MY_ABI} \
         -DANDROID_NATIVE_API_LEVEL=${MY_ANDROID_NATIVE_API_LEVEL} \
         -DANDROID_STL=c++_shared \
         -DCMAKE_TOOLCHAIN_FILE=${MY_ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DANDROID:BOOL=ON
 
-    $CMAKE_BIN --build . --config ${MY_BUILD_TYPE}
+    # $CMAKE_BIN -v --build . --config ${MY_BUILD_TYPE}
+    $CMAKE_BIN --build .
 
     cd ..
 
@@ -39,7 +39,7 @@ build_android_abi()
   # ABIS=('armeabi-v7a' 'x86' 'arm64-v8a' 'x86_64' )
   # BUILD_TYPES=(Debug Release MinsizeRel RelWithDebugInfo)
   ABIS=('x86_64')
-  BUILD_TYPES=(RelWithDebugInfo)
+  BUILD_TYPES=(Release)
 
   for ABI in ${ABIS[@]};do
 
