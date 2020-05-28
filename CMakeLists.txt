@@ -230,9 +230,7 @@ if(${PROJECT_NAME}_SWIG)
 
         set(${SWIG_WRAP_LANG}_WRAP_TEST_IN ${CMAKE_CURRENT_SOURCE_DIR}/test/${SWIG_WRAP_LANG}/main.${SWIG_WRAP_LANG})
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig.cmake)
-        include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/platform/${TARGET_PLATFORM}/swig.cmake)
 
-        list(APPEND GAME_LIBRARIES ${SWIG_TARGET_NAME})
     endif()
 endif()
 
