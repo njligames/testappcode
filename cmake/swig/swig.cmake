@@ -39,39 +39,41 @@ if(DEFINED SWIG_WRAP_LANG)
         )
     list(APPEND ${SWIG_WRAP_LANG}_INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG}-static)
 
-    set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
-    set(SWIG_OUTFILE_DIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
-    SWIG_ADD_LIBRARY(${PROJECT_NAME}-${SWIG_WRAP_LANG}
-        TYPE SHARED
-        LANGUAGE ${SWIG_WRAP_LANG}
-        SOURCES ${SWIG_INCLUDE_DIR}/swig.i
-        )
-    target_include_directories(${PROJECT_NAME}-${SWIG_WRAP_LANG}
-        PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
-        PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
-        PRIVATE $<BUILD_INTERFACE:${GAME_INCLUDE_DIRS}>
-        )
-    target_link_libraries(${PROJECT_NAME}-${SWIG_WRAP_LANG}
-        ${SWIG_WRAP_LIBRARIES}
-        )
-    list(APPEND ${SWIG_WRAP_LANG}_INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG})
+    if(NOT ANDROID)
+        set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
+        set(SWIG_OUTFILE_DIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
+        SWIG_ADD_LIBRARY(${PROJECT_NAME}-${SWIG_WRAP_LANG}
+            TYPE SHARED
+            LANGUAGE ${SWIG_WRAP_LANG}
+            SOURCES ${SWIG_INCLUDE_DIR}/swig.i
+            )
+        target_include_directories(${PROJECT_NAME}-${SWIG_WRAP_LANG}
+            PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
+            PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
+            PRIVATE $<BUILD_INTERFACE:${GAME_INCLUDE_DIRS}>
+            )
+        target_link_libraries(${PROJECT_NAME}-${SWIG_WRAP_LANG}
+            ${SWIG_WRAP_LIBRARIES}
+            )
+        list(APPEND ${SWIG_WRAP_LANG}_INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG})
 
-    set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/module")
-    set(SWIG_OUTFILE_DIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/module")
-    SWIG_ADD_LIBRARY(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
-        TYPE MODULE
-        LANGUAGE ${SWIG_WRAP_LANG}
-        SOURCES ${SWIG_INCLUDE_DIR}/swig.i
-        )
-    target_include_directories(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
-        PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
-        PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
-        PRIVATE $<BUILD_INTERFACE:${GAME_INCLUDE_DIRS}>
-        )
-    target_link_libraries(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
-        ${SWIG_WRAP_LIBRARIES}
-        )
-    list(APPEND ${SWIG_WRAP_LANG}_INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG}-module)
+        set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/module")
+        set(SWIG_OUTFILE_DIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/module")
+        SWIG_ADD_LIBRARY(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
+            TYPE MODULE
+            LANGUAGE ${SWIG_WRAP_LANG}
+            SOURCES ${SWIG_INCLUDE_DIR}/swig.i
+            )
+        target_include_directories(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
+            PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
+            PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
+            PRIVATE $<BUILD_INTERFACE:${GAME_INCLUDE_DIRS}>
+            )
+        target_link_libraries(${PROJECT_NAME}-${SWIG_WRAP_LANG}-module
+            ${SWIG_WRAP_LIBRARIES}
+            )
+        list(APPEND ${SWIG_WRAP_LANG}_INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG}-module)
+    endif()
 
     install(TARGETS ${${SWIG_WRAP_LANG}_INSTALL_LIBS} EXPORT gameTargets
         PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}/${SWIG_WRAP_LANG}
