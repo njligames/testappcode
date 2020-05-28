@@ -4,7 +4,7 @@ string(TOUPPER ${SWIG_WRAP_LANG} SWIG_WRAP_LANG_UPPER)
 if( ANDROID)
 
     add_library(lua UNKNOWN IMPORTED)
-    set_property(TARGET lua APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/android/${ANDROID_ABI}/liblua.so")
+    set_property(TARGET lua APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/android/${ANDROID_ABI}/liblua.a")
     list(APPEND GAME_LIBRARIES lua)
     set_target_properties(lua PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_INCLUDE_DIR}/includes/lua)
 

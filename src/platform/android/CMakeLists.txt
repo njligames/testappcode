@@ -3,11 +3,63 @@ set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUD
 list(APPEND GAME_LIBRARIES SDL2)
 set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${THIRDPARTY_INCLUDE_DIR}/includes/SDL2")
 
-find_library( log-lib log)
-list(APPEND GAME_LIBRARIES ${log-lib})
 
-FIND_LIBRARY(GLESv2-lib GLESv2)
-list(APPEND GAME_LIBRARIES "${GLESv2-lib}")
+
+
+
+
+
+
+find_library(log-lib log)
+list(APPEND GAME_LIBRARIES "${log-lib}")
+
+find_library(dl-lib dl)
+list(APPEND GAME_LIBRARIES "${dl-lib}")
+
+# IF( GL_ES2 )
+   find_library(GLESv2-lib GLESv2)
+   list(APPEND GAME_LIBRARIES "${GLESv2-lib}")
+# ELSEIF( GL_ES3 )
+#   FIND_LIBRARY(GLESv3-lib GLESv3)
+#   list(APPEND GAME_LIBRARIES "${GLESv3-lib}")
+# ELSE()
+#   MESSAGE(FATAL_ERROR "opengl isn't defined for android")
+# ENDIF()
+
+find_library(m-lib m)
+list(APPEND GAME_LIBRARIES "${m-lib}")
+
+# find_library(c-lib c)
+# list(APPEND GAME_LIBRARIES "${c-lib}")
+
+# FIND_LIBRARY(EGL-lib EGL)
+# list(APPEND GAME_LIBRARIES "${EGL-lib}")
+
+# find_library(stdc++-lib stdc++)
+# list(APPEND GAME_LIBRARIES "${stdc++-lib}")
+
+find_library(android-lib android)
+list(APPEND GAME_LIBRARIES "${android-lib}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
@@ -40,6 +92,9 @@ if(${PROJECT_NAME}_BUILD_STATIC)
     set_property(TARGET ${PROJECT_NAME}-static PROPERTY PUBLIC_HEADER ${GAME_PUBLIC_HEADER})
     set_property(TARGET ${PROJECT_NAME}-static PROPERTY INCLUDE_DIRECTORIES ${GAME_INCLUDE_DIRS})
     set_property(TARGET ${PROJECT_NAME}-static PROPERTY OUTPUT_NAME "${PROJECT_NAME}")
+
+    set_target_properties(${PROJECT_NAME}-static PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
     # set_property(TARGET ${PROJECT_NAME}-static PROPERTY XCODE_ATTRIBUTE_PRODUCT_NAME "${PROJECT_NAME}")
 
     list(APPEND INSTALL_LIBS ${PROJECT_NAME}-static)
@@ -72,6 +127,7 @@ if(${PROJECT_NAME}_BUILD_SHARED)
     set_property(TARGET ${PROJECT_NAME} PROPERTY INCLUDE_DIRECTORIES ${GAME_INCLUDE_DIRS})
     set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME "${PROJECT_NAME}")
     # set_property(TARGET ${PROJECT_NAME} PROPERTY XCODE_ATTRIBUTE_PRODUCT_NAME "${PROJECT_NAME}")
+    set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
     list(APPEND INSTALL_LIBS ${PROJECT_NAME})
 endif()
