@@ -33,5 +33,9 @@ jobs:
         echo test, and deploy your project.
 
     # Runs a single command using the runners shell
-    - name: Run a one-line script
+    - name: run cmake for macos project
       run: bash macOS.sh
+
+    # Runs a single command using the runners shell
+    - name: run cmake for android project
+      run: bash android.sh
