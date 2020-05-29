@@ -26,7 +26,7 @@ jobs:
 
     - name: view home
       run: |
-        ls ${HOME}
+        ls 
         pwd
 
     - uses: apple-actions/import-codesign-certs@v1
