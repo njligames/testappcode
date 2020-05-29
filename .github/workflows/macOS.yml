@@ -24,6 +24,7 @@ jobs:
       with:
         submodules: true
 
+
     - uses: apple-actions/import-codesign-certs@v1
       with: 
         p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
