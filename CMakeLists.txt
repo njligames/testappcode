@@ -156,7 +156,10 @@ file(GLOB_RECURSE SRCS_TEST_C ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c)
 file(GLOB_RECURSE HDRS_TEST ${CMAKE_CURRENT_SOURCE_DIR}/test/*.h)
 set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
-add_subdirectory(doc)
+set(BUILD_DOC OFF CACHE BOOL "Build the doxygen docs.")
+if(BUILD_DOC)
+    add_subdirectory(doc)
+endif()
 
 option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
 if(${PROJECT_NAME}_SWIG)
