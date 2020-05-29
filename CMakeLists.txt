@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
-cmake_policy(SET CMP0078 NEW)
-cmake_policy(SET CMP0086 NEW)
+if (CMAKE_VERSION VERSION_LESS 3.17.0)
+    cmake_policy(SET CMP0078 NEW)
+    cmake_policy(SET CMP0086 NEW)
+endif()
 
 message(STATUS "VERSION (${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK})")
 
