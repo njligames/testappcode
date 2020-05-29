@@ -24,6 +24,12 @@ jobs:
       with:
         submodules: true
     
+    - name: install lua
+      run: brew install lua
+    
+    - name: install swig
+      run: brew install swig
+      
     - name: build macOS
       run: |
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
