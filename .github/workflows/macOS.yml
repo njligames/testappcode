@@ -30,6 +30,9 @@ jobs:
     - name: install swig
       run: brew install swig
       
+    - name: print cmake version
+      run: cmake --version
+      
     - name: build macOS
       run: |
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
