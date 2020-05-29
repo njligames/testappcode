@@ -1,3 +1,5 @@
+![CI](https://github.com/njligames/testappcode/workflows/CI/badge.svg)
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
