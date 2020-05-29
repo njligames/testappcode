@@ -1,5 +1,6 @@
 ![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg)
 
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
