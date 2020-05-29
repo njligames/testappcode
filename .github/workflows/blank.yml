@@ -33,4 +33,4 @@ jobs:
     - name: build macOS
       run: |
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
-        cmake --build . --config Release --target game
+        cmake --build . --config Release --target install
