@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
+set(${PROJECT_NAME}_BUILD_DOC ON CACHE BOOL "Build the framework library")
+
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13.0)
     cmake_policy(SET CMP0078 NEW)
     cmake_policy(SET CMP0086 NEW)
@@ -156,8 +158,7 @@ file(GLOB_RECURSE SRCS_TEST_C ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c)
 file(GLOB_RECURSE HDRS_TEST ${CMAKE_CURRENT_SOURCE_DIR}/test/*.h)
 set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
-set(BUILD_DOC OFF CACHE BOOL "Build the doxygen docs.")
-if(BUILD_DOC)
+if(${PROJECT_NAME}_BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
