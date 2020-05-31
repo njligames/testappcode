@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
-set(${PROJECT_NAME}_BUILD_DOC ON CACHE BOOL "Build the framework library")
+set(${PROJECT_NAME}_BUILD_DOC OFF CACHE BOOL "Build the framework library")
 
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13.0)
     cmake_policy(SET CMP0078 NEW)
