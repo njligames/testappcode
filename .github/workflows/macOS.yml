@@ -44,7 +44,7 @@ jobs:
       run: |
         cmake --version
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
-        cmake --build . --config Release --target install
+        cmake --build . --config Release --target package
         
     - uses: actions/upload-artifact@v2
       with:
