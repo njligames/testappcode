@@ -2,9 +2,9 @@
 
 MY_BUILT_LIBRARY=$1
 
-MY_ANDROID_NDK=/Users/jamesfolk/Library/Android/sdk/ndk-bundle/
+# MY_ANDROID_NDK=/Users/jamesfolk/Library/Android/sdk/ndk-bundle/
+MY_ANDROID_NDK=./bin/ndk-bundle
 MY_ANDROID_NATIVE_API_LEVEL=29
-# CMAKE_BIN=/Users/jamesfolk/Library/Android/sdk//cmake/3.10.2.4988404/bin/cmake
 CMAKE_BIN=/usr/local/bin/cmake
 
 _build_android()
@@ -16,8 +16,6 @@ _build_android()
     mkdir -p .build_android
     cd .build_android
 
-    export LUA_DIR=/Users/jamesfolk/Work/third-party_libs/BUILD/lib/lua/android/28/Release/${MY_ABI}
-
     $CMAKE_BIN .. \
         ${CMAKE_LIB_OPTIONS} \
         -DCMAKE_INSTALL_PREFIX=./BUILD/lib/${MY_BUILT_LIBRARY}/android/${MY_ANDROID_NATIVE_API_LEVEL}/Release/${MY_ABI}\
@@ -28,7 +26,7 @@ _build_android()
         -DANDROID:BOOL=ON
 
     # $CMAKE_BIN -v --build . --config ${MY_BUILD_TYPE}
-    $CMAKE_BIN --build .
+    $CMAKE_BIN --build . --config ${MY_BUILD_TYPE} --target package
 
     cd ..
 
@@ -37,10 +35,10 @@ _build_android()
 build_android_abi()
 {
 
-  # ABIS=('armeabi-v7a' 'x86' 'arm64-v8a' 'x86_64' )
-  # BUILD_TYPES=(Debug Release MinsizeRel RelWithDebugInfo)
-  ABIS=('x86_64')
-  BUILD_TYPES=(Release)
+  ABIS=('armeabi-v7a' 'x86' 'arm64-v8a' 'x86_64' )
+  BUILD_TYPES=(Debug Release MinsizeRel RelWithDebugInfo)
+  # ABIS=('x86_64')
+  # BUILD_TYPES=(Release)
 
   for ABI in ${ABIS[@]};do
 

@@ -253,10 +253,10 @@ if (WIN32)
     endif ()
     set(CPACK_SOURCE_GENERATOR "ZIP")
 elseif ( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-    set(CPACK_GENERATOR "ZIP")
+    # set(CPACK_GENERATOR "productbuild")
+    set(CPACK_SOURCE_GENERATOR "ZIP")
 else ()
-    set(CPACK_GENERATOR "DEB")
-    set(CPACK_SOURCE_GENERATOR "TGZ")
+    set(CPACK_SOURCE_GENERATOR "ZIP")
 endif ()
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Folk") #required
