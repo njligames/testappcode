@@ -1,4 +1,5 @@
-![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg)
+
+![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg?branch=master)
 
 # Game Template
 
