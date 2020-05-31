@@ -118,4 +118,3 @@ install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
 enable_testing()
 add_subdirectory(test)
 
-include(CPack)
