@@ -42,6 +42,7 @@ jobs:
       
     - name: build ios
       run: |
+        export EFFECTIVE_PLATFORM_NAME='-iphonesimulator'
         cmake --version
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode" -DIOS:BOOL=TRUE
         cmake --build . --config Release --target package

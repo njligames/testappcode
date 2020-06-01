@@ -3,13 +3,6 @@ set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUD
 list(APPEND GAME_LIBRARIES SDL2)
 set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${THIRDPARTY_INCLUDE_DIR}/includes/SDL2")
 
-
-
-
-
-
-
-
 find_library(log-lib log)
 list(APPEND GAME_LIBRARIES "${log-lib}")
 
@@ -29,37 +22,8 @@ list(APPEND GAME_LIBRARIES "${dl-lib}")
 find_library(m-lib m)
 list(APPEND GAME_LIBRARIES "${m-lib}")
 
-# find_library(c-lib c)
-# list(APPEND GAME_LIBRARIES "${c-lib}")
-
-# FIND_LIBRARY(EGL-lib EGL)
-# list(APPEND GAME_LIBRARIES "${EGL-lib}")
-
-# find_library(stdc++-lib stdc++)
-# list(APPEND GAME_LIBRARIES "${stdc++-lib}")
-
 find_library(android-lib android)
 list(APPEND GAME_LIBRARIES "${android-lib}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
@@ -69,23 +33,6 @@ set(${PROJECT_NAME}_BUILD_STATIC ON CACHE BOOL "Build the shared library")
 
 if(${PROJECT_NAME}_BUILD_STATIC)
     add_library(${PROJECT_NAME}-static STATIC ${SRCS} ${HDRS})
-    # target_compile_definitions(${PROJECT_NAME}-static PUBLIC ${GAME_DEFINITIONS})
-    # target_link_libraries( ${PROJECT_NAME}-static ${GAME_LIBRARIES})
-    # set_target_properties(${PROJECT_NAME}-static PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}")
-    # list(APPEND INSTALL_LIBS ${PROJECT_NAME}-static)
-
-    # add_library(${PROJECT_NAME}-static STATIC ${SRCS} ${HDRS})
-    # target_compile_definitions(${PROJECT_NAME}-static PUBLIC ${GAME_DEFINITIONS})
-
-    # list(APPEND GAME_LIBRARIES "-framework CoreVideo")
-    # list(APPEND GAME_LIBRARIES "-framework Cocoa")
-    # list(APPEND GAME_LIBRARIES "-framework IOKit")
-    # list(APPEND GAME_LIBRARIES "-framework ForceFeedback")
-    # list(APPEND GAME_LIBRARIES "-framework Carbon")
-    # list(APPEND GAME_LIBRARIES "-framework CoreAudio")
-    # list(APPEND GAME_LIBRARIES "-framework AudioToolbox")
-    # list(APPEND GAME_LIBRARIES "-framework Metal")
-    # list(APPEND GAME_LIBRARIES "-framework OpenGL")
 
     target_link_libraries( ${PROJECT_NAME}-static ${GAME_LIBRARIES})
 
@@ -95,31 +42,11 @@ if(${PROJECT_NAME}_BUILD_STATIC)
 
     set_target_properties(${PROJECT_NAME}-static PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-    # set_property(TARGET ${PROJECT_NAME}-static PROPERTY XCODE_ATTRIBUTE_PRODUCT_NAME "${PROJECT_NAME}")
-
     list(APPEND INSTALL_LIBS ${PROJECT_NAME}-static)
 endif()
 
 if(${PROJECT_NAME}_BUILD_SHARED)
     add_library(${PROJECT_NAME} SHARED ${SRCS} ${HDRS})
-    # target_compile_definitions(${PROJECT_NAME} PUBLIC ${GAME_DEFINITIONS})
-    # target_link_libraries( ${PROJECT_NAME} ${GAME_LIBRARIES})
-    # set_target_properties(${PROJECT_NAME} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}")
-    # list(APPEND INSTALL_LIBS ${PROJECT_NAME})
-
-
-    # add_library(${PROJECT_NAME} SHARED ${SRCS} ${HDRS})
-    # target_compile_definitions(${PROJECT_NAME} PUBLIC ${GAME_DEFINITIONS})
-
-    # list(APPEND GAME_LIBRARIES "-framework CoreVideo")
-    # list(APPEND GAME_LIBRARIES "-framework Cocoa")
-    # list(APPEND GAME_LIBRARIES "-framework IOKit")
-    # list(APPEND GAME_LIBRARIES "-framework ForceFeedback")
-    # list(APPEND GAME_LIBRARIES "-framework Carbon")
-    # list(APPEND GAME_LIBRARIES "-framework CoreAudio")
-    # list(APPEND GAME_LIBRARIES "-framework AudioToolbox")
-    # list(APPEND GAME_LIBRARIES "-framework Metal")
-    # list(APPEND GAME_LIBRARIES "-framework OpenGL")
 
     target_link_libraries( ${PROJECT_NAME} ${GAME_LIBRARIES})
 
@@ -143,7 +70,7 @@ add_custom_target(
 install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
     PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
     LIBRARY DESTINATION lib/${PROJECT_NAME}
-    ARCHIVE DESTINATION archive/${PROJECT_NAME}
+    ARCHIVE DESTINATION lib/${PROJECT_NAME}
     RUNTIME DESTINATION bin/${PROJECT_NAME}
     )
 

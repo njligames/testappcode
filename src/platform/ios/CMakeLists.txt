@@ -1,4 +1,4 @@
-SET(CMAKE_OSX_SYSROOT "iphoneos")
+SET(CMAKE_OSX_SYSROOT "iphonesimulator")
 SET(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
 
 set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "10.0" CACHE STRING "Minimum supported iOS version")
@@ -155,9 +155,9 @@ install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
     LIBRARY DESTINATION lib/${PROJECT_NAME}
     ARCHIVE DESTINATION lib/${PROJECT_NAME}
     RUNTIME DESTINATION bin/${PROJECT_NAME}
-    FRAMEWORK DESTINATION Library/Frameworks/${PROJECT_NAME}
+    FRAMEWORK DESTINATION Frameworks/${PROJECT_NAME}
     )
 
-enable_testing()
-add_subdirectory(test)
+# enable_testing()
+# add_subdirectory(test)
 
