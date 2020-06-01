@@ -60,17 +60,17 @@ jobs:
         name: armeabi-v7a-artifact
         path: .build_android/game*
       
-    - name: build x86 android library. 
-      run: |
-        cmake --version
-        cmake . \
-        -DCMAKE_INSTALL_PREFIX=install \
-        -DANDROID_ABI='x86' \
-        -DANDROID_NATIVE_API_LEVEL=29 \
-        -DANDROID_STL=c++_shared \
-        -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/android-ndk/build/cmake/android.toolchain.cmake \
-        -DANDROID:BOOL=ON
-        cmake --build . --config ${MY_BUILD_TYPE} --target package
+        # - name: build x86 android library. 
+        #   run: |
+        #     cmake --version
+        #     cmake . \
+        #     -DCMAKE_INSTALL_PREFIX=install \
+        #     -DANDROID_ABI='x86' \
+        #     -DANDROID_NATIVE_API_LEVEL=29 \
+        #     -DANDROID_STL=c++_shared \
+        #     -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/android-ndk/build/cmake/android.toolchain.cmake \
+        #     -DANDROID:BOOL=ON
+        #     cmake --build . --config ${MY_BUILD_TYPE} --target package
         
     - uses: actions/upload-artifact@v2
       with:
