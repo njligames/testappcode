@@ -39,6 +39,9 @@ jobs:
     
     - name: install swig
       run: brew install swig
+    
+    - name: install ndk
+      run: brew cask install android-ndk
       
     - name: build macOS
       run: |

@@ -3,9 +3,8 @@
 MY_BUILT_LIBRARY=$1
 
 # MY_ANDROID_NDK=/Users/jamesfolk/Library/Android/sdk/ndk-bundle/
-MY_ANDROID_NDK=./bin/ndk-bundle
+MY_ANDROID_NDK=/usr/local/share/android-ndk
 MY_ANDROID_NATIVE_API_LEVEL=29
-CMAKE_BIN=/usr/local/bin/cmake
 
 _build_android()
 {
@@ -16,7 +15,7 @@ _build_android()
     mkdir -p .build_android
     cd .build_android
 
-    $CMAKE_BIN .. \
+    cmake .. \
         ${CMAKE_LIB_OPTIONS} \
         -DCMAKE_INSTALL_PREFIX=./BUILD/lib/${MY_BUILT_LIBRARY}/android/${MY_ANDROID_NATIVE_API_LEVEL}/Release/${MY_ABI}\
         -DANDROID_ABI=${MY_ABI} \
@@ -25,8 +24,7 @@ _build_android()
         -DCMAKE_TOOLCHAIN_FILE=${MY_ANDROID_NDK}/build/cmake/android.toolchain.cmake \
         -DANDROID:BOOL=ON
 
-    # $CMAKE_BIN -v --build . --config ${MY_BUILD_TYPE}
-    $CMAKE_BIN --build . --config ${MY_BUILD_TYPE} --target package
+    cmake --build . --config ${MY_BUILD_TYPE} --target package
 
     cd ..
 
