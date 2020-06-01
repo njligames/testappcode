@@ -62,19 +62,19 @@ static void handleInput(TestRender *renderer) {
             break;
         case SDL_APP_WILLENTERBACKGROUND:
             SDL_Log("SDL_APP_WILLENTERBACKGROUND");
-#if (defined(__IPHONEOS__) && __IPHONEOS__)
-            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, NULL,
-                                           renderer->getGraphics());
-#endif
+//#if (defined(__IPHONEOS__) && __IPHONEOS__)
+//            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, NULL,
+//                                           renderer->getGraphics());
+//#endif
             break;
         case SDL_APP_DIDENTERFOREGROUND:
             SDL_Log("SDL_APP_DIDENTERFOREGROUND");
 
-#if (defined(__IPHONEOS__) && __IPHONEOS__)
-            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, UpdateFrame,
-                                           renderer->getGraphics());
-            SDL_iPhoneSetEventPump(SDL_TRUE);
-#endif
+//#if (defined(__IPHONEOS__) && __IPHONEOS__)
+//            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, UpdateFrame,
+//                                           renderer->getGraphics());
+//            SDL_iPhoneSetEventPump(SDL_TRUE);
+//#endif
             break;
         }
     }

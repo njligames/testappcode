@@ -1,41 +1,62 @@
+SET(CMAKE_OSX_SYSROOT "iphoneos")
+SET(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
+
+set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "10.0" CACHE STRING "Minimum supported iOS version")
+
+# https://svn.scolring.org/trunk/dependencies/CMake/toolchain/IOS.toolchain.cmake
+set(IOS_IPHONEOS_ARCHS "arm64 armv7" CACHE STRING "Target iPhone architectures")
+set(IOS_IPHONESIMULATOR_ARCHS "i386 x86_64" CACHE STRING "Target iPhone simulator architectures")
+# Set iPhoneOS architectures
+set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=iphoneos*] "${IOS_IPHONEOS_ARCHS}")
+set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=iphoneos*] "${IOS_IPHONEOS_ARCHS}")
+
+# Set iPhoneSimulator architectures
+set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=iphonesimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=iphonesimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+
 add_library(SDL2 UNKNOWN IMPORTED)
-set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/${TARGET_PLATFORM}/libSDL2.a")
+set_property(TARGET SDL2 APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/${TARGET_PLATFORM}/Release\$(EFFECTIVE_PLATFORM_NAME)/libSDL2.a")
 list(APPEND GAME_LIBRARIES SDL2)
 set_target_properties(SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${THIRDPARTY_INCLUDE_DIR}/includes/SDL2)
+
+list(APPEND GAME_LIBRARIES "-framework OpenGLES")
+list(APPEND GAME_LIBRARIES "-framework UIKit")
+list(APPEND GAME_LIBRARIES "-framework Foundation")
+list(APPEND GAME_LIBRARIES "-framework AVFoundation")
+list(APPEND GAME_LIBRARIES "-framework GameController")
+list(APPEND GAME_LIBRARIES "-framework CoreMotion")
+list(APPEND GAME_LIBRARIES "-framework CoreGraphics")
+list(APPEND GAME_LIBRARIES "-framework QuartzCore")
+list(APPEND GAME_LIBRARIES "-framework Metal")
 
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
 
-list(APPEND GAME_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
-
+set(${PROJECT_NAME}_BUILD_STATIC ON CACHE BOOL "Build the static library")
 set(${PROJECT_NAME}_BUILD_SHARED ON CACHE BOOL "Build the shared library")
-set(${PROJECT_NAME}_BUILD_STATIC ON CACHE BOOL "Build the shared library")
+set(${PROJECT_NAME}_BUILD_FRAMEWORK ON CACHE BOOL "Build the framework library")
 
 if(${PROJECT_NAME}_BUILD_STATIC)
     add_library(${PROJECT_NAME}-static STATIC ${SRCS} ${HDRS})
     target_compile_definitions(${PROJECT_NAME}-static PUBLIC ${GAME_DEFINITIONS})
 
-    # list(APPEND GAME_LIBRARIES "-framework CoreVideo")
-    # list(APPEND GAME_LIBRARIES "-framework Cocoa")
-    # list(APPEND GAME_LIBRARIES "-framework IOKit")
-    # list(APPEND GAME_LIBRARIES "-framework ForceFeedback")
-    # list(APPEND GAME_LIBRARIES "-framework Carbon")
-    # list(APPEND GAME_LIBRARIES "-framework CoreAudio")
-    # list(APPEND GAME_LIBRARIES "-framework AudioToolbox")
-    # list(APPEND GAME_LIBRARIES "-framework Metal")
-    # list(APPEND GAME_LIBRARIES "-framework OpenGL")
-    list(APPEND GAME_LIBRARIES "-framework OpenGLES")
-    list(APPEND GAME_LIBRARIES "-framework UIKit")
-    list(APPEND GAME_LIBRARIES "-framework Foundation")
-    list(APPEND GAME_LIBRARIES "-framework AVFoundation")
-    list(APPEND GAME_LIBRARIES "-framework GameController")
-    list(APPEND GAME_LIBRARIES "-framework CoreMotion")
-    list(APPEND GAME_LIBRARIES "-framework CoreGraphics")
-    list(APPEND GAME_LIBRARIES "-framework QuartzCore")
-    list(APPEND GAME_LIBRARIES "-framework Metal")
-
-
     target_link_libraries( ${PROJECT_NAME}-static ${GAME_LIBRARIES})
+    set_target_properties(
+        ${PROJECT_NAME}-static PROPERTIES
+
+        MACOSX_BUNDLE TRUE
+
+        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "SRBQ5SCF5X"
+        POSITION_INDEPENDENT_CODE ON
+        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+        XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "NO"
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER njligames.${TARGET_PLATFORM}.${PROJECT_NAME}-test-static
+        XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
+        XCODE_ATTRIBUTE_ENABLE_BITCODE NO
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
+        )
 
     set_property(TARGET ${PROJECT_NAME}-static PROPERTY PUBLIC_HEADER ${GAME_PUBLIC_HEADER})
     set_property(TARGET ${PROJECT_NAME}-static PROPERTY INCLUDE_DIRECTORIES ${GAME_INCLUDE_DIRS})
@@ -49,24 +70,22 @@ if(${PROJECT_NAME}_BUILD_SHARED)
     add_library(${PROJECT_NAME} SHARED ${SRCS} ${HDRS})
     target_compile_definitions(${PROJECT_NAME} PUBLIC ${GAME_DEFINITIONS})
 
-    # list(APPEND GAME_LIBRARIES "-framework CoreVideo")
-    # list(APPEND GAME_LIBRARIES "-framework Cocoa")
-    # list(APPEND GAME_LIBRARIES "-framework IOKit")
-    # list(APPEND GAME_LIBRARIES "-framework ForceFeedback")
-    # list(APPEND GAME_LIBRARIES "-framework Carbon")
-    # list(APPEND GAME_LIBRARIES "-framework CoreAudio")
-    # list(APPEND GAME_LIBRARIES "-framework AudioToolbox")
-    # list(APPEND GAME_LIBRARIES "-framework Metal")
-    # list(APPEND GAME_LIBRARIES "-framework OpenGL")
-    list(APPEND GAME_LIBRARIES "-framework OpenGLES")
-    list(APPEND GAME_LIBRARIES "-framework UIKit")
-    list(APPEND GAME_LIBRARIES "-framework Foundation")
-    list(APPEND GAME_LIBRARIES "-framework AVFoundation")
-    list(APPEND GAME_LIBRARIES "-framework GameController")
-    list(APPEND GAME_LIBRARIES "-framework CoreMotion")
-    list(APPEND GAME_LIBRARIES "-framework CoreGraphics")
-    list(APPEND GAME_LIBRARIES "-framework QuartzCore")
-    list(APPEND GAME_LIBRARIES "-framework Metal")
+    set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
+
+        MACOSX_BUNDLE TRUE
+
+        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "SRBQ5SCF5X"
+        POSITION_INDEPENDENT_CODE ON
+        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+        XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "NO"
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER njligames.${TARGET_PLATFORM}.${PROJECT_NAME}-test-static
+        XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
+        XCODE_ATTRIBUTE_ENABLE_BITCODE NO
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
+        )
 
     target_link_libraries( ${PROJECT_NAME} ${GAME_LIBRARIES})
 
@@ -76,6 +95,51 @@ if(${PROJECT_NAME}_BUILD_SHARED)
     set_property(TARGET ${PROJECT_NAME} PROPERTY XCODE_ATTRIBUTE_PRODUCT_NAME "${PROJECT_NAME}")
 
     list(APPEND INSTALL_LIBS ${PROJECT_NAME})
+endif()
+
+if(${PROJECT_NAME}_BUILD_FRAMEWORK)
+    add_library(${PROJECT_NAME}Framework SHARED ${SRCS} ${HDRS})
+    target_compile_definitions(${PROJECT_NAME}Framework PUBLIC ${GAME_DEFINITIONS})
+
+    set_target_properties(
+        ${PROJECT_NAME}Framework PROPERTIES
+
+        MACOSX_BUNDLE TRUE
+
+        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "SRBQ5SCF5X"
+        POSITION_INDEPENDENT_CODE ON
+        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+        XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "NO"
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER njligames.${TARGET_PLATFORM}.${PROJECT_NAME}-test-static
+        XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}"
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
+        XCODE_ATTRIBUTE_ENABLE_BITCODE NO
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+        INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
+        )
+
+    target_link_libraries( ${PROJECT_NAME}Framework ${GAME_LIBRARIES})
+
+    set_property(TARGET ${PROJECT_NAME}Framework PROPERTY PUBLIC_HEADER ${GAME_PUBLIC_HEADER})
+    set_property(TARGET ${PROJECT_NAME}Framework PROPERTY INCLUDE_DIRECTORIES ${GAME_INCLUDE_DIRS})
+    set_property(TARGET ${PROJECT_NAME}Framework PROPERTY OUTPUT_NAME "${PROJECT_NAME}")
+    set_property(TARGET ${PROJECT_NAME}Framework PROPERTY XCODE_ATTRIBUTE_PRODUCT_NAME "${PROJECT_NAME}")
+
+    set_target_properties(${PROJECT_NAME}Framework PROPERTIES
+        FRAMEWORK TRUE
+        FRAMEWORK_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}
+        PUBLIC_HEADER "${GAME_PUBLIC_HEADER}"
+        FRAMEWORK_VERSION C
+        MACOSX_FRAMEWORK_IDENTIFIER com.njligames.${PROJECT_NAME}Framework.framework
+        # MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
+        # "current version" in semantic format in Mach-O binary file
+        VERSION 16.4.0
+        # "compatibility version" in semantic format in Mach-O binary file
+        SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}
+        INSTALL_NAME_DIR "@executable_path/../../../Library/Frameworks"
+        )
+
+    list(APPEND INSTALL_LIBS ${PROJECT_NAME}Framework)
 endif()
 
 set(CLANG_FORMAT_BIN "/usr/local/bin/clang-format" CACHE STRING "use: `brew install clang-format` to install")
@@ -89,9 +153,11 @@ add_custom_target(
 install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
     PUBLIC_HEADER DESTINATION include/${PROJECT_NAME}
     LIBRARY DESTINATION lib/${PROJECT_NAME}
-    ARCHIVE DESTINATION archive/${PROJECT_NAME}
+    ARCHIVE DESTINATION lib/${PROJECT_NAME}
     RUNTIME DESTINATION bin/${PROJECT_NAME}
+    FRAMEWORK DESTINATION Library/Frameworks/${PROJECT_NAME}
     )
 
 enable_testing()
 add_subdirectory(test)
+

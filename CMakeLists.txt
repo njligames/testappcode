@@ -68,6 +68,8 @@ if(NOT DEFINED ${TARGET_PLATFORM})
         endif()
     elseif(APPLE)
         if(IOS)
+            set(BUILT_GTEST TRUE)
+
             set(TARGET_PLATFORM "ios")
             list(APPEND GAME_DEFINITIONS "__IPHONEOS__=1")
             if(VR)
@@ -150,6 +152,8 @@ if(BUILT_GTEST)
         include_directories("${gtest_SOURCE_DIR}/include"
                 "${gmock_SOURCE_DIR}/include")
     endif()
+    list(APPEND GAME_INCLUDE_DIRS ${gtest_SOURCE_DIR}/include)
+    list(APPEND GAME_INCLUDE_DIRS ${gmock_SOURCE_DIR}/include)
 endif()
 
 
@@ -162,7 +166,7 @@ if(${PROJECT_NAME}_BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
-option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
 if(${PROJECT_NAME}_SWIG)
 
     find_package(SWIG REQUIRED)
