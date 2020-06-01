@@ -2,6 +2,7 @@
 * ![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg?branch=master)
 * ![android-swig-lua](https://github.com/njligames/testappcode/workflows/android-swig-lua/badge.svg?branch=master)
 
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
