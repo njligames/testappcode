@@ -46,7 +46,7 @@ jobs:
     - name: build armeabi-v7a android library. 
       run: |
         cmake --version
-        cmake .. \
+        cmake . \
         -DCMAKE_INSTALL_PREFIX=install \
         -DANDROID_ABI='armeabi-v7a' \
         -DANDROID_NATIVE_API_LEVEL=29 \
@@ -63,7 +63,7 @@ jobs:
     - name: build x86 android library. 
       run: |
         cmake --version
-        cmake .. \
+        cmake . \
         -DCMAKE_INSTALL_PREFIX=install \
         -DANDROID_ABI='x86' \
         -DANDROID_NATIVE_API_LEVEL=29 \
@@ -80,7 +80,7 @@ jobs:
     - name: build arm64-v8a android library. 
       run: |
         cmake --version
-        cmake .. \
+        cmake . \
         -DCMAKE_INSTALL_PREFIX=install \
         -DANDROID_ABI='arm64-v8a' \
         -DANDROID_NATIVE_API_LEVEL=29 \
@@ -97,7 +97,7 @@ jobs:
     - name: build x86_64 android library. 
       run: |
         cmake --version
-        cmake .. \
+        cmake . \
         -DCMAKE_INSTALL_PREFIX=install \
         -DANDROID_ABI='x86_64' \
         -DANDROID_NATIVE_API_LEVEL=29 \
