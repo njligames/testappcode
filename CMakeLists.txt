@@ -4,6 +4,18 @@ project(game VERSION 1.0.0.0)
 
 set(${PROJECT_NAME}_BUILD_DOC OFF CACHE BOOL "Build the framework library")
 
+set(${PROJECT_NAME}_SWIG_LUA ON CACHE BOOL "Wrap it for lua")
+set(${PROJECT_NAME}_SWIG_JAVA OFF CACHE BOOL "wrap it for java")
+set(${PROJECT_NAME}_SWIG_PHP OFF CACHE BOOL "wrap it for php")
+set(${PROJECT_NAME}_SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
+
+set(${PROJECT_NAME}_SWIG_PYTHON OFF CACHE BOOL "wrap it for python")
+set(${PROJECT_NAME}_SWIG_GO OFF CACHE BOOL "wrap it for go")
+set(${PROJECT_NAME}_SWIG_RUBY OFF CACHE BOOL "wrap it for ruby")
+set(${PROJECT_NAME}_SWIG_OCTAVE OFF CACHE BOOL "wrap it for octave")
+set(${PROJECT_NAME}_SWIG_CSHARP OFF CACHE BOOL "wrap it for csharp")
+set(${PROJECT_NAME}_SWIG_PERL OFF CACHE BOOL "wrap it for perl")
+
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13.0)
     cmake_policy(SET CMP0078 NEW)
     cmake_policy(SET CMP0086 NEW)
@@ -167,6 +179,23 @@ if(${PROJECT_NAME}_BUILD_DOC)
 endif()
 
 option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
+
+if(${PROJECT_NAME}_SWIG_LUA)
+    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+endif()
+
+if(${PROJECT_NAME}_SWIG_JAVA)
+    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+endif()
+
+if(${PROJECT_NAME}_SWIG_PHP)
+    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+endif()
+
+if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
+    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+endif()
+
 if(${PROJECT_NAME}_SWIG)
 
     find_package(SWIG REQUIRED)
@@ -175,18 +204,6 @@ if(${PROJECT_NAME}_SWIG)
     if(${SWIG_FOUND})
         list(APPEND SWIG_WRAP_INCLUDE ${GAME_PUBLIC_DIRS})
         list(APPEND SWIG_WRAP_LIBRARIES ${GAME_LIBRARIES} ${PROJECT_NAME}-static)
-
-        option(${PROJECT_NAME}_SWIG_LUA "Wrap it to lua" ON)
-        option(${PROJECT_NAME}_SWIG_JAVA "Wrap it to java" OFF)
-        option(${PROJECT_NAME}_SWIG_PHP "Wrap it to php" OFF)
-        option(${PROJECT_NAME}_SWIG_JAVASCRIPT "Wrap it to javascript (node)" OFF)
-
-        option(${PROJECT_NAME}_SWIG_PYTHON "Wrap it to python" OFF)
-        option(${PROJECT_NAME}_SWIG_GO "Wrap it to go" OFF)
-        option(${PROJECT_NAME}_SWIG_RUBY "Wrap it to ruby" OFF)
-        option(${PROJECT_NAME}_SWIG_OCTAVE "Wrap it to octave" OFF)
-        option(${PROJECT_NAME}_SWIG_CSHARP "Wrap it to csharp" OFF)
-        option(${PROJECT_NAME}_SWIG_PERL "Wrap it to perl" OFF)
 
         MESSAGE(STATUS "SWIG_FOUND ${SWIG_FOUND}")
         MESSAGE(STATUS "SWIG_DIR ${SWIG_DIR}")
