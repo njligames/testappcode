@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: ios-swig-lua
+name: appletv-swig-lua
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -40,11 +40,11 @@ jobs:
     - name: install swig
       run: brew install swig
       
-    - name: build iphonesimulator
+    - name: build appletvsimulator
       run: |
-        export EFFECTIVE_PLATFORM_NAME='-iphonesimulator'
+        export EFFECTIVE_PLATFORM_NAME='-appletvsimulator'
         cmake --version
-        cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode" -DIOS:BOOL=TRUE
+        cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode" -DTVOS:BOOL=TRUE
         cmake --build . --config Release --target package
         
     - uses: actions/upload-artifact@v2

@@ -166,7 +166,7 @@ if(${PROJECT_NAME}_BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
-option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
+option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
 if(${PROJECT_NAME}_SWIG)
 
     find_package(SWIG REQUIRED)

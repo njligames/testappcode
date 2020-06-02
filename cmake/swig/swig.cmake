@@ -29,6 +29,77 @@ if(DEFINED SWIG_WRAP_LANG)
         LANGUAGE ${SWIG_WRAP_LANG}
         SOURCES ${SWIG_INCLUDE_DIR}/swig.i
         )
+
+    if(IOS)
+        SET(CMAKE_OSX_SYSROOT "iphonesimulator")
+        SET(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
+
+        set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "10.0" CACHE STRING "Minimum supported iOS version")
+
+        # https://svn.scolring.org/trunk/dependencies/CMake/toolchain/IOS.toolchain.cmake
+        set(IOS_IPHONEOS_ARCHS "arm64 armv7" CACHE STRING "Target iPhone architectures")
+        set(IOS_IPHONESIMULATOR_ARCHS "i386 x86_64" CACHE STRING "Target iPhone simulator architectures")
+        # Set iPhoneOS architectures
+        set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=iphoneos*] "${IOS_IPHONEOS_ARCHS}")
+        set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=iphoneos*] "${IOS_IPHONEOS_ARCHS}")
+
+        # Set iPhoneSimulator architectures
+        set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=iphonesimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+        set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=iphonesimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+
+        set_target_properties(
+            ${PROJECT_NAME}-${SWIG_WRAP_LANG}-static PROPERTIES
+
+            MACOSX_BUNDLE TRUE
+
+            XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "SRBQ5SCF5X"
+            POSITION_INDEPENDENT_CODE ON
+            XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+            XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "NO"
+            XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER njligames.${TARGET_PLATFORM}.${PROJECT_NAME}-test-static
+            XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}"
+            XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
+            XCODE_ATTRIBUTE_ENABLE_BITCODE NO
+            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+            INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
+            )
+    endif()
+
+    if(TVOS)
+
+        set( CMAKE_OSX_SYSROOT "appletvos" )
+        set( CMAKE_XCODE_EFFECTIVE_PLATFORMS "-appletvos;-appletvsimulator" )
+
+        set(CMAKE_XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "10.0" CACHE STRING "Minimum supported iOS version")
+
+        # https://svn.scolring.org/trunk/dependencies/CMake/toolchain/IOS.toolchain.cmake
+        set(IOS_IPHONEOS_ARCHS "arm64" CACHE STRING "Target AppleTV architectures")
+        set(IOS_IPHONESIMULATOR_ARCHS "i386 x86_64"  CACHE STRING "Target AppleTV simulator architectures")
+        # Set iPhoneOS architectures
+        set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=appletvos*] "${IOS_IPHONEOS_ARCHS}")
+        set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=appletvos*] "${IOS_IPHONEOS_ARCHS}")
+        # Set iPhoneSimulator architectures
+        set(CMAKE_XCODE_ATTRIBUTE_ARCHS[sdk=appletvsimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+        set(CMAKE_XCODE_ATTRIBUTE_VALID_ARCHS[sdk=appletvsimulator*] "${IOS_IPHONESIMULATOR_ARCHS}")
+
+        set_target_properties(
+            ${PROJECT_NAME}-${SWIG_WRAP_LANG}-static PROPERTIES
+
+            MACOSX_BUNDLE TRUE
+
+            XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "SRBQ5SCF5X"
+            POSITION_INDEPENDENT_CODE ON
+            XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "3"
+            XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "NO"
+            XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER njligames.${TARGET_PLATFORM}.${PROJECT_NAME}-test-static
+            XCODE_ATTRIBUTE_SDKROOT "${CMAKE_OSX_SYSROOT}"
+            XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
+            XCODE_ATTRIBUTE_ENABLE_BITCODE NO
+            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+            INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
+            )
+    endif()
+    
     target_include_directories(${PROJECT_NAME}-${SWIG_WRAP_LANG}-static
         PRIVATE $<BUILD_INTERFACE:${SWIG_WRAP_INCLUDE}>
         PRIVATE $<BUILD_INTERFACE:${SWIG_INCLUDE_DIR}>
@@ -39,7 +110,8 @@ if(DEFINED SWIG_WRAP_LANG)
         )
     list(APPEND INSTALL_LIBS ${PROJECT_NAME}-${SWIG_WRAP_LANG}-static)
 
-    if(NOT ANDROID)
+
+    if(NOT ANDROID AND NOT IOS AND NOT TVOS)
         set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
         set(SWIG_OUTFILE_DIR "${CMAKE_BINARY_DIR}/swig/${SWIG_WRAP_LANG}/${CMAKE_SYSTEM_NAME}/shared")
         SWIG_ADD_LIBRARY(${PROJECT_NAME}-${SWIG_WRAP_LANG}
