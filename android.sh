@@ -1,8 +1,6 @@
 #!/bin/bash
 
-MY_BUILT_LIBRARY=$1
-
-MY_ANDROID_NDK=/usr/local/share/android-ndk
+MY_ANDROID_NDK=~/Library/Android/sdk/ndk-bundle/
 MY_ANDROID_NATIVE_API_LEVEL=29
 
 _build_android()
@@ -16,7 +14,7 @@ _build_android()
 
     cmake .. \
         ${CMAKE_LIB_OPTIONS} \
-        -DCMAKE_INSTALL_PREFIX=./BUILD/lib/${MY_BUILT_LIBRARY}/android/${MY_ANDROID_NATIVE_API_LEVEL}/Release/${MY_ABI}\
+        -DCMAKE_INSTALL_PREFIX=install
         -DANDROID_ABI=${MY_ABI} \
         -DANDROID_NATIVE_API_LEVEL=${MY_ANDROID_NATIVE_API_LEVEL} \
         -DANDROID_STL=c++_shared \
@@ -32,10 +30,10 @@ _build_android()
 build_android_abi()
 {
 
-  ABIS=('armeabi-v7a' 'x86' 'arm64-v8a' 'x86_64' )
-  BUILD_TYPES=(Debug Release MinsizeRel RelWithDebugInfo)
-  # ABIS=('x86_64')
-  # BUILD_TYPES=(Release)
+  # ABIS=('armeabi-v7a' 'x86' 'arm64-v8a' 'x86_64' )
+  # BUILD_TYPES=(Debug Release MinsizeRel RelWithDebugInfo)
+  ABIS=('x86_64')
+  BUILD_TYPES=(Release)
 
   for ABI in ${ABIS[@]};do
 
