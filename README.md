@@ -19,6 +19,8 @@
 
 * ![emscripten-swig-lua](https://github.com/njligames/testappcode/workflows/emscripten-swig-lua/badge.svg?branch=master)
 
+* ![linux-swig-lua](https://github.com/njligames/testappcode/workflows/linux-swig-lua/badge.svg?branch=master)
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
