@@ -17,6 +17,8 @@
 * ![android-vr-armeabi-v7a--swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-armeabi-v7a--swig-lua/badge.svg?branch=master)
 * ![android-vr-arm64-v8a-swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-arm64-v8a-swig-lua/badge.svg?branch=master)
 
+* ![emscripten-swig-lua](https://github.com/njligames/testappcode/workflows/emscripten-swig-lua/badge.svg?branch=master)
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
