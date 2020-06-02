@@ -1,7 +1,7 @@
 
 * ![android-x86_64-swig-lua](https://github.com/njligames/testappcode/workflows/android-x86_64-swig-lua/badge.svg?branch=master)
 * ![android-x86-swig-lua](https://github.com/njligames/testappcode/workflows/android-x86-swig-lua/badge.svg?branch=master)
-* ![android-armeabi-v7a--swig-lua](https://github.com/njligames/testappcode/workflows/android-armeabi-v7a--swig-lua/badge.svg?branch=master)
+* ![android-armeabi-v7a-swig-lua](https://github.com/njligames/testappcode/workflows/android-armeabi-v7a-swig-lua/badge.svg?branch=master)
 * ![android-arm64-v8a-swig-lua](https://github.com/njligames/testappcode/workflows/android-arm64-v8a-swig-lua/badge.svg?branch=master)
 * ![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg?branch=master)
 * ![ios-swig-lua](https://github.com/njligames/testappcode/workflows/ios-swig-lua/badge.svg?branch=master)

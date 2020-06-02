@@ -1,5 +1,12 @@
 #!/bin/bash
 
+VR=FALSE
+
+if [ -z "$1" ]
+then
+    VR=TRUE
+fi
+
 MY_ANDROID_NDK=~/Library/Android/sdk/ndk-bundle/
 MY_ANDROID_NATIVE_API_LEVEL=29
 
@@ -13,7 +20,7 @@ _build_android()
     cd .build_android
 
     cmake .. \
-        ${CMAKE_LIB_OPTIONS} \
+        -DVR=$VR \
         -DCMAKE_INSTALL_PREFIX=install
         -DANDROID_ABI=${MY_ABI} \
         -DANDROID_NATIVE_API_LEVEL=${MY_ANDROID_NATIVE_API_LEVEL} \

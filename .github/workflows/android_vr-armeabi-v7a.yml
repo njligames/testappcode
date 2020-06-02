@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: android-armeabi-v7a-swig-lua
+name: android-vr-armeabi-v7a--swig-lua
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -47,6 +47,7 @@ jobs:
       run: |
         cmake --version
         cmake . \
+        -DVR=TRUE \
         -DCMAKE_INSTALL_PREFIX=install \
         -DANDROID_ABI='armeabi-v7a' \
         -DANDROID_NATIVE_API_LEVEL=29 \
