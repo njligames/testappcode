@@ -5,6 +5,7 @@
 * ![android-arm64-v8a-swig-lua](https://github.com/njligames/testappcode/workflows/android-arm64-v8a-swig-lua/badge.svg?branch=master)
 * ![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg?branch=master)
 * ![ios-swig-lua](https://github.com/njligames/testappcode/workflows/ios-swig-lua/badge.svg?branch=master)
+* ![appletv-swig-lua](https://github.com/njligames/testappcode/workflows/appletv-swig-lua/badge.svg?branch=master)
 
 # Game Template
 
