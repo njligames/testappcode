@@ -24,7 +24,7 @@ jobs:
       with:
         submodules: true
 
-    - name: apt-get update
+    - name: sudo apt-get update
       run: apt-get update
 
     - name: install swig
