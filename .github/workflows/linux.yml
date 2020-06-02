@@ -27,8 +27,8 @@ jobs:
     - name: install swig
       run: sudo apt-get install swig
 
-    - name: install libsdl2-dev
-      run: sudo apt-get install libsdl2-dev
+    - name: install opengl
+      run: sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
       
     - name: build linux
       run: |
