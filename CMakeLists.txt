@@ -102,7 +102,7 @@ if(NOT DEFINED ${TARGET_PLATFORM})
     elseif(UNIX AND NOT APPLE AND NOT ANDROID)
         set(BUILT_GTEST TRUE)
 
-        if(LINUX)
+        if(CMAKE_SYSTEM_NAME MATCHES ".*Linux")
             set(TARGET_PLATFORM "linux")
             list(APPEND GAME_DEFINITIONS "__LINUX__=1")
             if(OCULUS)
@@ -178,22 +178,22 @@ if(${PROJECT_NAME}_BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
-option(${PROJECT_NAME}_SWIG "Wrap with swig" OFF)
+set(${PROJECT_NAME}_SWIG OFF)
 
 if(${PROJECT_NAME}_SWIG_LUA)
-    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+    set(${PROJECT_NAME}_SWIG ON)
 endif()
 
 if(${PROJECT_NAME}_SWIG_JAVA)
-    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+    set(${PROJECT_NAME}_SWIG ON)
 endif()
 
 if(${PROJECT_NAME}_SWIG_PHP)
-    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+    set(${PROJECT_NAME}_SWIG ON)
 endif()
 
 if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
-    option(${PROJECT_NAME}_SWIG "Wrap with swig" ON)
+    set(${PROJECT_NAME}_SWIG ON)
 endif()
 
 if(${PROJECT_NAME}_SWIG)
