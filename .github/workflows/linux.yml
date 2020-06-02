@@ -24,8 +24,14 @@ jobs:
       with:
         submodules: true
 
+    - name: apt-get update
+      run: apt-get update
+
     - name: install swig
-      run: sudo apt install swig libsdl2-dev doxygen graphviz
+      run: sudo apt-get install swig
+
+    - name: install libsdl2-dev
+      run: sudo apt-get install libsdl2-dev
       
     - name: build linux
       run: |
