@@ -2,7 +2,6 @@
 
 MY_BUILT_LIBRARY=$1
 
-# MY_ANDROID_NDK=/Users/jamesfolk/Library/Android/sdk/ndk-bundle/
 MY_ANDROID_NDK=/usr/local/share/android-ndk
 MY_ANDROID_NATIVE_API_LEVEL=29
 
