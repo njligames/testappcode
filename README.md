@@ -3,10 +3,19 @@
 * ![android-x86-swig-lua](https://github.com/njligames/testappcode/workflows/android-x86-swig-lua/badge.svg?branch=master)
 * ![android-armeabi-v7a-swig-lua](https://github.com/njligames/testappcode/workflows/android-armeabi-v7a-swig-lua/badge.svg?branch=master)
 * ![android-arm64-v8a-swig-lua](https://github.com/njligames/testappcode/workflows/android-arm64-v8a-swig-lua/badge.svg?branch=master)
+
 * ![macOS-swig-lua](https://github.com/njligames/testappcode/workflows/macOS-swig-lua/badge.svg?branch=master)
+
 * ![ios-swig-lua](https://github.com/njligames/testappcode/workflows/ios-swig-lua/badge.svg?branch=master)
-* ![appletv-swig-lua](https://github.com/njligames/testappcode/workflows/appletv-swig-lua/badge.svg?branch=master)
+
 * ![ios-vr-swig-lua](https://github.com/njligames/testappcode/workflows/ios-vr-swig-lua/badge.svg?branch=master)
+
+* ![appletv-swig-lua](https://github.com/njligames/testappcode/workflows/appletv-swig-lua/badge.svg?branch=master)
+
+* ![android-vr-x86_64-swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-x86_64-swig-lua/badge.svg?branch=master)
+* ![android-vr-x86-swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-x86-swig-lua/badge.svg?branch=master)
+* ![android-vr-armeabi-v7a--swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-armeabi-v7a--swig-lua/badge.svg?branch=master)
+* ![android-vr-arm64-v8a-swig-lua](https://github.com/njligames/testappcode/workflows/android-vr-arm64-v8a-swig-lua/badge.svg?branch=master)
 
 # Game Template
 
