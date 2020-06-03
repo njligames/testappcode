@@ -30,6 +30,10 @@ jobs:
         #     - name: install swig
         #       run: brew install swig
       
+    - uses: leafo/gh-actions-lua@v5
+      with:
+          luaVersion: "5.1.5"
+
     - name: build windows
       run: |
         cmake --version

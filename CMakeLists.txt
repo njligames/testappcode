@@ -4,7 +4,7 @@ project(game VERSION 1.0.0.0)
 
 set(${PROJECT_NAME}_BUILD_DOC OFF CACHE BOOL "Build the framework library")
 
-set(${PROJECT_NAME}_SWIG_LUA OFF CACHE BOOL "Wrap it for lua")
+set(${PROJECT_NAME}_SWIG_LUA ON CACHE BOOL "Wrap it for lua")
 set(${PROJECT_NAME}_SWIG_JAVA OFF CACHE BOOL "wrap it for java")
 set(${PROJECT_NAME}_SWIG_PHP OFF CACHE BOOL "wrap it for php")
 set(${PROJECT_NAME}_SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
