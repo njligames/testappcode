@@ -24,8 +24,7 @@ jobs:
       with:
         submodules: true
         
-    - name: install lua
-      run: winget install lua
+    - uses: xpol/setup-lua@v1
     
     - name: install swig
       run: winget install swig
