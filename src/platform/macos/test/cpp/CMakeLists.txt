@@ -1,6 +1,6 @@
 add_library(SDL_test UNKNOWN IMPORTED)
 set_property(TARGET SDL_test APPEND PROPERTY IMPORTED_LOCATION  "${THIRDPARTY_INCLUDE_DIR}/platform/${TARGET_PLATFORM}/libSDL_test.a")
-list(APPEND TARGET_LIBRARIES SDL_test)
+list(APPEND GAME_LIBRARIES SDL_test)
 
 list(APPEND GAME_INCLUDE_DIRS ${GTEST_INCLUDE_DIRS})
 list(APPEND GAME_INCLUDE_DIRS ${GMOCK_INCLUDE_DIRS})
@@ -34,7 +34,7 @@ set_target_properties(
   list(APPEND INSTALL_LIBS ${PROJECT_NAME}-test-static)
 
 target_compile_definitions( ${PROJECT_NAME}-test-static PUBLIC ${TARGET_DEFINITIONS})
-target_link_libraries( ${PROJECT_NAME}-test-static ${PROJECT_NAME} gtest gmock_main ${TARGET_LIBRARIES})
+target_link_libraries( ${PROJECT_NAME}-test-static ${PROJECT_NAME} gtest gmock_main ${GAME_LIBRARIES})
 
 add_test(NAME ${PROJECT_NAME}-test-static COMMAND ${PROJECT_NAME}-test-static)
 

@@ -35,19 +35,12 @@ then
   -DFACEBOOK:BOOL=TRUE \
   -G "Ninja"
 
-elif [ "${PLATFORM}" == "windows64" ]
+elif [ "${PLATFORM}" == "windows" ]
 then
 
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Visual Studio 14 2015 Win64"
-
-elif [ "${PLATFORM}" == "windows32" ]
-then
-
-  cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Visual Studio 14 2015"
+    -G "Visual Studio 16 2019"
 
 elif [ "${PLATFORM}" == "macOS" ]
 then
@@ -90,21 +83,13 @@ then
   ./gradlew clean
   ./gradlew assemble${CONFIGURATION}
 
-elif [ "${PLATFORM}" == "oculus_windows64" ]
+elif [ "${PLATFORM}" == "oculus_windows" ]
 then
 
   cmake .. \
     -DOCULUS=TRUE \
     -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Visual Studio 14 2015 Win64"
-
-elif [ "${PLATFORM}" == "oculus_windows32" ]
-then
-
-  cmake .. \
-    -DOCULUS=TRUE \
-    -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Visual Studio 14 2015"
+    -G "Visual Studio 16 2019"
 
 elif [ "${PLATFORM}" == "oculus_macOS" ]
 then

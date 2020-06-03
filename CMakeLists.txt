@@ -4,7 +4,7 @@ project(game VERSION 1.0.0.0)
 
 set(${PROJECT_NAME}_BUILD_DOC OFF CACHE BOOL "Build the framework library")
 
-set(${PROJECT_NAME}_SWIG_LUA ON CACHE BOOL "Wrap it for lua")
+set(${PROJECT_NAME}_SWIG_LUA OFF CACHE BOOL "Wrap it for lua")
 set(${PROJECT_NAME}_SWIG_JAVA OFF CACHE BOOL "wrap it for java")
 set(${PROJECT_NAME}_SWIG_PHP OFF CACHE BOOL "wrap it for php")
 set(${PROJECT_NAME}_SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
@@ -22,6 +22,16 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13.0)
 endif()
 
 message(STATUS "VERSION (${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK})")
+
+# Check for 64 or 32 bit
+set(SIZEOF_VOIDP ${CMAKE_SIZEOF_VOID_P})
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set(ARCH_64 TRUE)
+  set(PROCESSOR_ARCH "x64")
+else()
+  set(ARCH_64 FALSE)
+  set(PROCESSOR_ARCH "x86")
+endif()
 
 include(CheckCXXCompilerFlag)
 
@@ -66,13 +76,13 @@ if(NOT DEFINED ${TARGET_PLATFORM})
         set(BUILT_GTEST TRUE)
 
         if(ARCH_64)
-            set(TARGET_PLATFORM "windows64")
+            set(TARGET_PLATFORM "windows")
             list(APPEND GAME_DEFINITIONS "__WINDOWS64__=1")
             if(OCULUS)
                 list(APPEND GAME_DEFINITIONS "__VR__=1")
             endif()
         else()
-            set(TARGET_PLATFORM "windows32")
+            set(TARGET_PLATFORM "windows")
             list(APPEND GAME_DEFINITIONS "__WINDOWS32__=1")
             if(OCULUS)
                 list(APPEND GAME_DEFINITIONS "__VR__=1")
