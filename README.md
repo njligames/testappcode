@@ -21,6 +21,8 @@
 
 * ![linux-swig-lua](https://github.com/njligames/testappcode/workflows/linux-swig-lua/badge.svg?branch=master)
 
+* ![windows-swig-lua](https://github.com/njligames/testappcode/workflows/windows-swig-lua/badge.svg?branch=master)
+
 # Game Template
 
 ### `{PLATFORM_NAME}` - platform specific directory name. 
