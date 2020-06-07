@@ -25,7 +25,6 @@ jobs:
       with:
         submodules: true
 
-
     - name: install lua step
       id: lua
       uses: actions/windows-install@v1
@@ -34,16 +33,16 @@ jobs:
     # Use the output from the `hello` step
     - name: Get the output time
       run: echo "The time was ${{ steps.hello.outputs.time }}"
-
-
-    - name: install swig step
-      id: swig
-      uses: actions/windows-install@v1
-      with:
-        package-name: 'swig'
-    # Use the output from the `hello` step
-    - name: Get the output time
-      run: echo "The time was ${{ steps.hello.outputs.time }}"
+      # 
+      # 
+      #     - name: install swig step
+      #       id: swig
+      #       uses: actions/windows-install@v1
+      #       with:
+      #         package-name: 'swig'
+      #     # Use the output from the `hello` step
+      #     - name: Get the output time
+      #       run: echo "The time was ${{ steps.hello.outputs.time }}"
 
 
 
