@@ -27,12 +27,9 @@ jobs:
 
     - name: install lua step
       id: lua
-      uses: actions/windows-install@v1
+      uses: njligames/windows-install@v1
       with:
         package-name: 'lua'
-    # Use the output from the `hello` step
-    - name: Get the output time
-      run: echo "The time was ${{ steps.hello.outputs.time }}"
       # 
       # 
       #     - name: install swig step
