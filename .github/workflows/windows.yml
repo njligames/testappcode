@@ -27,11 +27,11 @@ jobs:
         
     - uses: crazy-max/ghaction-chocolatey@v1
       with:
-        args: lua
+        args: install lua
         
     - uses: crazy-max/ghaction-chocolatey@v1
       with:
-        args: swig
+        args: install swig
 
 
 
