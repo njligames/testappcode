@@ -40,8 +40,8 @@ jobs:
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Visual Studio 16 2019"
         cmake --build . --config Release --target package
       env:
-        LUA_DEV: "C:\Program Files (x86)\Lua\5.1\"
-        LUA_PATH: "C:\Program Files (x86)\Lua\5.1\lua\?.luac"
+        LUA_DEV: 'C:\Program Files (x86)\Lua\5.1\'
+        LUA_PATH: 'C:\Program Files (x86)\Lua\5.1\lua\?.luac'
         
     - uses: actions/upload-artifact@v2
       with:
