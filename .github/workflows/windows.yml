@@ -25,12 +25,15 @@ jobs:
       with:
         submodules: true
 
-    - name: install lua and swig step
-      run: |
-        @powershell -ExecutionPolicy Bypass -Command "[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
-        choco install -y lua
-        choco install -y swig
-        refreshenv
+    - name: Choco help
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: lua
+
+    - name: Choco help
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: swig
 
 
 
