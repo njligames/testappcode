@@ -27,17 +27,14 @@ jobs:
         
     - uses: crazy-max/ghaction-chocolatey@v1
       with:
-        args: install lua
-        
-    - uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: install swig
+        args: install lua swig
 
 
 
 
     - name: build windows
       run: |
+        refreshenv
         cmake --version
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Visual Studio 16 2019"
         cmake --build . --config Release --target package
