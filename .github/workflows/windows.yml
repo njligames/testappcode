@@ -35,8 +35,10 @@ jobs:
     - name: build windows
       run: |
         refreshenv
-        set LUA_DEV="C:\Program Files (x86)\Lua\5.1\"
-        set LUA_PATH="C:\Program Files (x86)\Lua\5.1\lua\?.luac"
+        
+        setx LUA_DEV "C:\Program Files (x86)\Lua\5.1\" /M
+        setx LUA_PATH "C:\Program Files (x86)\Lua\5.1\lua\?.luac" /M
+        
         echo %LUA_DEV%
         echo %LUA_PATH%
 
