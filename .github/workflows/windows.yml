@@ -24,16 +24,14 @@ jobs:
     - uses: actions/checkout@master
       with:
         submodules: true
-
-    - name: Choco help
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: lua
-
-    - name: Choco help
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: swig
+        
+    - uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: lua
+        
+    - uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: swig
 
 
 
