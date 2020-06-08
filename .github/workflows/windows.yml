@@ -35,8 +35,11 @@ jobs:
     - name: build windows
       run: |
         refreshenv
-        set LUA_DEV 'C:\Program Files (x86)\Lua\5.1\'
-        set LUA_PATH 'C:\Program Files (x86)\Lua\5.1\lua\?.luac'
+        setx LUA_DEV "C:\Program Files (x86)\Lua\5.1\"
+        setx LUA_PATH "C:\Program Files (x86)\Lua\5.1\lua\?.luac"
+        echo %LUA_DEV%
+        echo %LUA_PATH%
+
         cmake --version
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Visual Studio 16 2019"
         cmake --build . --config Release --target package
