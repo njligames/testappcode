@@ -25,21 +25,12 @@ jobs:
       with:
         submodules: true
 
-    - name: install lua step
-      id: lua
-      uses: njligames/windows-install@v1
-      with:
-        package-name: 'lua'
-      # 
-      # 
-      #     - name: install swig step
-      #       id: swig
-      #       uses: actions/windows-install@v1
-      #       with:
-      #         package-name: 'swig'
-      #     # Use the output from the `hello` step
-      #     - name: Get the output time
-      #       run: echo "The time was ${{ steps.hello.outputs.time }}"
+    - name: install lua and swig step
+      run: |
+        @powershell -NoProfile -ExecutionPolicy Bypass -Command "[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+        choco install -y lua
+        choco install -y swig
+        refreshenv
 
 
 
