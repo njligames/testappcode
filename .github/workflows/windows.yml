@@ -35,9 +35,7 @@ jobs:
     - name: build windows
       run: |
         refreshenv
-        echo '::set-env name=LUA_DEV::"C:\Program Files (x86)\Lua\5.1\"'
-        
-        echo LUA_DEV=%LUA_DEV%
+        echo '::set-env name=LUA_DIR::"C:\Program Files (x86)\Lua\5.1\"'
 
         cmake --version
         cmake . -DCMAKE_INSTALL_PREFIX=install -G "Visual Studio 16 2019"
