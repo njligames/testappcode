@@ -25,6 +25,10 @@ jobs:
       with:
         submodules: true
         
+    - uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: install swig
+        
         # - uses: crazy-max/ghaction-chocolatey@v1
         #   with:
         #     args: install lua swig
