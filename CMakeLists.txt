@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
-set(${PROJECT_NAME}_BUILD_DOC OFF CACHE BOOL "Build the framework library")
+set(BUILD_DOC OFF CACHE BOOL "Build the framework library")
+set(BUILD_TEST OFF CACHE BOOL "Build the framework library")
 
-set(${PROJECT_NAME}_SWIG_LUA ON CACHE BOOL "Wrap it for lua")
-set(${PROJECT_NAME}_SWIG_JAVA OFF CACHE BOOL "wrap it for java")
-set(${PROJECT_NAME}_SWIG_PHP OFF CACHE BOOL "wrap it for php")
-set(${PROJECT_NAME}_SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
+set(SWIG_LUA ON CACHE BOOL "Wrap it for lua")
+set(SWIG_JAVA OFF CACHE BOOL "wrap it for java")
+set(SWIG_PHP OFF CACHE BOOL "wrap it for php")
+set(SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
+set(SWIG_PYTHON OFF CACHE BOOL "wrap it for python")
 
-set(${PROJECT_NAME}_SWIG_PYTHON OFF CACHE BOOL "wrap it for python")
 set(${PROJECT_NAME}_SWIG_GO OFF CACHE BOOL "wrap it for go")
 set(${PROJECT_NAME}_SWIG_RUBY OFF CACHE BOOL "wrap it for ruby")
 set(${PROJECT_NAME}_SWIG_OCTAVE OFF CACHE BOOL "wrap it for octave")
@@ -184,25 +185,29 @@ file(GLOB_RECURSE SRCS_TEST_C ${CMAKE_CURRENT_SOURCE_DIR}/test/*.c)
 file(GLOB_RECURSE HDRS_TEST ${CMAKE_CURRENT_SOURCE_DIR}/test/*.h)
 set( GAME_SOURCES_TEST ${SRCS_TEST_CPP} ${SRCS_TEST_C} ${HDRS_TEST} )
 
-if(${PROJECT_NAME}_BUILD_DOC)
+if(BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
 set(${PROJECT_NAME}_SWIG OFF)
 
-if(${PROJECT_NAME}_SWIG_LUA)
+if(SWIG_LUA)
     set(${PROJECT_NAME}_SWIG ON)
 endif()
 
-if(${PROJECT_NAME}_SWIG_JAVA)
+if(SWIG_JAVA)
     set(${PROJECT_NAME}_SWIG ON)
 endif()
 
-if(${PROJECT_NAME}_SWIG_PHP)
+if(SWIG_PHP)
     set(${PROJECT_NAME}_SWIG ON)
 endif()
 
-if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
+if(SWIG_JAVASCRIPT)
+    set(${PROJECT_NAME}_SWIG ON)
+endif()
+
+if(SWIG_PYTHON)
     set(${PROJECT_NAME}_SWIG ON)
 endif()
 
@@ -222,15 +227,15 @@ if(${PROJECT_NAME}_SWIG)
 
         include(${SWIG_USE_FILE})
 
-        if(${PROJECT_NAME}_SWIG_LUA)
+        if(SWIG_LUA)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_lua.cmake)
         endif()
 
-        if(${PROJECT_NAME}_SWIG_PYTHON)
+        if(SWIG_PYTHON)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_python.cmake)
         endif()
 
-        if(${PROJECT_NAME}_SWIG_JAVA)
+        if(SWIG_JAVA)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_java.cmake)
         endif()
 
@@ -250,11 +255,11 @@ if(${PROJECT_NAME}_SWIG)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_csharp.cmake)
         endif()
 
-        if(${PROJECT_NAME}_SWIG_JAVASCRIPT)
+        if(SWIG_JAVASCRIPT)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_javascript.cmake)
         endif()
 
-        if(${PROJECT_NAME}_SWIG_PHP)
+        if(SWIG_PHP)
             include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/swig/swig_php.cmake)
         endif()
 
@@ -270,33 +275,39 @@ endif()
 
 add_subdirectory(src/platform)
 
-########################################################
-###                   PACKAGING                      ###
-### This is a quite INCOMPLETE set of variables that ###
-### should be set for the various generators.        ###
-### Consult the CPack documentations for a full set. ###
-########################################################
-if (WIN32)
-    if (USE_WIX_TOOLSET)
-        set(CPACK_GENERATOR "WIX") # this need WiX Tooset installed and a path to candle.exe
-    else ()
-        set(CPACK_GENERATOR "NSIS") # this needs NSIS installed, and available
-    endif ()
-    set(CPACK_SOURCE_GENERATOR "ZIP")
-elseif ( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-    # set(CPACK_GENERATOR "productbuild")
-    set(CPACK_SOURCE_GENERATOR "ZIP")
-else ()
-    set(CPACK_SOURCE_GENERATOR "ZIP")
-endif ()
+if(WINDOWS)
+  set(CPACK_GENERATOR NSIS)
+  set(CPACK_NSIS_MUI_ICON "${CMAKEIN_REPO_DIRECTORY}/platform.in/emscripten/executable/favicon-32x32.ico")
+  set(CPACK_NSIS_MUI_UNIICON "${CMAKEIN_REPO_DIRECTORY}/platform.in/emscripten/executable/favicon-32x32.ico")
+elseif(LINUX)
+  set(CPACK_GENERATOR DEB)
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Folk")
+elseif(APPLE)
+  set(CPACK_GENERATOR "DragNDrop")
+  set(CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK ON)
+  # set(CPACK_DMG_BACKGROUND_IMAGE "${CMAKEIN_REPO_DIRECTORY}/platform.in/windows/icon-1024x1024.png")
+else()
+  set(CPACK_GENERATOR ZIP)
+endif()
 
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "James Folk") #required
-
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VENDOR "NJLIGames LLC.")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${PROJECT_NAME} - Description")
 set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+if(IOS)
+  if(VR)
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-vr_ios")
+  else()
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-ios")
+  endif()
+elseif(TVOS)
+    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-tvos")
+endif()
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
+SET(CPACK_NSIS_MODIFY_PATH ON)
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.html")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")

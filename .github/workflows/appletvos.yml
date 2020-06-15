@@ -44,7 +44,7 @@ jobs:
       run: |
         export EFFECTIVE_PLATFORM_NAME='-appletvsimulator'
         cmake --version
-        cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode" -DTVOS:BOOL=TRUE
+        cmake . -DSWIG_LUA:BOOL=TRUE -DCMAKE_INSTALL_PREFIX=install -G "Xcode" -DTVOS:BOOL=TRUE
         cmake --build . --config Release --target package
         
     - uses: actions/upload-artifact@v2
