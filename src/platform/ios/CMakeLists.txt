@@ -147,7 +147,7 @@ install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
     FRAMEWORK DESTINATION Frameworks/${PROJECT_NAME}
     )
 
-if(BUILD_DOC)
+if(BUILD_TEST)
     enable_testing()
     add_subdirectory(test)
 endif()

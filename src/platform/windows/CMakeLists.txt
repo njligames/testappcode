@@ -61,6 +61,8 @@ install(TARGETS ${INSTALL_LIBS} EXPORT gameTargets
     FRAMEWORK DESTINATION Frameworks/${PROJECT_NAME}
     )
 
-enable_testing()
-add_subdirectory(test)
+if(BUILD_TEST)
+    enable_testing()
+    add_subdirectory(test)
+endif()
 
