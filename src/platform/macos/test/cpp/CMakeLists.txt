@@ -31,7 +31,8 @@ set_target_properties(
   XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Mac Developer"
   INCLUDE_DIRECTORIES "${GAME_INCLUDE_DIRS}"
   )
-  list(APPEND INSTALL_LIBS ${PROJECT_NAME}-test-static)
+
+list(APPEND INSTALL_LIBS ${PROJECT_NAME}-test-static)
 
 target_compile_definitions( ${PROJECT_NAME}-test-static PUBLIC ${TARGET_DEFINITIONS})
 target_link_libraries( ${PROJECT_NAME}-test-static ${PROJECT_NAME} gtest gmock_main ${GAME_LIBRARIES})

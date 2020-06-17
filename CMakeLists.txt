@@ -5,7 +5,7 @@ project(game VERSION 1.0.0.0)
 set(BUILD_DOC OFF CACHE BOOL "Build the framework library")
 set(BUILD_TEST OFF CACHE BOOL "Build the framework library")
 
-set(SWIG_LUA OFF CACHE BOOL "Wrap it for lua")
+set(SWIG_LUA ON CACHE BOOL "Wrap it for lua")
 set(SWIG_JAVA OFF CACHE BOOL "wrap it for java")
 set(SWIG_PHP OFF CACHE BOOL "wrap it for php")
 set(SWIG_JAVASCRIPT OFF CACHE BOOL "wrap it for javascript")
@@ -67,7 +67,7 @@ set(BUILT_GTEST FALSE)
 
 if(NOT DEFINED ${TARGET_PLATFORM})
     if(EMSCRIPTEN)
-        set(BUILT_GTEST FALSE)
+        set(BUILT_GTEST TRUE)
 
         set(TARGET_PLATFORM "emscripten")
         list(APPEND GAME_DEFINITIONS "__EMSCRIPTEN__=1")
