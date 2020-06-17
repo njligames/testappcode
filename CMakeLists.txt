@@ -66,7 +66,7 @@ set(BUILT_GTEST FALSE)
 
 if(NOT DEFINED ${TARGET_PLATFORM})
     if(EMSCRIPTEN)
-        set(BUILT_GTEST TRUE)
+        set(BUILT_GTEST FALSE)
 
         set(TARGET_PLATFORM "emscripten")
         list(APPEND GAME_DEFINITIONS "__EMSCRIPTEN__=1")
