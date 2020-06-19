@@ -2,8 +2,8 @@
 
 PLATFORM=$1
 # BOT=$2
-# CONFIGURATION=Debug
-CONFIGURATION=Release
+CONFIGURATION=Debug
+# CONFIGURATION=Release
 INSTALL_PREFIX=install
 
 if [ "${PLATFORM}" != "android" ]
