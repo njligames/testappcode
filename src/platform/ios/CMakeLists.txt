@@ -22,8 +22,8 @@ list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
 
 set(${PROJECT_NAME}_BUILD_STATIC ON CACHE BOOL "Build the static library")
-set(${PROJECT_NAME}_BUILD_SHARED ON CACHE BOOL "Build the shared library")
-set(${PROJECT_NAME}_BUILD_FRAMEWORK ON CACHE BOOL "Build the framework library")
+set(${PROJECT_NAME}_BUILD_SHARED OFF CACHE BOOL "Build the shared library")
+set(${PROJECT_NAME}_BUILD_FRAMEWORK OFF CACHE BOOL "Build the framework library")
 
 if(${PROJECT_NAME}_BUILD_STATIC)
     add_library(${PROJECT_NAME}-static STATIC ${SRCS} ${HDRS})
