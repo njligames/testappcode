@@ -37,7 +37,8 @@ jobs:
     
     - name: install emscripten
       run: |
-        #brew install emscripten
+        set -x
+
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
         git pull
