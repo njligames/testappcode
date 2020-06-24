@@ -36,7 +36,14 @@ jobs:
       run: brew install swig
     
     - name: install emscripten
-      run: brew install emscripten
+      run: |
+        #brew install emscripten
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        git pull
+        ./emsdk install 1.38.45
+        ./emsdk activate 1.38.45
+        source ./emsdk_env.sh
       
     - name: build emscripten
       run: |
