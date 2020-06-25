@@ -38,8 +38,7 @@ jobs:
     - name: install ninja
       run: brew install ninja
     
-    - name: install emscripten
-      working-directory: ${{ github.workspace }}
+    - name: Install emscripten and build.
       run: |
         set -x
 
