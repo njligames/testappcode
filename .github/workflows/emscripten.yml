@@ -48,8 +48,9 @@ jobs:
         source ./emsdk_env.sh
       
     - name: build emscripten
+      working-directory: ${{ github.workspace }}
       run: |
-        ./emcmake cmake .. \
+        emcmake cmake .. \
         -DCMAKE_INSTALL_PREFIX=install \
         -G "Ninja"
         cmake --build . --config Release --target package
