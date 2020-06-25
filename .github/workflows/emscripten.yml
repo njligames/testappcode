@@ -46,14 +46,13 @@ jobs:
         ./emsdk install latest
         ./emsdk activate latest
         source ./emsdk_env.sh
-      
-    - name: build emscripten
-      working-directory: ${{ github.workspace }}
-      run: |
         emcmake cmake .. \
         -DCMAKE_INSTALL_PREFIX=install \
         -G "Ninja"
         cmake --build . --config Release --target package
+      
+   
+        
         
     - uses: actions/upload-artifact@v2
       with:
