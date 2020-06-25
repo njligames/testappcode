@@ -48,7 +48,9 @@ jobs:
         ./emsdk install latest
         ./emsdk activate latest
         source ./emsdk_env.sh
-        emcmake cmake .. \
+        cd ../
+        
+        emcmake cmake . \
         -DCMAKE_INSTALL_PREFIX=install \
         -G "Ninja"
         cmake --build . --config Release --target package
