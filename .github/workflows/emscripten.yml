@@ -41,14 +41,14 @@ jobs:
 
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
-        git pull
+        # git pull
         ./emsdk install latest
         ./emsdk activate latest
         source ./emsdk_env.sh
       
     - name: build emscripten
       run: |
-        emcmake cmake .. \
+        ./emcmake cmake .. \
         -DCMAKE_INSTALL_PREFIX=install \
         -G "Ninja"
         cmake --build . --config Release --target package
