@@ -35,6 +35,9 @@ jobs:
     - name: install swig
       run: brew install swig
     
+    - name: install ninja
+      run: brew install ninja
+    
     - name: install emscripten
       working-directory: ${{ github.workspace }}
       run: |
