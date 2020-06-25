@@ -42,8 +42,8 @@ jobs:
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
         git pull
-        ./emsdk install 1.38.45
-        ./emsdk activate 1.38.45
+        ./emsdk install latest
+        ./emsdk activate latest
         source ./emsdk_env.sh
       
     - name: build emscripten
