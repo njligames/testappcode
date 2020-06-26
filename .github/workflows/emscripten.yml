@@ -28,9 +28,6 @@ jobs:
       run: |
         ls .github
         pwd
-
-    - name: install lua
-      run: brew install lua
     
     - name: install swig
       run: brew install swig

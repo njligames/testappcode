@@ -28,13 +28,6 @@ jobs:
     - uses: crazy-max/ghaction-chocolatey@v1
       with:
         args: install swig
-        
-        # - uses: crazy-max/ghaction-chocolatey@v1
-        #   with:
-        #     args: install lua swig
-
-
-
 
     - name: build windows
       run: |
