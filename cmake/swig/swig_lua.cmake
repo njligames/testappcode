@@ -6,7 +6,7 @@ if(EMSCRIPTEN)
     set_property(TARGET lua APPEND PROPERTY IMPORTED_LOCATION "${THIRDPARTY_INCLUDE_DIR}/platform/emscripten/liblua.a")
 elseif(WIN32)
     set_property(TARGET lua APPEND PROPERTY IMPORTED_LOCATION "${THIRDPARTY_INCLUDE_DIR}/platform/windows/lua.lib")
-elseif(APPLE
+elseif(APPLE)
     if(IOS)
         set_property(TARGET lua APPEND PROPERTY IMPORTED_LOCATION "${THIRDPARTY_INCLUDE_DIR}/platform/ios/Release\$(EFFECTIVE_PLATFORM_NAME)/liblua.a")
     elseif(TVOS)
