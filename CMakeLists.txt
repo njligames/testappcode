@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(game VERSION 1.0.0.0)
 
-set(${PROJECT_NAME}_DOC OFF CACHE BOOL "Build the framework library")
-set(${PROJECT_NAME}_TEST OFF CACHE BOOL "Build the framework library")
+set(${PROJECT_NAME}_DOC ON CACHE BOOL "Build the framework library")
+set(${PROJECT_NAME}_TEST ON CACHE BOOL "Build the framework library")
 
 set(SWIG_LUA ON CACHE BOOL "Wrap it for lua")
 set(SWIG_JAVA OFF CACHE BOOL "wrap it for java")
