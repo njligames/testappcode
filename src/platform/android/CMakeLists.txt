@@ -74,7 +74,7 @@ add_custom_target(
 #     RUNTIME DESTINATION bin/${PROJECT_NAME}
 #     )
 
-if(BUILD_TEST)
+if(${PROJECT_NAME}_TEST)
     enable_testing()
     add_subdirectory(test)
 endif()

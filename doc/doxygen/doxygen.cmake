@@ -1,5 +1,5 @@
 # first we can indicate the documentation build as an option and set it to ON by default
-option(BUILD_DOC "Build ${PROJECT_NAME} documentation" ON)
+# option(BUILD_DOC "Build ${PROJECT_NAME} documentation" ON)
 
 # check if Doxygen is installed
 find_package(Doxygen
