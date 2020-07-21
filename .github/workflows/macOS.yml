@@ -39,6 +39,9 @@ jobs:
     
     - name: install doxygen
       run: brew install doxygen
+    
+    - name: install doxygen
+      run: brew install graphviz
       
     - name: build macOS
       run: |
