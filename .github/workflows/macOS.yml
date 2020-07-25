@@ -52,7 +52,7 @@ jobs:
         cmake --build . --config Release --target package
 
         ./src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml" || true
-        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">")
+        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">") || true
 
         if [ -z "$test" ]
         then
