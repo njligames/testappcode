@@ -45,11 +45,16 @@ jobs:
       
     - name: build macOS
       run: |
+        export GTEST_OUTPUT="xml"
         cmake --version
-        cmake . -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
+        cmake . -dgame_DOC:BOOL=ON  -dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
         cmake --build . --config Release --target package
+        cd .build_macOS/src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/
+        ./game-test-static
         
     - uses: actions/upload-artifact@v2
       with:
         name: my-artifact
-        path: game*
+        path: |
+          game*
+          src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/test_detail.xml

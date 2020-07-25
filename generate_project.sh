@@ -6,6 +6,8 @@ CONFIGURATION=Debug
 # CONFIGURATION=Release
 INSTALL_PREFIX=install
 
+export GTEST_OUTPUT="xml"
+
 if [ "${PLATFORM}" != "android" ]
 then
   BUILD_DIR=.build_$PLATFORM
@@ -40,10 +42,11 @@ then
 
 elif [ "${PLATFORM}" == "macOS" ]
 then
-
-  cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Xcode"
+    cmake .. \
+        -Dgame_DOC:BOOL=ON \
+        -Dgame_TEST:BOOL=ON \
+        -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+        -G "Xcode"
 
 elif [ "${PLATFORM}" == "linux" ]
 then
@@ -109,8 +112,11 @@ else
 fi
 
 cmake --build . --target clean
-# cmake --build . --config ${CONFIGURATION} --target install
+cmake --build . --config ${CONFIGURATION} --target install
 cmake --build . --config ${CONFIGURATION} --target package
+
+cd ./src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/
+./game-test-static
 
 cd ..
 
