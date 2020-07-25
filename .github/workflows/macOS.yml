@@ -56,9 +56,12 @@ jobs:
 
         if [ -z "$test" ]
         then
-            echo "\$test is empty; PASSED!"
+            echo "PASSED!"
+            exit 0
         else
-            echo "\$test is NOT empty; FAILED!"
+            echo "FAILED!"
+            echo $test
+            exit 1
         fi
         
     - uses: actions/upload-artifact@v2
