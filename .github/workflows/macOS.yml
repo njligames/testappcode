@@ -46,7 +46,7 @@ jobs:
     - name: build macOS
       run: |
         cmake --version
-        cmake . -dgame_DOC:BOOL=ON  -dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
+        cmake . -Dgame_DOC:BOOL=ON  -Dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
         cmake --build . --config Release --target package
 
         ./src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml"
