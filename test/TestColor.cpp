@@ -33,7 +33,7 @@ void TestColor::render() {
 
     glClearColor(mColor.red(), mColor.green(), mColor.blue(), 1.0f);
 
-    printf("%f,%f,%f", mColor.red(), mColor.green(), mColor.blue());
+//    printf("%f,%f,%f", mColor.red(), mColor.green(), mColor.blue());
 }
 
 static void test_rgb(const unsigned &r, const unsigned &g, const unsigned &b) {

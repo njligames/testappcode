@@ -6,7 +6,9 @@ CONFIGURATION=Debug
 # CONFIGURATION=Release
 INSTALL_PREFIX=install
 
-export GTEST_OUTPUT="xml"
+function unittest {
+    exit
+}
 
 if [ "${PLATFORM}" != "android" ]
 then
@@ -47,6 +49,18 @@ then
         -Dgame_TEST:BOOL=ON \
         -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
         -G "Xcode"
+
+    function unittest {
+        ./.build_macOS/src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml"
+        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">")
+
+        if [ -z "$test" ]
+        then
+            echo "\$test is empty; PASSED!"
+        else
+            echo "\$test is NOT empty; FAILED!"
+        fi
+    }
 
 elif [ "${PLATFORM}" == "linux" ]
 then
@@ -115,8 +129,7 @@ cmake --build . --target clean
 cmake --build . --config ${CONFIGURATION} --target install
 cmake --build . --config ${CONFIGURATION} --target package
 
-cd ./src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/
-./game-test-static
-
 cd ..
+
+unittest
 

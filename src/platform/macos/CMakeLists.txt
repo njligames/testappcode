@@ -8,7 +8,7 @@ list(APPEND GAME_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/public_include)
 
 list(APPEND GAME_DEFINITIONS "GL_SILENCE_DEPRECATION=1")
 
-set(${PROJECT_NAME}_BUILD_SHARED ON CACHE BOOL "Build the shared library")
+set(${PROJECT_NAME}_BUILD_SHARED OFF CACHE BOOL "Build the shared library")
 set(${PROJECT_NAME}_BUILD_STATIC ON CACHE BOOL "Build the static library")
 set(${PROJECT_NAME}_BUILD_FRAMEWORK ON CACHE BOOL "Build the framework library")
 

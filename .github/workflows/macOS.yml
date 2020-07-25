@@ -45,16 +45,23 @@ jobs:
       
     - name: build macOS
       run: |
-        export GTEST_OUTPUT="xml"
         cmake --version
         cmake . -dgame_DOC:BOOL=ON  -dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
         cmake --build . --config Release --target package
-        cd .build_macOS/src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/
-        ./game-test-static
+
+        ./src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml"
+        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">")
+
+        if [ -z "$test" ]
+        then
+            echo "\$test is empty; PASSED!"
+        else
+            echo "\$test is NOT empty; FAILED!"
+        fi
         
     - uses: actions/upload-artifact@v2
       with:
         name: my-artifact
         path: |
           game*
-          src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/test_detail.xml
+          test_detail.xml
