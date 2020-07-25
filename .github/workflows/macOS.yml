@@ -47,7 +47,7 @@ jobs:
       run: |
         export GTEST_OUTPUT="xml"
         cmake --version
-        cmake . -dgame_DOC:BOOL=ON  -dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
+        cmake . -Dgame_DOC:BOOL=ON  -Dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Xcode"
         cmake --build . --config Release --target package
         cd .build_macOS/src/platform/macos/test/cpp/Debug/game-test-static.app/Contents/MacOS/
         ./game-test-static
