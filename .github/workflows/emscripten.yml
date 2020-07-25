@@ -35,6 +35,12 @@ jobs:
     - name: install ninja
       run: brew install ninja
     
+    - name: install doxygen
+      run: brew install doxygen
+    
+    - name: install graphviz
+      run: brew install graphviz
+    
     - name: Install emscripten and build.
       run: |
         set -x
@@ -51,9 +57,6 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=install \
         -G "Ninja"
         cmake --build . --config Release --target package
-      
-   
-        
         
     - uses: actions/upload-artifact@v2
       with:
