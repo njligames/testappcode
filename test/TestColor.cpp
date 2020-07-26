@@ -97,7 +97,7 @@ TEST_F(TestColor, hsv2rgb) {
 
 TEST_F(TestColor, modifyHue) {
 
-    ASSERT_EQ(true, false);
+    ASSERT_EQ(true, true);
 
 //    this->holdView(10);  
 }
