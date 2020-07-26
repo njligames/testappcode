@@ -26,6 +26,8 @@ void TestColor::TearDown() { TestRender::TearDown(); }
 void TestColor::update(double step) {
     float h(std::numeric_limits<float>::denorm_min());
     mColor = Color::modifyHue(mColor, 0.0001);
+    
+    
 }
 void TestColor::render() {
 
@@ -97,5 +99,5 @@ TEST_F(TestColor, modifyHue) {
 
     ASSERT_EQ(true, true);
 
-    this->holdView(10);  
+//    this->holdView(10);  
 }

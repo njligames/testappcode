@@ -61,6 +61,8 @@ class TestRender : public ::testing::Test {
 
     std::unique_ptr<Graphics> mGraphics;
 
+    const std::string currentDateTime()const;
+    double mTotalSteps;
   public:
     virtual void update(double step);
     virtual void render();
@@ -72,6 +74,10 @@ class TestRender : public ::testing::Test {
     }
     bool isDone() const { return mDone; }
     Graphics *getGraphics() const { return mGraphics.get(); }
+    
+    void screenShot()const;
+    double totalSteps()const{return mTotalSteps;}
+    
 };
 
 #endif /* TestRender_hpp */

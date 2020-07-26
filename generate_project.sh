@@ -51,7 +51,10 @@ then
         -G "Xcode"
 
     function unittest {
-        ./.build_macOS/src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml"
+        ./.build_macOS/src/platform/macos/test/cpp/Debug/game-test-static --gtest_output="xml" &
+        # sleep 2
+        # /usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/bin/screenshot game-test-static
+
         test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">")
 
         if [ -z "$test" ]

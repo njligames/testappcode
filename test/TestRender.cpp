@@ -35,7 +35,7 @@ class Graphics {
     }
 };
 
-TestRender::TestRender() {}
+TestRender::TestRender():mTotalSteps(0) {}
 
 TestRender::~TestRender(){};
 
@@ -181,9 +181,69 @@ void TestRender::TearDown() {
     SDL_GL_DeleteContext(glContext);
 };
 
-void TestRender::update(double step) {}
+const std::string TestRender::currentDateTime()const {
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+//    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    strftime(buf, sizeof(buf), "%Y-%m-%e-%H-%M-%S", &tstruct);
+    
+//    std::string s(buf);
+//    std::replace(s.begin(), s.end(), ':', '-');
+
+    return buf;
+}
+
+void TestRender::update(double step) {mTotalSteps+=step;}
 void TestRender::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void TestRender::screenShot()const{
+    
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    Uint32 rmask = 0xff000000;
+    Uint32 gmask = 0x00ff0000;
+    Uint32 bmask = 0x0000ff00;
+    Uint32 amask = 0x000000ff;
+#else
+    Uint32 rmask = 0x000000ff;
+    Uint32 gmask = 0x0000ff00;
+    Uint32 bmask = 0x00ff0000;
+    Uint32 amask = 0xff000000;
+#endif
+    
+    int w, h;
+    for (int i = 0; i < state->num_windows; ++i) {
+        std::string fname("ScreenShot-");
+        fname += currentDateTime() + std::string("-") + std::to_string(i) + std::string(".bmp");
+        
+        SDL_Renderer *renderer = state->renderers[i];
+        SDL_GetRendererOutputSize(renderer, &w, &h);
+        SDL_RendererInfo info;
+        SDL_GetRendererInfo(renderer, &info);
+        
+        SDL_Surface *sshot = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+        if(nullptr != sshot) {
+            SDL_LockSurface(sshot);
+            
+            if(0 == SDL_RenderReadPixels(renderer, NULL, sshot->format->format, sshot->pixels, sshot->pitch))
+            {
+                SDL_SaveBMP(sshot, fname.c_str());
+            }else {
+                printf("SDL_Init failed: %s\n", SDL_GetError());
+            }
+            
+            SDL_UnlockSurface(sshot);
+            SDL_FreeSurface(sshot);
+        }
+    }
+    
+    
+    
 }
 
 
