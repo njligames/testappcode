@@ -67,7 +67,7 @@ set(BUILT_GTEST FALSE)
 
 if(NOT DEFINED ${TARGET_PLATFORM})
     if(EMSCRIPTEN)
-        set(BUILT_GTEST FALSE)
+        set(BUILT_GTEST TRUE)
 
         set(TARGET_PLATFORM "emscripten")
         list(APPEND GAME_DEFINITIONS "__EMSCRIPTEN__=1")
@@ -92,8 +92,6 @@ if(NOT DEFINED ${TARGET_PLATFORM})
         endif()
     elseif(APPLE)
         if(IOS)
-            set(BUILT_GTEST TRUE)
-
             set(TARGET_PLATFORM "ios")
             list(APPEND GAME_DEFINITIONS "__IPHONEOS__=1")
             if(VR)

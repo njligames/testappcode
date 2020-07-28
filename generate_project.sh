@@ -22,6 +22,8 @@ fi
 if [ "${PLATFORM}" == "emscripten" ]
 then
     emcmake cmake .. \
+        -Dgame_DOC:BOOL=ON \
+        -Dgame_TEST:BOOL=ON \
         -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
         -G "Ninja"
 
