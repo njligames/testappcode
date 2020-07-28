@@ -39,8 +39,8 @@ jobs:
     - name: install xmllint
       run: sudo apt-get install libxml2-utils
 
-    - name: sndio
-      run: sudo apt-get install -y libasound2-dev
+    - name: install libsndio-dev
+      run: sudo apt-get install -y libsndio-dev
       
     - name: build linux
       run: |
