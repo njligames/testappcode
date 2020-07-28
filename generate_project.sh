@@ -71,8 +71,26 @@ then
   export CXX=/usr/bin/c++
 
   cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-    -G "Unix Makefiles"
+      -Dgame_DOC:BOOL=ON \
+      -Dgame_TEST:BOOL=ON \
+      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -G "Unix Makefiles"
+
+    function unittest {
+        ./.build_linux/src/platform/linux/test/cpp/game-test-static --gtest_output="xml"
+        # sleep 2
+        # /usr/local/Cellar/python/3.7.7/Frameworks/Python.framework/Versions/3.7/bin/screenshot game-test-static
+
+        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">") || true
+
+        if [ -z "$test" ]
+        then
+            echo "PASSED!"
+        else
+            echo "FAILED!"
+            echo $test
+        fi
+    }
 
 elif [ "${PLATFORM}" == "ios" ]
 then

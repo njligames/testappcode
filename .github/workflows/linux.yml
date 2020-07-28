@@ -29,12 +29,33 @@ jobs:
 
     - name: install opengl
       run: sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+
+    - name: doxygen
+      run: sudo apt-get install doxygen
+
+    - name: install xmllint
+      run: sudo apt-get install libxml2-utils
       
     - name: build linux
       run: |
         cmake --version
-        cmake . -DCMAKE_INSTALL_PREFIX=install -G "Unix Makefiles"
+        cmake . -Dgame_DOC:BOOL=ON  -Dgame_TEST:BOOL=ON -DCMAKE_INSTALL_PREFIX=install -G "Unix Makefiles"
+
+        cmake --build . --config ${CONFIGURATION} --target install
         cmake --build . --config Release --target package
+
+        ./.build_linux/src/platform/linux/test/cpp/game-test-static --gtest_output="xml" || true
+        test=$(echo 'cat //failure/@message' | xmllint --shell "test_detail.xml" | grep -v ">") || true
+
+        if [ -z "$test" ]
+        then
+            echo "PASSED!"
+            exit 0
+        else
+            echo "FAILED!"
+            echo $test
+            exit 1
+        fi
         
     - uses: actions/upload-artifact@v2
       with:
