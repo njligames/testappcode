@@ -40,7 +40,7 @@ jobs:
       run: sudo apt-get install libxml2-utils
 
     - name: sndio
-      run: sudo apt-get install -y sndio-tools
+      run: sudo apt-get install -y libasound2-dev
       
     - name: build linux
       run: |
