@@ -1,3 +1,11 @@
+//
+//  Ishne.cpp
+//  Spaulding Medical Test
+//
+//  Created by James Folk on 11/6/20.
+//  Copyright © 2020 NJLIGames Ltd. All rights reserved.
+//
+
 #include "Ishne.h"
 #include <stdio.h>
 #include <vector>

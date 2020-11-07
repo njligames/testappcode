@@ -1,8 +1,9 @@
 //
 //  Color.cpp
-//  SDLSkeleton
+//  Spaulding Medical Test
 //
-//  Created by James Folk on 3/31/20.
+//  Created by James Folk on 11/6/20.
+//  Copyright © 2020 NJLIGames Ltd. All rights reserved.
 //
 
 #include "Color.h"

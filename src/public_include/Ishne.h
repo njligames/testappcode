@@ -1,3 +1,11 @@
+//
+//  Ishne.h
+//  Spaulding Medical Test
+//
+//  Created by James Folk on 11/6/20.
+//  Copyright © 2020 NJLIGames Ltd. All rights reserved.
+//
+
 #include <string>
 
 class Ishne {
