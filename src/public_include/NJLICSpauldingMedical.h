@@ -1,23 +1,23 @@
 //
-//  NJLICColorTest.h
+//  NJLICSpauldingMedical.h
 //  SDLSkeleton
 //
-//  Created by James Folk on 5/16/20.
+//  Created by James Folk on 11/6/20.
 //
 
-#ifndef NJLICColorTest_h
-#define NJLICColorTest_h
+#ifndef NJLICSpauldingMedical_h
+#define NJLICSpauldingMedical_h
 
 #include "Color.h"
-// #include "thirdparty/includes/NJLICEngine/NJLICGame.h"
 #include "NJLICGame.h"
 
-class NJLICColorTest : public NJLICGame {
-    Color mColor;
+class Ishne;
+class NJLICSpauldingMedical : public NJLICGame {
+    Ishne *mIshne;
 
   public:
-    NJLICColorTest();
-    virtual ~NJLICColorTest();
+    NJLICSpauldingMedical();
+    virtual ~NJLICSpauldingMedical();
 
     virtual void update(double step) override;
     virtual void render()const override;
@@ -49,4 +49,4 @@ class NJLICColorTest : public NJLICGame {
     
 };
 
-#endif /* NJLICColorTest_h */
+#endif /* NJLICSpauldingMedical_h */

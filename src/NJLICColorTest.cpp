@@ -68,3 +68,6 @@ void NJLICColorTest::vRCameraRotation(float m11, float m12, float m13,
                                       float m31, float m32, float m33) {}
 
 void NJLICColorTest::vRCameraRotationYPR(float yaw, float pitch, float roll) {}
+
+void NJLICColorTest::fileDrop(const std::string &fileName){
+}
