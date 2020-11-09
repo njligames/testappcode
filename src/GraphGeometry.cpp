@@ -26,10 +26,11 @@ namespace NJLIC {
     }
 
     void GraphGeometry::loadData() {
-        auto size = mValues.size();
+        auto iter = mValues.begin();
+        auto numberOfDataPoints = 1000;
         
-        m_NumberOfIndices = (GLsizei)size;
-        m_NumberOfVertices = (GLsizei)size;
+        m_NumberOfIndices = (GLsizei)numberOfDataPoints;
+        m_NumberOfVertices = (GLsizei)numberOfDataPoints;
         
         struct TCV
         {
@@ -68,7 +69,11 @@ namespace NJLIC {
             GLuint *indiceData;
         };
         
-        TCV tcv = std::for_each(mValues.begin(), mValues.end(), TCV(size));
+        
+        
+        
+//        TCV tcv = std::for_each(mValues.begin(), mValues.end(), TCV(size));
+        TCV tcv = std::for_each(iter, iter + numberOfDataPoints, TCV(numberOfDataPoints));
         
         Geometry::loadData();
 

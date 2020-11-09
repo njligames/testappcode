@@ -27,12 +27,8 @@ void NJLICSpauldingMedical::loadView(const Ishne &ishne) {
     NJLIC::Node *mGraphNode = new NJLIC::Node();
     NJLIC::GraphGeometry *mGraphGeometry = new NJLIC::GraphGeometry();
 
-    mGraphGeometry->load(mShader, ishne.getValues(0), 1);
-//    mGraphGeometry->loadDiffuseMatrial(mShader, "assets/loading.jpg");
+    mGraphGeometry->load(mShader, ishne.getValues(0), ishne.numberOfLeads());
     mGraphNode->addGeometry(mGraphGeometry);
-//    mGraphGeometry->setDimensions(
-//        mGraphNode, glm::vec2(mGraphGeometry->getDiffuseImageWidth(),
-//                              mGraphGeometry->getDiffuseImageHeight()));
     mScene->addActiveNode(mGraphNode);
     mGraphNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
     mScene->getRootNode()->addChildNode(mGraphNode);
