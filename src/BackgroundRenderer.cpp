@@ -100,12 +100,12 @@ namespace NJLIC {
         programPointer = glCreateProgram();
 
         if (!Util::compileShader(vertexShader, GL_VERTEX_SHADER,
-                                    vertShaderSource)) {
+                                 vertShaderSource)) {
             return false;
         }
 
         if (!Util::compileShader(fragShader, GL_FRAGMENT_SHADER,
-                                    fragShaderSource)) {
+                                 fragShaderSource)) {
             return false;
         }
 
@@ -165,24 +165,15 @@ namespace NJLIC {
 
     BackgroundRenderer *BackgroundRenderer::sBackgroundRenderer = nullptr;
 
-    BackgroundRenderer::BackgroundRenderer() :
-        mProgram(GL_INVALID_VALUE),
-        mVao(GL_INVALID_VALUE),
-        mVertexBuffer(GL_INVALID_VALUE),
-        mIndexBuffer(GL_INVALID_VALUE),
-        mVideoFrameTexture(GL_INVALID_VALUE),
-        mBufferData(nullptr),
-        mwidth(0),
-        mheight(0),
-        mchannels_in_file(0),
-        mShouldReload(true),
-        mTextureIndex(-1)
-    {
-        memset(&mUniforms[0], GL_INVALID_VALUE, sizeof(GLint)*NUM_UNIFORMS);
+    BackgroundRenderer::BackgroundRenderer()
+        : mProgram(GL_INVALID_VALUE), mVao(GL_INVALID_VALUE),
+          mVertexBuffer(GL_INVALID_VALUE), mIndexBuffer(GL_INVALID_VALUE),
+          mVideoFrameTexture(GL_INVALID_VALUE), mBufferData(nullptr), mwidth(0),
+          mheight(0), mchannels_in_file(0), mShouldReload(true),
+          mTextureIndex(-1) {
+        memset(&mUniforms[0], GL_INVALID_VALUE, sizeof(GLint) * NUM_UNIFORMS);
     }
-    BackgroundRenderer::~BackgroundRenderer() {
-        
-    }
+    BackgroundRenderer::~BackgroundRenderer() {}
 
     BackgroundRenderer *BackgroundRenderer::getInstance() {
         if (nullptr == sBackgroundRenderer)
@@ -232,12 +223,11 @@ namespace NJLIC {
 
             int width, height, channels_in_file;
             unsigned char *buffer = (unsigned char *)Util::loadImage(
-                "assets_engine/loading.jpg", &width, &height, &channels_in_file);
+                "assets_engine/loading.jpg", &width, &height,
+                &channels_in_file);
 
-            mBufferData = (unsigned char *)Util::loadImage(file.c_str(),
-                                                           &mwidth,
-                                                           &mheight,
-                                                           &mchannels_in_file);
+            mBufferData = (unsigned char *)Util::loadImage(
+                file.c_str(), &mwidth, &mheight, &mchannels_in_file);
 
             mTextureIndex = 0;
             //            MaterialProperty::addReference(size_t(mTextureIndex));

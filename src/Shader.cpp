@@ -37,13 +37,12 @@ namespace NJLIC {
 
         m_Program = glCreateProgram();
 
-        if (!Util::compileShader(vertShader, GL_VERTEX_SHADER,
-                                    vertexSource)) {
+        if (!Util::compileShader(vertShader, GL_VERTEX_SHADER, vertexSource)) {
             return false;
         }
 
         if (!Util::compileShader(fragShader, GL_FRAGMENT_SHADER,
-                                    fragmentSource)) {
+                                 fragmentSource)) {
             return false;
         }
 

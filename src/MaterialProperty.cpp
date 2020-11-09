@@ -54,7 +54,6 @@ namespace NJLIC {
         // using the shaders
         glGenTextures(1, &property->mDiffuseTexture);
         Util::glErrorCheck();
-        
     }
 
     void MaterialProperty::removeReference(MaterialProperty *property) {
@@ -120,7 +119,8 @@ namespace NJLIC {
     }
 
     MaterialProperty::MaterialProperty()
-        : mDiffuseTexture(-1), mWidth(2), mHeight(2), mChannels(1), m_TextureIndex(0), mIsLoaded(false) {}
+        : mDiffuseTexture(-1), mWidth(2), mHeight(2), mChannels(1),
+          m_TextureIndex(0), mIsLoaded(false) {}
 
     MaterialProperty::~MaterialProperty() { unLoad(); }
 

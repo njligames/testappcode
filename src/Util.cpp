@@ -31,7 +31,7 @@
 #include "curl/curl.h"
 
 void *Util::loadImage(const std::string &filePath, int *width, int *height,
-                         int *channels_in_file) {
+                      int *channels_in_file) {
 
     const std::string base_path(SDL_GetBasePath());
 
@@ -42,8 +42,8 @@ void *Util::loadImage(const std::string &filePath, int *width, int *height,
     return buffer;
 }
 
-void *Util::loadDefaultCardImage(int *width, int *height,
-                                    int *channels_in_file, size_t *fileSize) {
+void *Util::loadDefaultCardImage(int *width, int *height, int *channels_in_file,
+                                 size_t *fileSize) {
 
     std::string base_path(SDL_GetBasePath());
     std::string defaultImage("assets/Default.png");

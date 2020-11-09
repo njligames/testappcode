@@ -130,8 +130,9 @@ namespace NJLIC {
           m_ShaderChanged(true), /*mDiffuseTexture(-1),*/ mMaterialProperty(
               new NJLIC::MaterialProperty()),
           mFormat(GL_RGBA),
-mDrawMode(GL_TRIANGLES) { //},
-                             //          mWidth(2), mHeight(2), mChannels(1) {
+          mDrawMode(
+              GL_TRIANGLES) { //},
+                              //          mWidth(2), mHeight(2), mChannels(1) {
         assert(m_MatrixBuffer);
         assert(m_MatrixBufferFullSize);
 
@@ -560,8 +561,7 @@ mDrawMode(GL_TRIANGLES) { //},
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 
-            glDrawElements(mDrawMode,
-                           numberOfInstances() * numberOfIndices(),
+            glDrawElements(mDrawMode, numberOfInstances() * numberOfIndices(),
                            getElementIndexType(), (const GLvoid *)0);
 
             //            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

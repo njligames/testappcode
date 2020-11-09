@@ -189,8 +189,7 @@ bool BitmapFont::load(const std::string &fontName) {
         size_t jsonFileSize;
         std::string defaultJson("assets/fonts/%s.json");
         snprintf(buff, sizeof(buff), defaultJson.c_str(), fontName.c_str());
-        char *jsonFileBuffer =
-            Util::loadFile(std::string(buff), jsonFileSize);
+        char *jsonFileBuffer = Util::loadFile(std::string(buff), jsonFileSize);
         if (nullptr != jsonFileBuffer) {
 
 #if !(defined(NDEBUG))
@@ -349,10 +348,14 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
                 scale = charData.scale;
 
                 NJLIC::Node *node = renderLetter(ascii, charData);
-//                float _y(((lineHeight * scale) - (charData.yoffset * scale)) -
-//                         ((lineHeight * scale) - (base * scale)) - currentY);
+                //                float _y(((lineHeight * scale) -
+                //                (charData.yoffset * scale)) -
+                //                         ((lineHeight * scale) - (base *
+                //                         scale)) - currentY);
 
-                node->setOrigin(glm::vec2(currentX + ((charData.xoffset + kerning) * scale), currentY));
+                node->setOrigin(
+                    glm::vec2(currentX + ((charData.xoffset + kerning) * scale),
+                              currentY));
 
                 mainNode->addChildNode(node);
                 scene->addActiveNode(node);

@@ -9,17 +9,14 @@
 #define DEBUG_DRAW_IMPLEMENTATION
 
 #include "DebugDrawer.h"
-#include "glm/gtc/type_ptr.hpp"
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <string>
 
-static GLfloat modelView[] = {1.0, 0.0, 0.0, 0.0,
-                              0.0, 1.0, 0.0, 0.0,
-                              0.0, 0.0, 1.0, 0.0,
-                              0.0, 0.0, 0.0, 1.0};
-static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
-                                           0.0, 1.0, 0.0, 0.0,
-                                           0.0, 0.0, 1.0, 0.0,
+static GLfloat modelView[] = {1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+                              0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+                                           0.0, 0.0, 0.0, 0.0, 1.0, 0.0,
                                            0.0, 0.0, 0.0, 1.0};
 
 //    static const std::string textVertShaderSrc = R"(
@@ -37,8 +34,9 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
 //    void main()
 //    {
 //        // Map to normalized clip coordinates:
-//        float x = ((2.0 * (in_Position.x - 0.5)) / u_screenDimensions.x) - 1.0;
-//        float y = 1.0 - ((2.0 * (in_Position.y - 0.5)) / u_screenDimensions.y);
+//        float x = ((2.0 * (in_Position.x - 0.5)) / u_screenDimensions.x)
+//        - 1.0; float y = 1.0 - ((2.0 * (in_Position.y - 0.5)) /
+//        u_screenDimensions.y);
 //
 //        gl_Position = vec4(x, y, 0.0, 1.0);
 //        v_TexCoords = in_TexCoords;
@@ -67,7 +65,7 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
 //
 //    )";
 
-    static const std::string linePointVertShaderSource = R"(
+static const std::string linePointVertShaderSource = R"(
     
     attribute vec3 in_Position;
     attribute vec4 in_ColorPointSize;
@@ -86,7 +84,7 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
     
     )";
 
-    static const std::string linePointFragShaderSource = R"(
+static const std::string linePointFragShaderSource = R"(
     
 #ifdef GL_ES
     precision mediump float;
@@ -102,34 +100,30 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
     
     )";
 
-    DebugDrawer::DebugDrawer()
-        :
-//        m_DebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE),
-          m_Initialized(false),
-//          m_LinePointShaderProgram(NULL),
-//          m_TextShaderProgram(NULL),
-//            mLinePointShaderProgram(0),
-          m_mat4Buffer(new float[16]),
-          m_textMat4Buffer(new float[16]), linePointVAO(0), linePointVBO(0),
-            mShader(new NJLIC::Shader())//,
+DebugDrawer::DebugDrawer()
+    : //        m_DebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE),
+      m_Initialized(false),
+      //          m_LinePointShaderProgram(NULL),
+      //          m_TextShaderProgram(NULL),
+      //            mLinePointShaderProgram(0),
+      m_mat4Buffer(new float[16]), m_textMat4Buffer(new float[16]),
+      linePointVAO(0), linePointVBO(0), mShader(new NJLIC::Shader()) //,
 //          textVAO(0),
 //          textVBO(0)
-    {
-    }
+{}
 
-    DebugDrawer::~DebugDrawer()
-    {
-        delete[] m_textMat4Buffer;
-        delete[] m_mat4Buffer;
+DebugDrawer::~DebugDrawer() {
+    delete[] m_textMat4Buffer;
+    delete[] m_mat4Buffer;
 
-        glDeleteVertexArrays_NJLIC(1, &linePointVAO);
+    glDeleteVertexArrays_NJLIC(1, &linePointVAO);
 
-        glDeleteBuffers(1, &linePointVBO);
+    glDeleteBuffers(1, &linePointVBO);
 
-//        glDeleteVertexArrays_NJLIC(1, &textVAO);
-//
-//        glDeleteBuffers(1, &textVBO);
-    }
+    //        glDeleteVertexArrays_NJLIC(1, &textVAO);
+    //
+    //        glDeleteBuffers(1, &textVBO);
+}
 
 //    const char *DebugDrawer::getClassName() const
 //    {
@@ -146,209 +140,195 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
 //        return njli::JsonJLI::parse(string_format("%s", FORMATSTRING));
 //    }
 
-    void DebugDrawer::beginDraw() { /*newFrameImgui();*/ }
+void DebugDrawer::beginDraw() { /*newFrameImgui();*/
+}
 
-    void DebugDrawer::endDraw() { /*renderImgui();*/ }
+void DebugDrawer::endDraw() { /*renderImgui();*/
+}
 
-    void DebugDrawer::drawPointList(const dd::DrawVertex *points,
-                                         int count, bool depthEnabled)
-    {
-//        SDL_assert(points != nullptr);
-//        SDL_assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
+void DebugDrawer::drawPointList(const dd::DrawVertex *points, int count,
+                                bool depthEnabled) {
+    //        SDL_assert(points != nullptr);
+    //        SDL_assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
 
-        glBindVertexArray_NJLIC(linePointVAO);
+    glBindVertexArray_NJLIC(linePointVAO);
 
-//        m_LinePointShaderProgram->use();
-//        glUseProgram(mLinePointShaderProgram);
-        mShader->use();
+    //        m_LinePointShaderProgram->use();
+    //        glUseProgram(mLinePointShaderProgram);
+    mShader->use();
 
+    //        m_Camera->render(m_LinePointShaderProgram, true);
+    //        GLint modelViewLocation =
+    //        glGetUniformLocation(mLinePointShaderProgram, "modelView");
+    //        glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+    mShader->setUniformValue("modelView", modelView);
 
+    //        GLint projectionLocation =
+    //        glGetUniformLocation(mLinePointShaderProgram, "projection");
+    //        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE,
+    //        orthographicProjection);
+    mShader->setUniformValue("projection", orthographicProjection);
 
-//        m_Camera->render(m_LinePointShaderProgram, true);
-//        GLint modelViewLocation = glGetUniformLocation(mLinePointShaderProgram, "modelView");
-//        glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
-        mShader->setUniformValue("modelView", modelView);
+    GLboolean _depthEnabled = glIsEnabled(GL_DEPTH_TEST);
 
-//        GLint projectionLocation = glGetUniformLocation(mLinePointShaderProgram, "projection");
-//        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, orthographicProjection);
-        mShader->setUniformValue("projection", orthographicProjection);
-
-        GLboolean _depthEnabled = glIsEnabled(GL_DEPTH_TEST);
-
-        if (depthEnabled)
-        {
-            glEnable(GL_DEPTH_TEST);
-        }
-        else
-        {
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        // NOTE: Could also use glBufferData to take advantage of the buffer
-        // orphaning trick...
-        glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(dd::DrawVertex),
-                        points);
-
-        // Issue the draw call:
-        glDrawArrays(GL_POINTS, 0, count);
-
-        glUseProgram(0);
-
-        glBindVertexArray_NJLIC(0);
-
-        if (_depthEnabled)
-        {
-            glEnable(GL_DEPTH_TEST);
-        }
-        else
-        {
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    if (depthEnabled) {
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glDisable(GL_DEPTH_TEST);
     }
 
-    void DebugDrawer::drawLineList(const dd::DrawVertex *lines, int count,
-                                        bool depthEnabled)
-    {
-        assert(lines != nullptr);
-        assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
+    // NOTE: Could also use glBufferData to take advantage of the buffer
+    // orphaning trick...
+    glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(dd::DrawVertex), points);
 
-        glBindVertexArray_NJLIC(linePointVAO);
+    // Issue the draw call:
+    glDrawArrays(GL_POINTS, 0, count);
 
-//        m_LinePointShaderProgram->use();
-//        glUseProgram(mLinePointShaderProgram);
-        mShader->use();
+    glUseProgram(0);
 
-//        m_Camera->render(m_LinePointShaderProgram, true);
+    glBindVertexArray_NJLIC(0);
 
-//        GLint modelViewLocation = glGetUniformLocation(mLinePointShaderProgram, "modelView");
-//        glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
-        mShader->setUniformValue("modelView", modelView);
-
-//        GLint projectionLocation = glGetUniformLocation(mLinePointShaderProgram, "projection");
-//        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, orthographicProjection);
-        mShader->setUniformValue("projection", orthographicProjection);
-
-        GLboolean _depthEnabled = glIsEnabled(GL_DEPTH_TEST);
-
-        if (depthEnabled)
-        {
-            glEnable(GL_DEPTH_TEST);
-        }
-        else
-        {
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        // NOTE: Could also use glBufferData to take advantage of the buffer
-        // orphaning trick...
-        glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(dd::DrawVertex),
-                        lines);
-
-        // Issue the draw call:
-        glDrawArrays(GL_LINES, 0, count);
-
-        glUseProgram(0);
-
-        glBindVertexArray_NJLIC(0);
-
-        if (_depthEnabled)
-        {
-            glEnable(GL_DEPTH_TEST);
-        }
-        else
-        {
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-    void DebugDrawer::drawGlyphList(const dd::DrawVertex *glyphs,
-                                         int count,
-                                         dd::GlyphTextureHandle glyphTex)
-    {
-//        assert(glyphs != nullptr);
-//        assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
-//
-//        glBindVertexArray_NJLIC(textVAO);
-//
-//        m_TextShaderProgram->use();
-//        GLfloat width = njli::World::getInstance()->getViewportDimensions().x();
-//        GLfloat height =
-//            njli::World::getInstance()->getViewportDimensions().y();
-//        m_TextShaderProgram->setUniformValue("u_glyphTexture", (GLuint)0);
-//        m_TextShaderProgram->setUniformValue("u_screenDimensions", width,
-//                                             height);
-//
-//        if (glyphTex != nullptr)
-//        {
-//            glActiveTexture(GL_TEXTURE0);
-//            glBindTexture(
-//                GL_TEXTURE_2D,
-//                static_cast<GLuint>(reinterpret_cast<std::size_t>(glyphTex)));
-//        }
-//
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//        glDisable(GL_DEPTH_TEST);
-//
-//        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-//        glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(dd::DrawVertex),
-//                        glyphs);
-//
-//        glDrawArrays(GL_TRIANGLES, 0, count); // Issue the draw call
-//
-//        glDisable(GL_BLEND);
-//        glUseProgram(0);
-//        glBindVertexArray_NJLIC(0);
-//        glBindBuffer(GL_ARRAY_BUFFER, 0);
-//        glBindTexture(GL_TEXTURE_2D, 0);
+    if (_depthEnabled) {
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glDisable(GL_DEPTH_TEST);
     }
 
-    void DebugDrawer::destroyGlyphTexture(dd::GlyphTextureHandle glyphTex)
-    {
-        if (glyphTex == nullptr)
-        {
-            return;
-        }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
-        const GLuint textureId =
-            static_cast<GLuint>(reinterpret_cast<std::size_t>(glyphTex));
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glDeleteTextures(1, &textureId);
+void DebugDrawer::drawLineList(const dd::DrawVertex *lines, int count,
+                               bool depthEnabled) {
+    assert(lines != nullptr);
+    assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
+
+    glBindVertexArray_NJLIC(linePointVAO);
+
+    //        m_LinePointShaderProgram->use();
+    //        glUseProgram(mLinePointShaderProgram);
+    mShader->use();
+
+    //        m_Camera->render(m_LinePointShaderProgram, true);
+
+    //        GLint modelViewLocation =
+    //        glGetUniformLocation(mLinePointShaderProgram, "modelView");
+    //        glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+    mShader->setUniformValue("modelView", modelView);
+
+    //        GLint projectionLocation =
+    //        glGetUniformLocation(mLinePointShaderProgram, "projection");
+    //        glUniformMatrix4fv(projectionLocation, 1, GL_FALSE,
+    //        orthographicProjection);
+    mShader->setUniformValue("projection", orthographicProjection);
+
+    GLboolean _depthEnabled = glIsEnabled(GL_DEPTH_TEST);
+
+    if (depthEnabled) {
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glDisable(GL_DEPTH_TEST);
     }
 
-    dd::GlyphTextureHandle
-    DebugDrawer::createGlyphTexture(int width, int height,
-                                         const void *pixels)
-    {
-        assert(width > 0 && height > 0);
-        assert(pixels != nullptr);
+    // NOTE: Could also use glBufferData to take advantage of the buffer
+    // orphaning trick...
+    glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(dd::DrawVertex), lines);
 
-        GLuint textureId = 0;
-        glGenTextures(1, &textureId);
-        glBindTexture(GL_TEXTURE_2D, textureId);
+    // Issue the draw call:
+    glDrawArrays(GL_LINES, 0, count);
 
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glUseProgram(0);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0,
-                     GL_LUMINANCE, GL_UNSIGNED_BYTE, pixels);
+    glBindVertexArray_NJLIC(0);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        ;
-
-        return reinterpret_cast<dd::GlyphTextureHandle>(
-            static_cast<std::size_t>(textureId));
+    if (_depthEnabled) {
+        glEnable(GL_DEPTH_TEST);
+    } else {
+        glDisable(GL_DEPTH_TEST);
     }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void DebugDrawer::drawGlyphList(const dd::DrawVertex *glyphs, int count,
+                                dd::GlyphTextureHandle glyphTex) {
+    //        assert(glyphs != nullptr);
+    //        assert(count > 0 && count <= DEBUG_DRAW_VERTEX_BUFFER_SIZE);
+    //
+    //        glBindVertexArray_NJLIC(textVAO);
+    //
+    //        m_TextShaderProgram->use();
+    //        GLfloat width =
+    //        njli::World::getInstance()->getViewportDimensions().x(); GLfloat
+    //        height =
+    //            njli::World::getInstance()->getViewportDimensions().y();
+    //        m_TextShaderProgram->setUniformValue("u_glyphTexture", (GLuint)0);
+    //        m_TextShaderProgram->setUniformValue("u_screenDimensions", width,
+    //                                             height);
+    //
+    //        if (glyphTex != nullptr)
+    //        {
+    //            glActiveTexture(GL_TEXTURE0);
+    //            glBindTexture(
+    //                GL_TEXTURE_2D,
+    //                static_cast<GLuint>(reinterpret_cast<std::size_t>(glyphTex)));
+    //        }
+    //
+    //        glEnable(GL_BLEND);
+    //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //        glDisable(GL_DEPTH_TEST);
+    //
+    //        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+    //        glBufferSubData(GL_ARRAY_BUFFER, 0, count *
+    //        sizeof(dd::DrawVertex),
+    //                        glyphs);
+    //
+    //        glDrawArrays(GL_TRIANGLES, 0, count); // Issue the draw call
+    //
+    //        glDisable(GL_BLEND);
+    //        glUseProgram(0);
+    //        glBindVertexArray_NJLIC(0);
+    //        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //        glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void DebugDrawer::destroyGlyphTexture(dd::GlyphTextureHandle glyphTex) {
+    if (glyphTex == nullptr) {
+        return;
+    }
+
+    const GLuint textureId =
+        static_cast<GLuint>(reinterpret_cast<std::size_t>(glyphTex));
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDeleteTextures(1, &textureId);
+}
+
+dd::GlyphTextureHandle DebugDrawer::createGlyphTexture(int width, int height,
+                                                       const void *pixels) {
+    assert(width > 0 && height > 0);
+    assert(pixels != nullptr);
+
+    GLuint textureId = 0;
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE,
+                 GL_UNSIGNED_BYTE, pixels);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    ;
+
+    return reinterpret_cast<dd::GlyphTextureHandle>(
+        static_cast<std::size_t>(textureId));
+}
 
 //    void DebugDrawer::drawLine(const btVector3 &from, const btVector3 &to,
 //                                    const btVector3 &color)
@@ -362,10 +342,10 @@ static GLfloat orthographicProjection[] = {1.0, 0.0, 0.0, 0.0,
 void DebugDrawer::drawLine(const glm::vec3 &from, const glm::vec3 &to,
                            const glm::vec3 &color) {
     const float _from[] = {from.x, from.y, from.z};
-const float _to[] = {to.x, to.y, to.z};
-const float _color[] = {color.x, color.y, color.z };
+    const float _to[] = {to.x, to.y, to.z};
+    const float _color[] = {color.x, color.y, color.z};
 
-dd::line(_from, _to, _color);
+    dd::line(_from, _to, _color);
 }
 //
 //    void DebugDrawer::drawContactPoint(const btVector3 &PointOnB,
@@ -378,17 +358,16 @@ dd::line(_from, _to, _color);
 //        dd::point(_pos, _color, 1.0, lifeTime);
 //
 //        btVector3 from(PointOnB);
-//        btVector3 to(PointOnB + (normalOnB.normalized() * normalOnB.length()));
-//        const float _from[] = {from.x(), from.y(), from.z()};
-//        const float _to[] = {to.x(), to.y(), to.z()};
+//        btVector3 to(PointOnB + (normalOnB.normalized() *
+//        normalOnB.length())); const float _from[] = {from.x(), from.y(),
+//        from.z()}; const float _to[] = {to.x(), to.y(), to.z()};
 //
 //        dd::line(_from, _to, _color, lifeTime);
 //    }
 
-    void DebugDrawer::reportErrorWarning(const char *warningString)
-    {
-//        SDL_LogError(SDL_LOG_CATEGORY_TEST, "%s", warningString);
-    }
+void DebugDrawer::reportErrorWarning(const char *warningString) {
+    //        SDL_LogError(SDL_LOG_CATEGORY_TEST, "%s", warningString);
+}
 
 //    void DebugDrawer::draw3dText(const btVector3 &location,
 //                                      const char *textString)
@@ -411,75 +390,72 @@ dd::line(_from, _to, _color);
 //
 //    int DebugDrawer::getDebugMode() const { return m_DebugMode; }
 
-    void DebugDrawer::init()
-    {
-        if (!m_Initialized)
-        {
-            m_Initialized = true;
+void DebugDrawer::init() {
+    if (!m_Initialized) {
+        m_Initialized = true;
 
-            dd::initialize(this);
+        dd::initialize(this);
 
-//            glEnable(GL_CULL_FACE);
-//            glEnable(GL_DEPTH_TEST);
-//            glDisable(GL_BLEND);
+        //            glEnable(GL_CULL_FACE);
+        //            glEnable(GL_DEPTH_TEST);
+        //            glDisable(GL_BLEND);
 
-            // This has to be enabled since the point drawing shader will
-            // use gl_PointSize.
+        // This has to be enabled since the point drawing shader will
+        // use gl_PointSize.
 
-            //        glEnable(GL_PROGRAM_POINT_SIZE);
+        //        glEnable(GL_PROGRAM_POINT_SIZE);
 
-//            m_LinePointShaderProgram = njli::ShaderProgram::create();
-//            m_TextShaderProgram = njli::ShaderProgram::create();
-//
-//            m_LinePointShaderProgram->load(linePointVertShaderSource,
-//                                           linePointFragShaderSource);
-//            m_TextShaderProgram->load(textVertShaderSrc, textFragShaderSrc);
+        //            m_LinePointShaderProgram = njli::ShaderProgram::create();
+        //            m_TextShaderProgram = njli::ShaderProgram::create();
+        //
+        //            m_LinePointShaderProgram->load(linePointVertShaderSource,
+        //                                           linePointFragShaderSource);
+        //            m_TextShaderProgram->load(textVertShaderSrc,
+        //            textFragShaderSrc);
 
-//            Shader::load(linePointVertShaderSource, linePointFragShaderSource, mLinePointShaderProgram);
-            mShader->load(linePointVertShaderSource, linePointFragShaderSource);
+        //            Shader::load(linePointVertShaderSource,
+        //            linePointFragShaderSource, mLinePointShaderProgram);
+        mShader->load(linePointVertShaderSource, linePointFragShaderSource);
 
-            setupVertexBuffers();
+        setupVertexBuffers();
 
-//            initImgui();
-        }
+        //            initImgui();
     }
+}
 
-    void DebugDrawer::unInit()
-    {
-        if (m_Initialized)
-        {
-            m_Initialized = false;
+void DebugDrawer::unInit() {
+    if (m_Initialized) {
+        m_Initialized = false;
 
-//            if(0 == mLinePointShaderProgram)
-//            {
-//                glDeleteProgram(mLinePointShaderProgram);
-//                mLinePointShaderProgram = 0;
-//            }
+        //            if(0 == mLinePointShaderProgram)
+        //            {
+        //                glDeleteProgram(mLinePointShaderProgram);
+        //                mLinePointShaderProgram = 0;
+        //            }
 
-//            njli::ShaderProgram::destroy(m_TextShaderProgram);
-//            njli::ShaderProgram::destroy(m_LinePointShaderProgram);
+        //            njli::ShaderProgram::destroy(m_TextShaderProgram);
+        //            njli::ShaderProgram::destroy(m_LinePointShaderProgram);
 
-//            unInitImgui();
+        //            unInitImgui();
 
-            dd::shutdown();
-        }
+        dd::shutdown();
     }
+}
 
-    void DebugDrawer::draw()//Camera *camera)
-    {
-//        m_Camera = camera;
-//
-//        if (m_Camera && m_Camera->hasParent())
-//        {
-//            (m_Camera->getProjection() * m_Camera->getModelView())
-//                .getOpenGLMatrix(m_textMat4Buffer);
-//        }
+void DebugDrawer::draw() // Camera *camera)
+{
+    //        m_Camera = camera;
+    //
+    //        if (m_Camera && m_Camera->hasParent())
+    //        {
+    //            (m_Camera->getProjection() * m_Camera->getModelView())
+    //                .getOpenGLMatrix(m_textMat4Buffer);
+    //        }
 
-        if (dd::hasPendingDraws())
-        {
-            dd::flush(1);
-        }
+    if (dd::hasPendingDraws()) {
+        dd::flush(1);
     }
+}
 
 //    void DebugDrawer::point(const btVector3 &pos, const btVector3 &color,
 //                                 float size, int durationMillis,
@@ -515,8 +491,8 @@ dd::line(_from, _to, _color);
 
 //    void DebugDrawer::projectedText(const std::string &str,
 //                                         const btVector3 &pos,
-//                                         const btVector3 &color, float scaling,
-//                                         int durationMillis)
+//                                         const btVector3 &color, float
+//                                         scaling, int durationMillis)
 //    {
 //        const float _pos[] = {pos.x(), pos.y(), pos.z()};
 //        const float _color[] = {color.x(), color.y(), color.z()};
@@ -534,7 +510,8 @@ dd::line(_from, _to, _color);
 //
 //        transform.getOpenGLMatrix(m_mat4Buffer);
 //
-//        dd::axisTriad(m_mat4Buffer, size, length, durationMillis, depthEnabled);
+//        dd::axisTriad(m_mat4Buffer, size, length, durationMillis,
+//        depthEnabled);
 //    }
 
 //    void DebugDrawer::arrow(const btVector3 &from, const btVector3 &to,
@@ -584,7 +561,8 @@ dd::line(_from, _to, _color);
 //        const float _planeNormal[] = {pn.x(), pn.y(), pn.z()};
 //        const float _planeColor[] = {planeColor.x(), planeColor.y(),
 //                                     planeColor.z()};
-//        const float _normalVecColor[] = {normalVecColor.x(), normalVecColor.y(),
+//        const float _normalVecColor[] = {normalVecColor.x(),
+//        normalVecColor.y(),
 //                                         normalVecColor.z()};
 //
 //        dd::plane(_center, _planeNormal, _planeColor, _normalVecColor,
@@ -623,7 +601,8 @@ dd::line(_from, _to, _color);
 //    {
 //        //            const float _from[] = {from.x(), from.y(), from.z()};
 //        //            const float _to[] = {to.x(), to.y(), to.z()};
-//        //            const float _color[] = {color.x(), color.y(), color.z()};
+//        //            const float _color[] = {color.x(), color.y(),
+//        color.z()};
 //
 //        const float _points[] = {p0.x, p0.y, p0.z, p1.x, p1.y, p1.z,
 //                                 p2.x, p2.y, p2.z, p3.x, p3.y, p3.z,
@@ -707,245 +686,248 @@ dd::line(_from, _to, _color);
 //                         depthEnabled);
 //    }
 
-    void DebugDrawer::setupVertexBuffers()
+void DebugDrawer::setupVertexBuffers() {
+    // std::cout << "> DDRenderInterfaceCoreGL::setupVertexBuffers()" <<
+    // std::endl;
+
+    //
+    // Lines/points vertex buffer:
+    //
+    glGenVertexArrays_NJLIC(1, &linePointVAO);
+    glBindVertexArray_NJLIC(linePointVAO);
     {
-        // std::cout << "> DDRenderInterfaceCoreGL::setupVertexBuffers()" <<
-        // std::endl;
+        glGenBuffers(1, &linePointVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
+        // RenderInterface will never be called with a batch larger than
+        // DEBUG_DRAW_VERTEX_BUFFER_SIZE vertexes, so we can allocate the
+        // same amount here.
+        glBufferData(GL_ARRAY_BUFFER,
+                     DEBUG_DRAW_VERTEX_BUFFER_SIZE * sizeof(dd::DrawVertex),
+                     nullptr, GL_STREAM_DRAW);
 
-        //
-        // Lines/points vertex buffer:
-        //
-        glGenVertexArrays_NJLIC(1, &linePointVAO);
-        glBindVertexArray_NJLIC(linePointVAO);
-        {
-            glGenBuffers(1, &linePointVBO);
-            glBindBuffer(GL_ARRAY_BUFFER, linePointVBO);
-            // RenderInterface will never be called with a batch larger than
-            // DEBUG_DRAW_VERTEX_BUFFER_SIZE vertexes, so we can allocate the
-            // same amount here.
-            glBufferData(GL_ARRAY_BUFFER,
-                         DEBUG_DRAW_VERTEX_BUFFER_SIZE * sizeof(dd::DrawVertex),
-                         nullptr, GL_STREAM_DRAW);
+        // Set the vertex format expected by 3D points and lines:
+        //            int inPositionAttrib =
+        //                m_LinePointShaderProgram->getAttributeLocation("in_Position");
+        //            int inColorPointSize =
+        //                m_LinePointShaderProgram->getAttributeLocation(
+        //                    "in_ColorPointSize");
+        //            GLint inPositionAttrib =
+        //            glGetAttribLocation(mLinePointShaderProgram,
+        //            "in_Position"); GLint inColorPointSize =
+        //            glGetAttribLocation(mLinePointShaderProgram,
+        //            "in_ColorPointSize");
 
-            // Set the vertex format expected by 3D points and lines:
-//            int inPositionAttrib =
-//                m_LinePointShaderProgram->getAttributeLocation("in_Position");
-//            int inColorPointSize =
-//                m_LinePointShaderProgram->getAttributeLocation(
-//                    "in_ColorPointSize");
-//            GLint inPositionAttrib = glGetAttribLocation(mLinePointShaderProgram, "in_Position");
-//            GLint inColorPointSize = glGetAttribLocation(mLinePointShaderProgram, "in_ColorPointSize");
-            
-            GLint inPositionAttrib = mShader->getAttributeLocation("in_Position");
-            GLint inColorPointSize = mShader->getAttributeLocation("in_ColorPointSize");
+        GLint inPositionAttrib = mShader->getAttributeLocation("in_Position");
+        GLint inColorPointSize =
+            mShader->getAttributeLocation("in_ColorPointSize");
 
-            glEnableVertexAttribArray(inPositionAttrib); // in_Position (vec3)
-            glVertexAttribPointer(
-                /* index     = */ inPositionAttrib,
-                /* size      = */ 3,
-                /* type      = */ GL_FLOAT,
-                /* normalize = */ GL_FALSE,
-                /* stride    = */ sizeof(dd::DrawVertex),
-                /* offset    = */
-                (const GLvoid *)offsetof(dd::DrawVertex, line.x));
+        glEnableVertexAttribArray(inPositionAttrib); // in_Position (vec3)
+        glVertexAttribPointer(
+            /* index     = */ inPositionAttrib,
+            /* size      = */ 3,
+            /* type      = */ GL_FLOAT,
+            /* normalize = */ GL_FALSE,
+            /* stride    = */ sizeof(dd::DrawVertex),
+            /* offset    = */
+            (const GLvoid *)offsetof(dd::DrawVertex, line.x));
 
-            glEnableVertexAttribArray(
-                inColorPointSize); // in_ColorPointSize (vec4)
-            glVertexAttribPointer(
-                /* index     = */ inColorPointSize,
-                /* size      = */ 4,
-                /* type      = */ GL_FLOAT,
-                /* normalize = */ GL_FALSE,
-                /* stride    = */ sizeof(dd::DrawVertex),
-                /* offset    = */
-                (const GLvoid *)offsetof(dd::DrawVertex, line.r));
+        glEnableVertexAttribArray(inColorPointSize); // in_ColorPointSize (vec4)
+        glVertexAttribPointer(
+            /* index     = */ inColorPointSize,
+            /* size      = */ 4,
+            /* type      = */ GL_FLOAT,
+            /* normalize = */ GL_FALSE,
+            /* stride    = */ sizeof(dd::DrawVertex),
+            /* offset    = */
+            (const GLvoid *)offsetof(dd::DrawVertex, line.r));
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-        }
-        glBindVertexArray_NJLIC(0);
-
-        //
-        // Text rendering vertex buffer:
-        //
-//        glGenVertexArrays_NJLIC(1, &textVAO);
-//        glBindVertexArray_NJLIC(textVAO);
-//        {
-//            glGenBuffers(1, &textVBO);
-//            glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-//
-//            // NOTE: A more optimized implementation might consider combining
-//            // both the lines/points and text buffers to save some memory!
-//            glBufferData(GL_ARRAY_BUFFER,
-//                         DEBUG_DRAW_VERTEX_BUFFER_SIZE * sizeof(dd::DrawVertex),
-//                         nullptr, GL_STREAM_DRAW);
-//
-//            // Set the vertex format expected by the 2D text:
-//            std::size_t offset = 0;
-//
-//            int in_Position =
-//                m_TextShaderProgram->getAttributeLocation("in_Position");
-//            int in_TexCoords =
-//                m_TextShaderProgram->getAttributeLocation("in_TexCoords");
-//            int in_Color =
-//                m_TextShaderProgram->getAttributeLocation("in_Color");
-//
-//            glEnableVertexAttribArray(in_Position); // in_Position (vec2)
-//            glVertexAttribPointer(
-//                /* index     = */ in_Position,
-//                /* size      = */ 2,
-//                /* type      = */ GL_FLOAT,
-//                /* normalize = */ GL_FALSE,
-//                /* stride    = */ sizeof(dd::DrawVertex),
-//                /* offset    = */ (const GLvoid *)offset);
-//            offset += sizeof(float) * 2;
-//
-//            glEnableVertexAttribArray(in_TexCoords); // in_TexCoords (vec2)
-//            glVertexAttribPointer(
-//                /* index     = */ in_TexCoords,
-//                /* size      = */ 2,
-//                /* type      = */ GL_FLOAT,
-//                /* normalize = */ GL_FALSE,
-//                /* stride    = */ sizeof(dd::DrawVertex),
-//                /* offset    = */ (const GLvoid *)offset);
-//            offset += sizeof(float) * 2;
-//
-//            glEnableVertexAttribArray(in_Color); // in_Color (vec4)
-//            glVertexAttribPointer(
-//                /* index     = */ in_Color,
-//                /* size      = */ 3,
-//                /* type      = */ GL_FLOAT,
-//                /* normalize = */ GL_FALSE,
-//                /* stride    = */ sizeof(dd::DrawVertex),
-//                /* offset    = */ (const GLvoid *)offset);
-//
-//            glBindBuffer(GL_ARRAY_BUFFER, 0);
-//        }
-//        glBindVertexArray_NJLIC(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
+    glBindVertexArray_NJLIC(0);
 
-    // From Carbon HIToolbox/Events.h
-    // FIXME: Keyboard mapping is hacked in because Synergy doesn't give us
-    // character but only keycode which aren't really portable if you consider
-    // keyboard locale. See https://github.com/ocornut/imgui/pull/247
-    //    enum {
-    //        kVK_ANSI_A                    = 0x00,
-    //        kVK_ANSI_S                    = 0x01,
-    //        kVK_ANSI_D                    = 0x02,
-    //        kVK_ANSI_F                    = 0x03,
-    //        kVK_ANSI_H                    = 0x04,
-    //        kVK_ANSI_G                    = 0x05,
-    //        kVK_ANSI_Z                    = 0x06,
-    //        kVK_ANSI_X                    = 0x07,
-    //        kVK_ANSI_C                    = 0x08,
-    //        kVK_ANSI_V                    = 0x09,
-    //        kVK_ANSI_B                    = 0x0B,
-    //        kVK_ANSI_Q                    = 0x0C,
-    //        kVK_ANSI_W                    = 0x0D,
-    //        kVK_ANSI_E                    = 0x0E,
-    //        kVK_ANSI_R                    = 0x0F,
-    //        kVK_ANSI_Y                    = 0x10,
-    //        kVK_ANSI_T                    = 0x11,
-    //        kVK_ANSI_1                    = 0x12,
-    //        kVK_ANSI_2                    = 0x13,
-    //        kVK_ANSI_3                    = 0x14,
-    //        kVK_ANSI_4                    = 0x15,
-    //        kVK_ANSI_6                    = 0x16,
-    //        kVK_ANSI_5                    = 0x17,
-    //        kVK_ANSI_Equal                = 0x18,
-    //        kVK_ANSI_9                    = 0x19,
-    //        kVK_ANSI_7                    = 0x1A,
-    //        kVK_ANSI_Minus                = 0x1B,
-    //        kVK_ANSI_8                    = 0x1C,
-    //        kVK_ANSI_0                    = 0x1D,
-    //        kVK_ANSI_RightBracket         = 0x1E,
-    //        kVK_ANSI_O                    = 0x1F,
-    //        kVK_ANSI_U                    = 0x20,
-    //        kVK_ANSI_LeftBracket          = 0x21,
-    //        kVK_ANSI_I                    = 0x22,
-    //        kVK_ANSI_P                    = 0x23,
-    //        kVK_ANSI_L                    = 0x25,
-    //        kVK_ANSI_J                    = 0x26,
-    //        kVK_ANSI_Quote                = 0x27,
-    //        kVK_ANSI_K                    = 0x28,
-    //        kVK_ANSI_Semicolon            = 0x29,
-    //        kVK_ANSI_Backslash            = 0x2A,
-    //        kVK_ANSI_Comma                = 0x2B,
-    //        kVK_ANSI_Slash                = 0x2C,
-    //        kVK_ANSI_N                    = 0x2D,
-    //        kVK_ANSI_M                    = 0x2E,
-    //        kVK_ANSI_Period               = 0x2F,
-    //        kVK_ANSI_Grave                = 0x32,
-    //        kVK_ANSI_KeypadDecimal        = 0x41,
-    //        kVK_ANSI_KeypadMultiply       = 0x43,
-    //        kVK_ANSI_KeypadPlus           = 0x45,
-    //        kVK_ANSI_KeypadClear          = 0x47,
-    //        kVK_ANSI_KeypadDivide         = 0x4B,
-    //        kVK_ANSI_KeypadEnter          = 0x4C,
-    //        kVK_ANSI_KeypadMinus          = 0x4E,
-    //        kVK_ANSI_KeypadEquals         = 0x51,
-    //        kVK_ANSI_Keypad0              = 0x52,
-    //        kVK_ANSI_Keypad1              = 0x53,
-    //        kVK_ANSI_Keypad2              = 0x54,
-    //        kVK_ANSI_Keypad3              = 0x55,
-    //        kVK_ANSI_Keypad4              = 0x56,
-    //        kVK_ANSI_Keypad5              = 0x57,
-    //        kVK_ANSI_Keypad6              = 0x58,
-    //        kVK_ANSI_Keypad7              = 0x59,
-    //        kVK_ANSI_Keypad8              = 0x5B,
-    //        kVK_ANSI_Keypad9              = 0x5C
-    //    };
     //
-    //    /* keycodes for keys that are independent of keyboard layout*/
-    //    enum {
-    //        kVK_Return                    = 0x24,
-    //        kVK_Tab                       = 0x30,
-    //        kVK_Space                     = 0x31,
-    //        kVK_Delete                    = 0x33,
-    //        kVK_Escape                    = 0x35,
-    //        kVK_Command                   = 0x37,
-    //        kVK_Shift                     = 0x38,
-    //        kVK_CapsLock                  = 0x39,
-    //        kVK_Option                    = 0x3A,
-    //        kVK_Control                   = 0x3B,
-    //        kVK_RightShift                = 0x3C,
-    //        kVK_RightOption               = 0x3D,
-    //        kVK_RightControl              = 0x3E,
-    //        kVK_Function                  = 0x3F,
-    //        kVK_F17                       = 0x40,
-    //        kVK_VolumeUp                  = 0x48,
-    //        kVK_VolumeDown                = 0x49,
-    //        kVK_Mute                      = 0x4A,
-    //        kVK_F18                       = 0x4F,
-    //        kVK_F19                       = 0x50,
-    //        kVK_F20                       = 0x5A,
-    //        kVK_F5                        = 0x60,
-    //        kVK_F6                        = 0x61,
-    //        kVK_F7                        = 0x62,
-    //        kVK_F3                        = 0x63,
-    //        kVK_F8                        = 0x64,
-    //        kVK_F9                        = 0x65,
-    //        kVK_F11                       = 0x67,
-    //        kVK_F13                       = 0x69,
-    //        kVK_F16                       = 0x6A,
-    //        kVK_F14                       = 0x6B,
-    //        kVK_F10                       = 0x6D,
-    //        kVK_F12                       = 0x6F,
-    //        kVK_F15                       = 0x71,
-    //        kVK_Help                      = 0x72,
-    //        kVK_Home                      = 0x73,
-    //        kVK_PageUp                    = 0x74,
-    //        kVK_ForwardDelete             = 0x75,
-    //        kVK_F4                        = 0x76,
-    //        kVK_End                       = 0x77,
-    //        kVK_F2                        = 0x78,
-    //        kVK_PageDown                  = 0x79,
-    //        kVK_F1                        = 0x7A,
-    //        kVK_LeftArrow                 = 0x7B,
-    //        kVK_RightArrow                = 0x7C,
-    //        kVK_DownArrow                 = 0x7D,
-    //        kVK_UpArrow                   = 0x7E
-    //    };
+    // Text rendering vertex buffer:
     //
+    //        glGenVertexArrays_NJLIC(1, &textVAO);
+    //        glBindVertexArray_NJLIC(textVAO);
+    //        {
+    //            glGenBuffers(1, &textVBO);
+    //            glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+    //
+    //            // NOTE: A more optimized implementation might consider
+    //            combining
+    //            // both the lines/points and text buffers to save some memory!
+    //            glBufferData(GL_ARRAY_BUFFER,
+    //                         DEBUG_DRAW_VERTEX_BUFFER_SIZE *
+    //                         sizeof(dd::DrawVertex), nullptr, GL_STREAM_DRAW);
+    //
+    //            // Set the vertex format expected by the 2D text:
+    //            std::size_t offset = 0;
+    //
+    //            int in_Position =
+    //                m_TextShaderProgram->getAttributeLocation("in_Position");
+    //            int in_TexCoords =
+    //                m_TextShaderProgram->getAttributeLocation("in_TexCoords");
+    //            int in_Color =
+    //                m_TextShaderProgram->getAttributeLocation("in_Color");
+    //
+    //            glEnableVertexAttribArray(in_Position); // in_Position (vec2)
+    //            glVertexAttribPointer(
+    //                /* index     = */ in_Position,
+    //                /* size      = */ 2,
+    //                /* type      = */ GL_FLOAT,
+    //                /* normalize = */ GL_FALSE,
+    //                /* stride    = */ sizeof(dd::DrawVertex),
+    //                /* offset    = */ (const GLvoid *)offset);
+    //            offset += sizeof(float) * 2;
+    //
+    //            glEnableVertexAttribArray(in_TexCoords); // in_TexCoords
+    //            (vec2) glVertexAttribPointer(
+    //                /* index     = */ in_TexCoords,
+    //                /* size      = */ 2,
+    //                /* type      = */ GL_FLOAT,
+    //                /* normalize = */ GL_FALSE,
+    //                /* stride    = */ sizeof(dd::DrawVertex),
+    //                /* offset    = */ (const GLvoid *)offset);
+    //            offset += sizeof(float) * 2;
+    //
+    //            glEnableVertexAttribArray(in_Color); // in_Color (vec4)
+    //            glVertexAttribPointer(
+    //                /* index     = */ in_Color,
+    //                /* size      = */ 3,
+    //                /* type      = */ GL_FLOAT,
+    //                /* normalize = */ GL_FALSE,
+    //                /* stride    = */ sizeof(dd::DrawVertex),
+    //                /* offset    = */ (const GLvoid *)offset);
+    //
+    //            glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //        }
+    //        glBindVertexArray_NJLIC(0);
+}
+
+// From Carbon HIToolbox/Events.h
+// FIXME: Keyboard mapping is hacked in because Synergy doesn't give us
+// character but only keycode which aren't really portable if you consider
+// keyboard locale. See https://github.com/ocornut/imgui/pull/247
+//    enum {
+//        kVK_ANSI_A                    = 0x00,
+//        kVK_ANSI_S                    = 0x01,
+//        kVK_ANSI_D                    = 0x02,
+//        kVK_ANSI_F                    = 0x03,
+//        kVK_ANSI_H                    = 0x04,
+//        kVK_ANSI_G                    = 0x05,
+//        kVK_ANSI_Z                    = 0x06,
+//        kVK_ANSI_X                    = 0x07,
+//        kVK_ANSI_C                    = 0x08,
+//        kVK_ANSI_V                    = 0x09,
+//        kVK_ANSI_B                    = 0x0B,
+//        kVK_ANSI_Q                    = 0x0C,
+//        kVK_ANSI_W                    = 0x0D,
+//        kVK_ANSI_E                    = 0x0E,
+//        kVK_ANSI_R                    = 0x0F,
+//        kVK_ANSI_Y                    = 0x10,
+//        kVK_ANSI_T                    = 0x11,
+//        kVK_ANSI_1                    = 0x12,
+//        kVK_ANSI_2                    = 0x13,
+//        kVK_ANSI_3                    = 0x14,
+//        kVK_ANSI_4                    = 0x15,
+//        kVK_ANSI_6                    = 0x16,
+//        kVK_ANSI_5                    = 0x17,
+//        kVK_ANSI_Equal                = 0x18,
+//        kVK_ANSI_9                    = 0x19,
+//        kVK_ANSI_7                    = 0x1A,
+//        kVK_ANSI_Minus                = 0x1B,
+//        kVK_ANSI_8                    = 0x1C,
+//        kVK_ANSI_0                    = 0x1D,
+//        kVK_ANSI_RightBracket         = 0x1E,
+//        kVK_ANSI_O                    = 0x1F,
+//        kVK_ANSI_U                    = 0x20,
+//        kVK_ANSI_LeftBracket          = 0x21,
+//        kVK_ANSI_I                    = 0x22,
+//        kVK_ANSI_P                    = 0x23,
+//        kVK_ANSI_L                    = 0x25,
+//        kVK_ANSI_J                    = 0x26,
+//        kVK_ANSI_Quote                = 0x27,
+//        kVK_ANSI_K                    = 0x28,
+//        kVK_ANSI_Semicolon            = 0x29,
+//        kVK_ANSI_Backslash            = 0x2A,
+//        kVK_ANSI_Comma                = 0x2B,
+//        kVK_ANSI_Slash                = 0x2C,
+//        kVK_ANSI_N                    = 0x2D,
+//        kVK_ANSI_M                    = 0x2E,
+//        kVK_ANSI_Period               = 0x2F,
+//        kVK_ANSI_Grave                = 0x32,
+//        kVK_ANSI_KeypadDecimal        = 0x41,
+//        kVK_ANSI_KeypadMultiply       = 0x43,
+//        kVK_ANSI_KeypadPlus           = 0x45,
+//        kVK_ANSI_KeypadClear          = 0x47,
+//        kVK_ANSI_KeypadDivide         = 0x4B,
+//        kVK_ANSI_KeypadEnter          = 0x4C,
+//        kVK_ANSI_KeypadMinus          = 0x4E,
+//        kVK_ANSI_KeypadEquals         = 0x51,
+//        kVK_ANSI_Keypad0              = 0x52,
+//        kVK_ANSI_Keypad1              = 0x53,
+//        kVK_ANSI_Keypad2              = 0x54,
+//        kVK_ANSI_Keypad3              = 0x55,
+//        kVK_ANSI_Keypad4              = 0x56,
+//        kVK_ANSI_Keypad5              = 0x57,
+//        kVK_ANSI_Keypad6              = 0x58,
+//        kVK_ANSI_Keypad7              = 0x59,
+//        kVK_ANSI_Keypad8              = 0x5B,
+//        kVK_ANSI_Keypad9              = 0x5C
+//    };
+//
+//    /* keycodes for keys that are independent of keyboard layout*/
+//    enum {
+//        kVK_Return                    = 0x24,
+//        kVK_Tab                       = 0x30,
+//        kVK_Space                     = 0x31,
+//        kVK_Delete                    = 0x33,
+//        kVK_Escape                    = 0x35,
+//        kVK_Command                   = 0x37,
+//        kVK_Shift                     = 0x38,
+//        kVK_CapsLock                  = 0x39,
+//        kVK_Option                    = 0x3A,
+//        kVK_Control                   = 0x3B,
+//        kVK_RightShift                = 0x3C,
+//        kVK_RightOption               = 0x3D,
+//        kVK_RightControl              = 0x3E,
+//        kVK_Function                  = 0x3F,
+//        kVK_F17                       = 0x40,
+//        kVK_VolumeUp                  = 0x48,
+//        kVK_VolumeDown                = 0x49,
+//        kVK_Mute                      = 0x4A,
+//        kVK_F18                       = 0x4F,
+//        kVK_F19                       = 0x50,
+//        kVK_F20                       = 0x5A,
+//        kVK_F5                        = 0x60,
+//        kVK_F6                        = 0x61,
+//        kVK_F7                        = 0x62,
+//        kVK_F3                        = 0x63,
+//        kVK_F8                        = 0x64,
+//        kVK_F9                        = 0x65,
+//        kVK_F11                       = 0x67,
+//        kVK_F13                       = 0x69,
+//        kVK_F16                       = 0x6A,
+//        kVK_F14                       = 0x6B,
+//        kVK_F10                       = 0x6D,
+//        kVK_F12                       = 0x6F,
+//        kVK_F15                       = 0x71,
+//        kVK_Help                      = 0x72,
+//        kVK_Home                      = 0x73,
+//        kVK_PageUp                    = 0x74,
+//        kVK_ForwardDelete             = 0x75,
+//        kVK_F4                        = 0x76,
+//        kVK_End                       = 0x77,
+//        kVK_F2                        = 0x78,
+//        kVK_PageDown                  = 0x79,
+//        kVK_F1                        = 0x7A,
+//        kVK_LeftArrow                 = 0x7B,
+//        kVK_RightArrow                = 0x7C,
+//        kVK_DownArrow                 = 0x7D,
+//        kVK_UpArrow                   = 0x7E
+//    };
+//
 //    static char g_keycodeCharUnshifted[256] = {};
 //    static char g_keycodeCharShifted[256] = {};
 //
@@ -961,8 +943,8 @@ dd::line(_from, _to, _color);
 //    static int g_AttribLocationPosition = 0, g_AttribLocationUV = 0,
 //               g_AttribLocationColor = 0;
 //    static size_t g_VboSize = 0;
-//    static unsigned int g_VboHandle = 0, g_VaoHandle = 0, g_ElementsHandle = 0;
-//    static float g_displayScale;
+//    static unsigned int g_VboHandle = 0, g_VaoHandle = 0, g_ElementsHandle =
+//    0; static float g_displayScale;
 //
 //    static int usynergy_sockfd;
 //    static bool g_synergyPtrActive = false;
@@ -975,152 +957,152 @@ dd::line(_from, _to, _color);
 //    static void ImGui_ImplIOS_RenderDrawLists(ImDrawData *draw_data);
 //    bool ImGui_ImplIOS_CreateDeviceObjects();
 
-    //    static NSString *g_serverName;
+//    static NSString *g_serverName;
 //    static std::string g_serverName;
 
-    //    void setupKeymaps()
-    //    {
-    //        // The keyboard mapping is a big headache. I tried for a while to
-    //        find a better way to do this,
-    //        // but this was the best I could come up with. There are some
-    //        device independent API's available
-    //        // to convert scan codes to unicode characters, but these are only
-    //        available on mac and not
-    //        // on iOS as far as I can tell (it's part of Carbon). I didn't see
-    //        any better way to do
-    //        // this or  any way to get the character codes out of usynergy.
-    //        g_keycodeCharUnshifted[ kVK_ANSI_A ]='a';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_S ]='s';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_D ]='d';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_F ]='f';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_H ]='h';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_G ]='g';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Z ]='z';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_X ]='x';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_C ]='c';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_V ]='v';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_B ]='b';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Q ]='q';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_W ]='w';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_E ]='e';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_R ]='r';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Y ]='y';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_T ]='t';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_1 ]='1';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_2 ]='2';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_3 ]='3';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_4 ]='4';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_6 ]='6';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_5 ]='5';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Equal ]='=';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_9 ]='9';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_7 ]='7';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Minus ]='-';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_8 ]='8';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_0 ]='0';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_RightBracket ]=']';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_O ]='o';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_U ]='u';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_LeftBracket ]='[';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_I ]='i';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_P ]='p';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_L ]='l';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_J ]='j';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Quote ]='\'';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_K ]='k';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Semicolon ]=';';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Backslash ]='\\';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Comma ]=',';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Slash ]='/';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_N ]='n';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_M ]='m';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Period ]='.';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Grave ]='`';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadDecimal ]='.';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadMultiply ]='*';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadPlus ]='+';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadDivide ]='/';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadEnter ]='\n';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadMinus ]='-';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_KeypadEquals ]='=';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad0 ]='0';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad1 ]='1';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad2 ]='2';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad3 ]='3';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad4 ]='4';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad5 ]='5';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad6 ]='6';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad7 ]='7';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad8 ]='8';
-    //        g_keycodeCharUnshifted[ kVK_ANSI_Keypad9 ]='9';
-    //        g_keycodeCharUnshifted[ kVK_Space ]=' ';
-    //
-    //        g_keycodeCharShifted[ kVK_ANSI_A ]='A';
-    //        g_keycodeCharShifted[ kVK_ANSI_S ]='S';
-    //        g_keycodeCharShifted[ kVK_ANSI_D ]='D';
-    //        g_keycodeCharShifted[ kVK_ANSI_F ]='F';
-    //        g_keycodeCharShifted[ kVK_ANSI_H ]='H';
-    //        g_keycodeCharShifted[ kVK_ANSI_G ]='G';
-    //        g_keycodeCharShifted[ kVK_ANSI_Z ]='Z';
-    //        g_keycodeCharShifted[ kVK_ANSI_X ]='X';
-    //        g_keycodeCharShifted[ kVK_ANSI_C ]='C';
-    //        g_keycodeCharShifted[ kVK_ANSI_V ]='V';
-    //        g_keycodeCharShifted[ kVK_ANSI_B ]='B';
-    //        g_keycodeCharShifted[ kVK_ANSI_Q ]='Q';
-    //        g_keycodeCharShifted[ kVK_ANSI_W ]='W';
-    //        g_keycodeCharShifted[ kVK_ANSI_E ]='E';
-    //        g_keycodeCharShifted[ kVK_ANSI_R ]='R';
-    //        g_keycodeCharShifted[ kVK_ANSI_Y ]='Y';
-    //        g_keycodeCharShifted[ kVK_ANSI_T ]='T';
-    //        g_keycodeCharShifted[ kVK_ANSI_1 ]='!';
-    //        g_keycodeCharShifted[ kVK_ANSI_2 ]='@';
-    //        g_keycodeCharShifted[ kVK_ANSI_3 ]='#';
-    //        g_keycodeCharShifted[ kVK_ANSI_4 ]='$';
-    //        g_keycodeCharShifted[ kVK_ANSI_6 ]='^';
-    //        g_keycodeCharShifted[ kVK_ANSI_5 ]='%';
-    //        g_keycodeCharShifted[ kVK_ANSI_Equal ]='+';
-    //        g_keycodeCharShifted[ kVK_ANSI_9 ]='(';
-    //        g_keycodeCharShifted[ kVK_ANSI_7 ]='&';
-    //        g_keycodeCharShifted[ kVK_ANSI_Minus ]='_';
-    //        g_keycodeCharShifted[ kVK_ANSI_8 ]='*';
-    //        g_keycodeCharShifted[ kVK_ANSI_0 ]=')';
-    //        g_keycodeCharShifted[ kVK_ANSI_RightBracket ]='}';
-    //        g_keycodeCharShifted[ kVK_ANSI_O ]='O';
-    //        g_keycodeCharShifted[ kVK_ANSI_U ]='U';
-    //        g_keycodeCharShifted[ kVK_ANSI_LeftBracket ]='{';
-    //        g_keycodeCharShifted[ kVK_ANSI_I ]='I';
-    //        g_keycodeCharShifted[ kVK_ANSI_P ]='P';
-    //        g_keycodeCharShifted[ kVK_ANSI_L ]='L';
-    //        g_keycodeCharShifted[ kVK_ANSI_J ]='J';
-    //        g_keycodeCharShifted[ kVK_ANSI_Quote ]='\"';
-    //        g_keycodeCharShifted[ kVK_ANSI_K ]='K';
-    //        g_keycodeCharShifted[ kVK_ANSI_Semicolon ]=':';
-    //        g_keycodeCharShifted[ kVK_ANSI_Backslash ]='|';
-    //        g_keycodeCharShifted[ kVK_ANSI_Comma ]='<';
-    //        g_keycodeCharShifted[ kVK_ANSI_Slash ]='?';
-    //        g_keycodeCharShifted[ kVK_ANSI_N ]='N';
-    //        g_keycodeCharShifted[ kVK_ANSI_M ]='M';
-    //        g_keycodeCharShifted[ kVK_ANSI_Period ]='>';
-    //        g_keycodeCharShifted[ kVK_ANSI_Grave ]='~';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadDecimal ]='.';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadMultiply ]='*';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadPlus ]='+';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadDivide ]='/';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadEnter ]='\n';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadMinus ]='-';
-    //        g_keycodeCharShifted[ kVK_ANSI_KeypadEquals ]='=';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad0 ]='0';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad1 ]='1';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad2 ]='2';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad3 ]='3';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad4 ]='4';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad5 ]='5';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad6 ]='6';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad7 ]='7';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad8 ]='8';
-    //        g_keycodeCharShifted[ kVK_ANSI_Keypad9 ]='9';
-    //        g_keycodeCharShifted[ kVK_Space ]=' ';
-    //    }
+//    void setupKeymaps()
+//    {
+//        // The keyboard mapping is a big headache. I tried for a while to
+//        find a better way to do this,
+//        // but this was the best I could come up with. There are some
+//        device independent API's available
+//        // to convert scan codes to unicode characters, but these are only
+//        available on mac and not
+//        // on iOS as far as I can tell (it's part of Carbon). I didn't see
+//        any better way to do
+//        // this or  any way to get the character codes out of usynergy.
+//        g_keycodeCharUnshifted[ kVK_ANSI_A ]='a';
+//        g_keycodeCharUnshifted[ kVK_ANSI_S ]='s';
+//        g_keycodeCharUnshifted[ kVK_ANSI_D ]='d';
+//        g_keycodeCharUnshifted[ kVK_ANSI_F ]='f';
+//        g_keycodeCharUnshifted[ kVK_ANSI_H ]='h';
+//        g_keycodeCharUnshifted[ kVK_ANSI_G ]='g';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Z ]='z';
+//        g_keycodeCharUnshifted[ kVK_ANSI_X ]='x';
+//        g_keycodeCharUnshifted[ kVK_ANSI_C ]='c';
+//        g_keycodeCharUnshifted[ kVK_ANSI_V ]='v';
+//        g_keycodeCharUnshifted[ kVK_ANSI_B ]='b';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Q ]='q';
+//        g_keycodeCharUnshifted[ kVK_ANSI_W ]='w';
+//        g_keycodeCharUnshifted[ kVK_ANSI_E ]='e';
+//        g_keycodeCharUnshifted[ kVK_ANSI_R ]='r';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Y ]='y';
+//        g_keycodeCharUnshifted[ kVK_ANSI_T ]='t';
+//        g_keycodeCharUnshifted[ kVK_ANSI_1 ]='1';
+//        g_keycodeCharUnshifted[ kVK_ANSI_2 ]='2';
+//        g_keycodeCharUnshifted[ kVK_ANSI_3 ]='3';
+//        g_keycodeCharUnshifted[ kVK_ANSI_4 ]='4';
+//        g_keycodeCharUnshifted[ kVK_ANSI_6 ]='6';
+//        g_keycodeCharUnshifted[ kVK_ANSI_5 ]='5';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Equal ]='=';
+//        g_keycodeCharUnshifted[ kVK_ANSI_9 ]='9';
+//        g_keycodeCharUnshifted[ kVK_ANSI_7 ]='7';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Minus ]='-';
+//        g_keycodeCharUnshifted[ kVK_ANSI_8 ]='8';
+//        g_keycodeCharUnshifted[ kVK_ANSI_0 ]='0';
+//        g_keycodeCharUnshifted[ kVK_ANSI_RightBracket ]=']';
+//        g_keycodeCharUnshifted[ kVK_ANSI_O ]='o';
+//        g_keycodeCharUnshifted[ kVK_ANSI_U ]='u';
+//        g_keycodeCharUnshifted[ kVK_ANSI_LeftBracket ]='[';
+//        g_keycodeCharUnshifted[ kVK_ANSI_I ]='i';
+//        g_keycodeCharUnshifted[ kVK_ANSI_P ]='p';
+//        g_keycodeCharUnshifted[ kVK_ANSI_L ]='l';
+//        g_keycodeCharUnshifted[ kVK_ANSI_J ]='j';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Quote ]='\'';
+//        g_keycodeCharUnshifted[ kVK_ANSI_K ]='k';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Semicolon ]=';';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Backslash ]='\\';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Comma ]=',';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Slash ]='/';
+//        g_keycodeCharUnshifted[ kVK_ANSI_N ]='n';
+//        g_keycodeCharUnshifted[ kVK_ANSI_M ]='m';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Period ]='.';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Grave ]='`';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadDecimal ]='.';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadMultiply ]='*';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadPlus ]='+';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadDivide ]='/';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadEnter ]='\n';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadMinus ]='-';
+//        g_keycodeCharUnshifted[ kVK_ANSI_KeypadEquals ]='=';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad0 ]='0';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad1 ]='1';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad2 ]='2';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad3 ]='3';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad4 ]='4';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad5 ]='5';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad6 ]='6';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad7 ]='7';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad8 ]='8';
+//        g_keycodeCharUnshifted[ kVK_ANSI_Keypad9 ]='9';
+//        g_keycodeCharUnshifted[ kVK_Space ]=' ';
+//
+//        g_keycodeCharShifted[ kVK_ANSI_A ]='A';
+//        g_keycodeCharShifted[ kVK_ANSI_S ]='S';
+//        g_keycodeCharShifted[ kVK_ANSI_D ]='D';
+//        g_keycodeCharShifted[ kVK_ANSI_F ]='F';
+//        g_keycodeCharShifted[ kVK_ANSI_H ]='H';
+//        g_keycodeCharShifted[ kVK_ANSI_G ]='G';
+//        g_keycodeCharShifted[ kVK_ANSI_Z ]='Z';
+//        g_keycodeCharShifted[ kVK_ANSI_X ]='X';
+//        g_keycodeCharShifted[ kVK_ANSI_C ]='C';
+//        g_keycodeCharShifted[ kVK_ANSI_V ]='V';
+//        g_keycodeCharShifted[ kVK_ANSI_B ]='B';
+//        g_keycodeCharShifted[ kVK_ANSI_Q ]='Q';
+//        g_keycodeCharShifted[ kVK_ANSI_W ]='W';
+//        g_keycodeCharShifted[ kVK_ANSI_E ]='E';
+//        g_keycodeCharShifted[ kVK_ANSI_R ]='R';
+//        g_keycodeCharShifted[ kVK_ANSI_Y ]='Y';
+//        g_keycodeCharShifted[ kVK_ANSI_T ]='T';
+//        g_keycodeCharShifted[ kVK_ANSI_1 ]='!';
+//        g_keycodeCharShifted[ kVK_ANSI_2 ]='@';
+//        g_keycodeCharShifted[ kVK_ANSI_3 ]='#';
+//        g_keycodeCharShifted[ kVK_ANSI_4 ]='$';
+//        g_keycodeCharShifted[ kVK_ANSI_6 ]='^';
+//        g_keycodeCharShifted[ kVK_ANSI_5 ]='%';
+//        g_keycodeCharShifted[ kVK_ANSI_Equal ]='+';
+//        g_keycodeCharShifted[ kVK_ANSI_9 ]='(';
+//        g_keycodeCharShifted[ kVK_ANSI_7 ]='&';
+//        g_keycodeCharShifted[ kVK_ANSI_Minus ]='_';
+//        g_keycodeCharShifted[ kVK_ANSI_8 ]='*';
+//        g_keycodeCharShifted[ kVK_ANSI_0 ]=')';
+//        g_keycodeCharShifted[ kVK_ANSI_RightBracket ]='}';
+//        g_keycodeCharShifted[ kVK_ANSI_O ]='O';
+//        g_keycodeCharShifted[ kVK_ANSI_U ]='U';
+//        g_keycodeCharShifted[ kVK_ANSI_LeftBracket ]='{';
+//        g_keycodeCharShifted[ kVK_ANSI_I ]='I';
+//        g_keycodeCharShifted[ kVK_ANSI_P ]='P';
+//        g_keycodeCharShifted[ kVK_ANSI_L ]='L';
+//        g_keycodeCharShifted[ kVK_ANSI_J ]='J';
+//        g_keycodeCharShifted[ kVK_ANSI_Quote ]='\"';
+//        g_keycodeCharShifted[ kVK_ANSI_K ]='K';
+//        g_keycodeCharShifted[ kVK_ANSI_Semicolon ]=':';
+//        g_keycodeCharShifted[ kVK_ANSI_Backslash ]='|';
+//        g_keycodeCharShifted[ kVK_ANSI_Comma ]='<';
+//        g_keycodeCharShifted[ kVK_ANSI_Slash ]='?';
+//        g_keycodeCharShifted[ kVK_ANSI_N ]='N';
+//        g_keycodeCharShifted[ kVK_ANSI_M ]='M';
+//        g_keycodeCharShifted[ kVK_ANSI_Period ]='>';
+//        g_keycodeCharShifted[ kVK_ANSI_Grave ]='~';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadDecimal ]='.';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadMultiply ]='*';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadPlus ]='+';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadDivide ]='/';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadEnter ]='\n';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadMinus ]='-';
+//        g_keycodeCharShifted[ kVK_ANSI_KeypadEquals ]='=';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad0 ]='0';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad1 ]='1';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad2 ]='2';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad3 ]='3';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad4 ]='4';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad5 ]='5';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad6 ]='6';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad7 ]='7';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad8 ]='8';
+//        g_keycodeCharShifted[ kVK_ANSI_Keypad9 ]='9';
+//        g_keycodeCharShifted[ kVK_Space ]=' ';
+//    }
 
 //    void setupImGuiHooks()
 //    {
@@ -1168,7 +1150,8 @@ dd::line(_from, _to, _color);
 //        //        io.KeyMap[ImGuiKey_Y] = kVK_ANSI_Y+1;
 //        //        io.KeyMap[ImGuiKey_Z] = kVK_ANSI_Z+1;
 //
-//        io.KeyMap[ImGuiKey_Tab] = SDLK_TAB; // Keyboard mapping. ImGui will use
+//        io.KeyMap[ImGuiKey_Tab] = SDLK_TAB; // Keyboard mapping. ImGui will
+//        use
 //        // those indices to peek into the
 //        // io.KeyDown[] array.
 //        io.KeyMap[ImGuiKey_LeftArrow] = SDL_SCANCODE_LEFT;
@@ -1296,7 +1279,8 @@ dd::line(_from, _to, _color);
 //            io.MouseDown[1] = g_MousePressed[1] ||
 //                              (mouseMask & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
 //            io.MouseDown[2] = g_MousePressed[2] ||
-//                              (mouseMask & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0;
+//                              (mouseMask & SDL_BUTTON(SDL_BUTTON_MIDDLE)) !=
+//                              0;
 //            g_MousePressed[0] = g_MousePressed[1] = g_MousePressed[2] = false;
 //
 //            io.MouseWheel = g_MouseWheel;
@@ -1316,11 +1300,13 @@ dd::line(_from, _to, _color);
 //        //        g_serverName = serverName;
 //        //
 //        //        // Init synergy
-//        //        NSString *bundleName = [[[NSBundle mainBundle] infoDictionary]
+//        //        NSString *bundleName = [[[NSBundle mainBundle]
+//        infoDictionary]
 //        //        objectForKey:(NSString*)kCFBundleNameKey];
 //        //
 //        //        uSynergyInit( &_synergyCtx );
-//        //        _synergyCtx.m_clientName = strdup( [bundleName UTF8String] );
+//        //        _synergyCtx.m_clientName = strdup( [bundleName UTF8String]
+//        );
 //        //        _synergyCtx.m_clientWidth = self.view.bounds.size.width;
 //        //        _synergyCtx.m_clientHeight = self.view.bounds.size.height;
 //        //
@@ -1340,7 +1326,8 @@ dd::line(_from, _to, _color);
 //        //        _synergyCtx.m_cookie = (uSynergyCookie)&_synergyCtx;
 //        //
 //        //        // Create a background thread for synergy
-//        //        _synergyQueue = dispatch_queue_create( "imgui-usynergy", NULL
+//        //        _synergyQueue = dispatch_queue_create( "imgui-usynergy",
+//        NULL
 //        //        ); dispatch_async( _synergyQueue, ^{
 //        //            while (1) {
 //        //                uSynergyUpdate( &_synergyCtx );
@@ -1417,27 +1404,27 @@ dd::line(_from, _to, _color);
 //        return false;
 //    }
 
-    //    - (void)viewDidPan: (UIPanGestureRecognizer *)recognizer
-    //    {
-    //
-    //        if ((recognizer.state == UIGestureRecognizerStateBegan) ||
-    //            (recognizer.state == UIGestureRecognizerStateChanged))
-    //        {
-    //            _mouseDown = YES;
-    //            _touchPos = [recognizer locationInView:self.view];
-    //        }
-    //        else
-    //        {
-    //            _mouseDown = NO;
-    //            _touchPos = CGPointMake( -1, -1 );
-    //        }
-    //    }
-    //
-    //    - (void)viewDidTap: (UITapGestureRecognizer*)recognizer
-    //    {
-    //        _touchPos = [recognizer locationInView:self.view];
-    //        _mouseTapped = YES;
-    //    }
+//    - (void)viewDidPan: (UIPanGestureRecognizer *)recognizer
+//    {
+//
+//        if ((recognizer.state == UIGestureRecognizerStateBegan) ||
+//            (recognizer.state == UIGestureRecognizerStateChanged))
+//        {
+//            _mouseDown = YES;
+//            _touchPos = [recognizer locationInView:self.view];
+//        }
+//        else
+//        {
+//            _mouseDown = NO;
+//            _touchPos = CGPointMake( -1, -1 );
+//        }
+//    }
+//
+//    - (void)viewDidTap: (UITapGestureRecognizer*)recognizer
+//    {
+//        _touchPos = [recognizer locationInView:self.view];
+//        _mouseTapped = YES;
+//    }
 
 //    static const char *ImGui_ImplGlfw_GetClipboardText(void *user_data)
 //    {
@@ -1450,17 +1437,18 @@ dd::line(_from, _to, _color);
 //        SDL_SetClipboardText(text);
 //    }
 
-    // This is the main rendering function that you have to implement and
-    // provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO
-    // structure) If text or lines are blurry when integrating ImGui in your
-    // engine:
-    // - in your Render function, try translating your projection matrix by
-    // (0.5f,0.5f) or (0.375f,0.375f)
-    // NOTE: this is copied pretty much entirely from the opengl3_example, with
-    // only minor changes for ES
+// This is the main rendering function that you have to implement and
+// provide to ImGui (via setting up 'RenderDrawListsFn' in the ImGuiIO
+// structure) If text or lines are blurry when integrating ImGui in your
+// engine:
+// - in your Render function, try translating your projection matrix by
+// (0.5f,0.5f) or (0.375f,0.375f)
+// NOTE: this is copied pretty much entirely from the opengl3_example, with
+// only minor changes for ES
 //    static void ImGui_ImplIOS_RenderDrawLists(ImDrawData *draw_data)
 //    {
-//        // Setup render state: alpha-blending enabled, no face culling, no depth
+//        // Setup render state: alpha-blending enabled, no face culling, no
+//        depth
 //        // testing, scissor enabled
 //        GLint last_program, last_texture;
 //        glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
@@ -1574,7 +1562,8 @@ dd::line(_from, _to, _color);
 //        unsigned char *pixels;
 //        int width, height;
 //        io.Fonts->GetTexDataAsRGBA32(
-//            &pixels, &width, &height); // Load as RGBA 32-bits for OpenGL3 demo
+//            &pixels, &width, &height); // Load as RGBA 32-bits for OpenGL3
+//            demo
 //        // because it is more likely to be compatible
 //        // with user's existing shader.
 //
@@ -1625,7 +1614,8 @@ dd::line(_from, _to, _color);
 //            "varying vec4 Frag_Color;\n"
 //            "void main()\n"
 //            "{\n"
-//            "    gl_FragColor = Frag_Color * texture2D( Texture, Frag_UV.st);\n"
+//            "    gl_FragColor = Frag_Color * texture2D( Texture,
+//            Frag_UV.st);\n"
 //            "}\n";
 //
 //        g_ShaderHandle = glCreateProgram();
