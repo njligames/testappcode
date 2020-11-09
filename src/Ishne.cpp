@@ -10,7 +10,12 @@
 #include <stdio.h>
 #include <vector>
 
-Ishne::Ishne() : mData(nullptr), mFileData(nullptr), mFileSize(0), mSamples(nullptr), mVarblock(nullptr) {
+Ishne::Ishne() :
+mData(nullptr),
+mFileData(nullptr),
+mFileSize(0),
+mMap(nullptr),
+mVarblock(nullptr) {
     
 }
 
@@ -145,10 +150,12 @@ bool Ishne::init(const std::string &fileName) {
             currentByteCount+=mData->Var_length_block_size;
         }
         
-        mSamples = new SampleVector;
+        mMap = new Ishne::Map();
+        for(int j = 0; j < mData->nLeads; j++) {
+            mMap->insert(Pair(j, new LeadVector()));
+        }
         
         for(int i = 0; i < mData->Sample_Size_ECG; i++) {
-            LeadVector leadVector;
             
             for(int j = 0; j < mData->nLeads && (currentByteCount < mFileSize); j++) {
                 short data;
@@ -156,9 +163,9 @@ bool Ishne::init(const std::string &fileName) {
                 current_ptr+=2;
                 currentByteCount+=2;
                 
-                leadVector.push_back(data);
+                mMap->find(j)->second->push_back(data);
+                
             }
-            mSamples->push_back(leadVector);
             
             if(currentByteCount >= mFileSize) {
                 
@@ -205,15 +212,15 @@ bool Ishne::init(const std::string &fileName) {
 void Ishne::unInit() {
     if(nullptr!=mData)delete mData;
     mData = nullptr;
-    if(nullptr!=mSamples)delete mSamples;
-    mSamples = nullptr;
+    if(nullptr!=mMap) {
+        for(Map::iterator i = mMap->begin(); i != mMap->end(); i++){
+            delete i->second;
+        }
+        delete mMap;
+    }
+    mMap = nullptr;
     if(nullptr!=mVarblock)delete mVarblock;
     mVarblock = nullptr;
-}
-
-long Ishne::numberOfSamples()const {
-    if(mSamples)return mSamples->size();
-    return 0;
 }
 
 short Ishne::numberOfLeads()const {
@@ -226,15 +233,16 @@ short Ishne::samplingRate()const {
     return 0;
 }
 
-short Ishne::getSample(const size_t sample_index, const size_t lead_index)const {
-    if(mData) {
-        if(sample_index < mSamples->size()) {
-            if(lead_index < mSamples->at(sample_index).size()) {
-                return mSamples->at(sample_index).at(lead_index);
-            }
+const Ishne::LeadVector &Ishne::getValues(const size_t lead_index)const {
+    static LeadVector vec;
+    if(nullptr != mMap) {
+        Map::const_iterator iter = mMap->find(lead_index);
+        if(iter != mMap->end()) {
+            LeadVector *v = iter->second;
+            return *v;
         }
     }
-    return 0;
+    return vec;
 }
 
 void *Ishne::load(const std::string &fileName) {

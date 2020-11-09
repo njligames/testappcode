@@ -39,7 +39,7 @@ namespace NJLIC {
 
         int m_TextureIndex;
 
-        bool mIsLoaded = false;
+        bool mIsLoaded;
 
       public:
         static void initReferences();

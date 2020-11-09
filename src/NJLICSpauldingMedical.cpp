@@ -9,29 +9,80 @@
 #include "NJLICSpauldingMedical.h"
 
 #include "GraphicsPlatform.h"
-#include "Ishne.h"
 #include "BitmapFont.h"
 #include "BackgroundRenderer.h"
 #include "MaterialProperty.h"
+#include "DebugDrawer.h"
+#include "GraphGeometry.h"
 
 #include <iostream>
 
+void NJLICSpauldingMedical::loadView(const Ishne &ishne) {
+//    for(int i = 0; i < ishne.numberOfLeads(); i++) {
+//        NJLIC::GraphGeometry *g=new NJLIC::GraphGeometry();
+//        g->load(mShader, ishne.getValues(i));
+//        mGeometries.push_back(g);
+//    }
+    
+    NJLIC::Node *mGraphNode = new NJLIC::Node();
+    NJLIC::GraphGeometry *mGraphGeometry = new NJLIC::GraphGeometry();
+
+    mGraphGeometry->load(mShader, ishne.getValues(0), 1);
+//    mGraphGeometry->loadDiffuseMatrial(mShader, "assets/loading.jpg");
+    mGraphNode->addGeometry(mGraphGeometry);
+//    mGraphGeometry->setDimensions(
+//        mGraphNode, glm::vec2(mGraphGeometry->getDiffuseImageWidth(),
+//                              mGraphGeometry->getDiffuseImageHeight()));
+    mScene->addActiveNode(mGraphNode);
+    mGraphNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
+    mScene->getRootNode()->addChildNode(mGraphNode);
+
+}
+
 NJLICSpauldingMedical::NJLICSpauldingMedical() :
-mIshne(new Ishne) {
+mDebugDrawer(new DebugDrawer),
+mShader(new NJLIC::Shader()),
+mCamera(new NJLIC::Camera()),
+mCameraNode(new NJLIC::Node()),
+mScene(new NJLIC::Scene())
+{
     
 }
 
 NJLICSpauldingMedical::~NJLICSpauldingMedical() {
-    delete mIshne;
+    delete mScene;
+    delete mCameraNode;
+    delete mCamera;
+    delete mShader;
+    delete mDebugDrawer;
 }
 
 void NJLICSpauldingMedical::update(double step) {
     
+    mScene->update(step);
+    
+//    glm::vec3 from(0, 0, 0);
+//    glm::vec3 to(1, 1, 0);
+//    glm::vec3 color(1, 0, 0);
+    
+//    static bool drew=false;
+//    if(!drew) {
+//        mDebugDrawer->drawLine(from, to, color);
+////        drew=true;
+//
+//    }
 }
+
 void NJLICSpauldingMedical::render() const {
     //    printf("render\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    
+    glDisable(GL_DEPTH_TEST);
     NJLIC::BackgroundRenderer::getInstance()->render(1920, 1080);
+    mDebugDrawer->draw();
+    
+    glEnable(GL_DEPTH_TEST);
+    mScene->render();
 }
 
 void NJLICSpauldingMedical::resize(unsigned int w, unsigned int h) {
@@ -43,12 +94,57 @@ void NJLICSpauldingMedical::init(int argc, char *argv[]) {
     glClearColor(0.f, 0.f, 0.f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     BitmapFont::getInstance()->setCurrentFontName("FranklinGothicMedium");
     NJLIC::BackgroundRenderer::getInstance()->init("assets/Medical-abstract-background-Polygon-and-dot-line-graphic-.jpg");
+    
+    mDebugDrawer->init();
+    
+    mCameraNode->addCamera(mCamera);
+    mCameraNode->setOrigin(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    mScene->addActiveNode(mCameraNode);
+    mScene->addActiveCamera(mCamera);
+    mScene->getRootNode()->setOrigin(glm::vec3(0.0f, 0.0f, 1.0f));
+
+    bool loaded = false;
+
+    const char *vertShader =
+        Util::loadFile("assets/shaders/StandardShader2.vert");
+    const char *fragShader =
+        Util::loadFile("assets/shaders/StandardShader2.frag");
+
+    if (nullptr != vertShader && nullptr != fragShader) {
+        const std::string &vertexSource(vertShader);
+        const std::string &fragmentSource(fragShader);
+
+        if (mShader->load(vertexSource, fragmentSource)) {
+//            const char *objData = Util::loadFile("assets/models/sprite.obj");
+        }
+    }
+    
+    NJLIC::Node * mTitleNode = BitmapFont::getInstance()->printf(mScene, "%s", "A");
+    mScene->addActiveNode(mTitleNode);
+    mTitleNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
+    mScene->getRootNode()->addChildNode(mTitleNode);
+    
+    
+    
 }
+
 void NJLICSpauldingMedical::unInit() {
+    mDebugDrawer->unInit();
+    
     NJLIC::BackgroundRenderer::destroyInstance();
     BitmapFont::destroyInstance();
+    
+    while(!mGeometries.empty()) {
+        auto g = mGeometries.back();
+        delete g;
+        mGeometries.pop_back();
+    }
 }
 
 void NJLICSpauldingMedical::start() {
@@ -82,9 +178,14 @@ void NJLICSpauldingMedical::vRCameraRotation(float m11, float m12, float m13,
 void NJLICSpauldingMedical::vRCameraRotationYPR(float yaw, float pitch, float roll) {}
 
 void NJLICSpauldingMedical::fileDrop(const std::string &fileName) {
+    Ishne *ishne = new Ishne();
+    
     try {
-        mIshne->init(fileName);
+        ishne->init(fileName);
     } catch (const std::runtime_error& error) {
         std::cout << error.what() << std::endl;
     }
+    
+    loadView(*ishne);
+    delete ishne;
 }

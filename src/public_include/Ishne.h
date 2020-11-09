@@ -7,8 +7,15 @@
 //
 
 #include <string>
+#include <map>
 
 class Ishne {
+public:
+    using LeadVector = std::vector<short>;
+//    using SampleVector = std::vector<LeadVector>;
+    using Map = std::map<size_t, LeadVector*>;
+    using Pair = std::pair<size_t, LeadVector*>;
+private:
     struct ISNEHeader{
         long Var_length_block_size;
         long Sample_Size_ECG;
@@ -39,12 +46,11 @@ class Ishne {
     void *mFileData;
     long mFileSize;
     
-    using LeadVector = std::vector<short>;
-    using SampleVector = std::vector<LeadVector>;
-    
-    SampleVector *mSamples;
+    Map *mMap;
     char *mVarblock;
 public:
+    
+    
     Ishne();
     ~Ishne();
     
@@ -56,10 +62,10 @@ public:
     const Ishne& operator=(const Ishne &rhs) = delete;
     const Ishne&& operator=(const Ishne &&rhs) = delete;
     
-    long numberOfSamples()const;
     short numberOfLeads()const;
     short samplingRate()const;
-    short getSample(const size_t sample_index, const size_t lead_index)const;
+    
+    const Ishne::LeadVector &getValues(const size_t lead_index)const;
 protected:
     void *load(const std::string &fileName);
     void unload();

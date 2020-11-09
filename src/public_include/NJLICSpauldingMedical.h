@@ -10,10 +10,30 @@
 
 #include "Color.h"
 #include "NJLICGame.h"
+#include "Ishne.h"
+#include "GraphGeometry.h"
+#include "Shader.h"
+#include "Camera.h"
+#include "Node.h"
+#include "Scene.h"
 
-class Ishne;
+#include <vector>
+
+class DebugDrawer;
+
+
+
 class NJLICSpauldingMedical : public NJLICGame {
-    Ishne *mIshne;
+    DebugDrawer *mDebugDrawer;
+    std::vector<NJLIC::GraphGeometry*> mGeometries;
+    
+    NJLIC::Shader *mShader;
+    NJLIC::Camera *mCamera;
+    NJLIC::Node *mCameraNode;
+    NJLIC::Scene *mScene;
+    std::vector<NJLIC::Node *> mGraphNodes;
+    
+    void loadView(const Ishne &ishne);
 
   public:
     NJLICSpauldingMedical();

@@ -147,6 +147,7 @@ list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/nlohmann)
 list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/stb)
 list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/glm)
 list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/NJLICEngine)
+list(APPEND GAME_INCLUDE_DIRS ${THIRDPARTY_INCLUDE_DIR}/includes/debugdraw)
 
 if(BUILT_GTEST)
     # Download and unpack googletest at configure time

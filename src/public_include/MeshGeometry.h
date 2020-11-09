@@ -74,13 +74,15 @@ namespace NJLIC {
         virtual GLsizei numberOfVertices() const;
         virtual GLsizei numberOfIndices() const;
 
-      private:
-        TexturedColoredVertex *m_VertexData;
-        GLuint *m_IndiceData;
-
-        std::string m_Filedata;
         GLsizei m_NumberOfVertices;
         GLsizei m_NumberOfIndices;
+        TexturedColoredVertex *m_VertexData;
+        GLuint *m_IndiceData;
+      private:
+        
+
+        std::string m_Filedata;
+        
 
         TexturedColoredVertex *m_triangleBuffer;
     };

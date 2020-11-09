@@ -129,7 +129,8 @@ namespace NJLIC {
           m_NormalMatrixBufferChanged(true), m_ModelViewBufferChanged(true),
           m_ShaderChanged(true), /*mDiffuseTexture(-1),*/ mMaterialProperty(
               new NJLIC::MaterialProperty()),
-          mFormat(GL_RGBA) { //},
+          mFormat(GL_RGBA),
+mDrawMode(GL_TRIANGLES) { //},
                              //          mWidth(2), mHeight(2), mChannels(1) {
         assert(m_MatrixBuffer);
         assert(m_MatrixBufferFullSize);
@@ -395,11 +396,6 @@ namespace NJLIC {
             shader->setUniformValue("tDiffuseColor",
                                     mMaterialProperty->getTextureIndex());
 
-            //            glActiveTexture(GL_TEXTURE0);
-            //            Util::glErrorCheck();
-            //            glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
-            //            Util::glErrorCheck();
-
             camera->render(shader, m_ShaderChanged);
 
             struct LightSourceParameters {
@@ -564,7 +560,7 @@ namespace NJLIC {
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 
-            glDrawElements(GL_TRIANGLES,
+            glDrawElements(mDrawMode,
                            numberOfInstances() * numberOfIndices(),
                            getElementIndexType(), (const GLvoid *)0);
 

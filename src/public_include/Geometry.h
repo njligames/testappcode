@@ -215,6 +215,8 @@ namespace NJLIC {
             return mMaterialProperty->getNumComponents();
         }
 
+        void setDrawMode(const GLenum drawMode){mDrawMode=drawMode;}
+        GLenum getDrawMode()const{return mDrawMode;}
       protected:
         const void *getModelViewTransformArrayBufferPtr() const;
         GLsizeiptr getModelViewTransformArrayBufferSize() const;
@@ -293,6 +295,8 @@ namespace NJLIC {
         NJLIC::MaterialProperty *mMaterialProperty;
 
         GLenum mFormat;
+        
+        GLenum mDrawMode;
 
         //      protected:
         //        int mWidth;

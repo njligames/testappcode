@@ -583,6 +583,9 @@ void main()
         baseColor = computeLinearFogColor(baseColor);
     }
     
+    if(material.diffuse.a <= 0.1) {
+        discard;
+    }
     gl_FragColor = baseColor;
 //    gl_FragColor = material.diffuse;
 }

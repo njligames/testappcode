@@ -278,8 +278,6 @@ void BitmapFont::setCurrentFontName(const std::string &fontName) {
 
 NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
 
-    //    NJLIC::Node *rootNode = new NJLIC::Node();
-
     char buffer[2048];
     va_list args;
 
@@ -319,12 +317,6 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
     NodeVector nodeVector;
 
     for (int i = 0; i < mCurrentPrintf.size(); i++) {
-        //    for (std::string::iterator iter = mCurrentPrintf.begin();
-        //         iter != mCurrentPrintf.end(); iter++) {
-
-        //        "114,106": 27,
-
-        //        int ascii = (int)*iter;
         int ascii = (int)mCurrentPrintf.at(i);
         int previousAscii = 0;
         if (i - 1 >= 0) {
@@ -357,19 +349,17 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
                 scale = charData.scale;
 
                 NJLIC::Node *node = renderLetter(ascii, charData);
-                float _y(((lineHeight * scale) - (charData.yoffset * scale)) -
-                         ((lineHeight * scale) - (base * scale)) - currentY);
+//                float _y(((lineHeight * scale) - (charData.yoffset * scale)) -
+//                         ((lineHeight * scale) - (base * scale)) - currentY);
 
-                node->setOrigin(glm::vec2(currentX, currentY));
+                node->setOrigin(glm::vec2(currentX + ((charData.xoffset + kerning) * scale), currentY));
 
                 mainNode->addChildNode(node);
                 scene->addActiveNode(node);
 
                 nodeVector.push_back(node);
 
-                currentX += (charData.xoffset * scale);
                 currentX += (charData.xadvance * scale);
-                currentX += (kerning * scale);
             }
 
         } else {
@@ -394,68 +384,6 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
         o.x -= xoffset;
         node->setOrigin(o);
     }
-
-    //    BitmapFontData *bmfd = mFontMap.find(mCurrentFontName)->second;
-    //
-    //
-    //
-    //
-    //
-    //    using FontInfoMap = std::map<int64_t,  LetterFrameInfo*>;
-    //    using FontInfoPair = std::pair<int64_t,  LetterFrameInfo*>;
-    //    FontInfoMap _FontInfoMap;
-    //
-    //    FrameVector frames = bmfd->_jsonData.getFrames();
-    //    for(FrameVector::iterator frames_iter = frames.begin();
-    //        frames_iter != frames.end();
-    //        frames_iter++) {
-    //
-    //        Frame currentFrame = *frames_iter;
-    //        LetterFrameInfo *fi = new LetterFrameInfo(currentFrame);
-    //
-    //        FontInfoPair p = FontInfoPair(fi->id, fi);
-    //
-    //        _FontInfoMap.insert(p);
-    //
-    //
-    //        std::printf("%lld\n", fi->id);
-    //
-    ////        std::printf("START\n");
-    ////        for(Frame::iterator frame_iter = currentFrame.begin();
-    ////            frame_iter != currentFrame.end();
-    ////            frame_iter++) {
-    ////            std::string key = frame_iter->first;
-    ////            int64_t value = frame_iter->second;
-    ////
-    ////
-    ////
-    ////            std::printf("\t%s - %d\n", key.c_str(), value);
-    ////        }
-    ////        std::printf("END\n");
-    //
-    //    }
-    //    using Mapping = std::map<std::string, int64_t>;
-    //
-    //    auto info = bmfd->_jsonData.getInfo();
-    //    Mapping mapping = bmfd->_jsonData.getMapping();
-    //
-    //    // get the font info from the ascii value.
-    //
-    //
-    //    std::printf("START\n");
-    //    for(Mapping::iterator map_iter = mapping.begin();
-    //        map_iter != mapping.end();
-    //        map_iter++) {
-    //        std::string ascii = map_iter->first;
-    //        int64_t id = map_iter->second;
-    //
-    //        int value = std::stoi(ascii);
-    //
-    //        std::printf("\t%s - %lld `%d`\n", ascii.c_str(), id, value);
-    //
-    //    }
-    //    std::printf("END\n");
-    //    auto kernings = bmfd->_jsonData.getKernings();
 
     return mainNode;
 }
