@@ -30,10 +30,10 @@ namespace NJLIC {
 
         static GLubyte _indices[] = {0, 1, 2, 2, 3, 0};
 
-        glGenVertexArraysAPPLE(1, &vao);
+        glGenVertexArrays_NJLIC(1, &vao);
 
         Util::glErrorCheck();
-        glBindVertexArrayAPPLE(vao);
+        glBindVertexArray_NJLIC(vao);
         Util::glErrorCheck();
 
         glGenBuffers(GLsizei(1), &vertexBuffer);
@@ -85,7 +85,7 @@ namespace NJLIC {
                               GLboolean(GL_FALSE), s3, (const GLvoid *)p3);
         Util::glErrorCheck();
 
-        glBindVertexArrayAPPLE(0);
+        glBindVertexArray_NJLIC(0);
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), 0);
         glBindBuffer(GLenum(GL_ELEMENT_ARRAY_BUFFER), 0);
     }
@@ -275,7 +275,7 @@ namespace NJLIC {
 
         glDeleteProgram(mProgram);
         glDeleteTextures(1, &mVideoFrameTexture);
-        glDeleteVertexArraysAPPLE(1, &mVao);
+        glDeleteVertexArrays_NJLIC(1, &mVao);
         glDeleteBuffers(GLsizei(1), &mVertexBuffer);
         glDeleteBuffers(GLsizei(1), &mIndexBuffer);
     }
@@ -295,12 +295,12 @@ namespace NJLIC {
         glUniform1i(mUniforms[UNIFORM_VIDEOFRAME], mTextureIndex);
         Util::glErrorCheck();
 
-        glBindVertexArrayAPPLE(mVao);
+        glBindVertexArray_NJLIC(mVao);
         Util::glErrorCheck();
         glDrawElements(GLenum(GL_TRIANGLES), GLsizei(6),
                        GLenum(GL_UNSIGNED_BYTE), 0);
         Util::glErrorCheck();
-        glBindVertexArrayAPPLE(0);
+        glBindVertexArray_NJLIC(0);
 
         if (nullptr != mBufferData && mShouldReload) {
             glBindTexture(GL_TEXTURE_2D, mVideoFrameTexture);
