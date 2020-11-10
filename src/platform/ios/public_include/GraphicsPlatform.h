@@ -5,7 +5,7 @@
     #define glDeleteVertexArrays_NJLIC glDeleteVertexArraysOES
 
 
-    //#include <OpenGLES/ES2/glext.h>
+    #include <OpenGLES/ES2/glext.h>
     #include <OpenGLES/ES2/gl.h>
 
 #elif defined(__GL_ES3__)

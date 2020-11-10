@@ -27,9 +27,6 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "stb_image_resize.h"
 #endif
-
-#include "curl/curl.h"
-
 void *Util::loadImage(const std::string &filePath, int *width, int *height,
                       int *channels_in_file) {
 
