@@ -172,8 +172,8 @@ namespace NJLIC {
         loadData();
 
         assert(m_VertexArray == 0);
-        glGenVertexArraysAPPLE(1, &m_VertexArray);
-        glBindVertexArrayAPPLE(m_VertexArray);
+        glGenVertexArrays_NJLIC(1, &m_VertexArray);
+        glBindVertexArray_NJLIC(m_VertexArray);
         {
             {
                 assert(m_ModelViewBuffer == 0);
@@ -345,7 +345,7 @@ namespace NJLIC {
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             }
         }
-        glBindVertexArrayAPPLE(0);
+        glBindVertexArray_NJLIC(0);
     }
 
     void Geometry::unLoad() {
@@ -370,7 +370,7 @@ namespace NJLIC {
         m_ModelViewBuffer = 0;
 
         if (m_VertexArray)
-            glDeleteVertexArraysAPPLE(1, &m_VertexArray);
+            glDeleteVertexArrays_NJLIC(1, &m_VertexArray);
         m_VertexArray = 0;
 
         //        if (-1 != mDiffuseTexture)
@@ -529,7 +529,7 @@ namespace NJLIC {
 
             m_ShaderChanged = false;
 
-            glBindVertexArrayAPPLE(m_VertexArray);
+            glBindVertexArray_NJLIC(m_VertexArray);
 
             if (isModelViewBufferChanged()) {
                 glBindBuffer(GL_ARRAY_BUFFER, m_ModelViewBuffer);
@@ -566,7 +566,7 @@ namespace NJLIC {
                            getElementIndexType(), (const GLvoid *)0);
 
             //            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-            //            glBindVertexArrayAPPLE(0);
+            //            glBindVertexArray_NJLIC(0);
         }
     }
 
