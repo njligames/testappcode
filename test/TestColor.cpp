@@ -26,8 +26,6 @@ void TestColor::TearDown() { TestRender::TearDown(); }
 void TestColor::update(double step) {
     float h(std::numeric_limits<float>::denorm_min());
     mColor = Color::modifyHue(mColor, 0.0001);
-    
-    
 }
 void TestColor::render() {
 
@@ -35,7 +33,7 @@ void TestColor::render() {
 
     glClearColor(mColor.red(), mColor.green(), mColor.blue(), 1.0f);
 
-//    printf("%f,%f,%f", mColor.red(), mColor.green(), mColor.blue());
+    //    printf("%f,%f,%f", mColor.red(), mColor.green(), mColor.blue());
 }
 
 static void test_rgb(const unsigned &r, const unsigned &g, const unsigned &b) {
@@ -99,5 +97,5 @@ TEST_F(TestColor, modifyHue) {
 
     ASSERT_EQ(true, true);
 
-//    this->holdView(10);  
+    this->holdView(10);
 }

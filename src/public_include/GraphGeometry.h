@@ -18,12 +18,13 @@ namespace NJLIC {
         const GraphGeometry &operator=(const GraphGeometry &) = delete;
         
         std::vector<short> mValues;
+        size_t mNumSamplesToLoad;
 
       public:
         GraphGeometry();
         virtual ~GraphGeometry();
 
-        virtual void load(Shader *shader, const std::vector<short> &values, unsigned int numInstances = 1);
+        virtual void load(Shader *shader, const std::vector<short> &values, unsigned int numSamplesToLoad, unsigned int numInstances = 1);
 
       protected:
         

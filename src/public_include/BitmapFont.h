@@ -59,9 +59,11 @@ class BitmapFont {
     glm::vec2 mCurrentBounds;
     std::string mCurrentFontName;
     std::string mCurrentPrintf;
+    float mCurrentPrintfWidth;
 
     NJLIC::SpriteGeometry *mGeometry;
     NJLIC::Shader *mShader;
+    NJLIC::MaterialProperty *mMaterialProperty;
 
     bool load(const std::string &fontName);
     bool unLoad(const std::string &fontName);
@@ -72,6 +74,18 @@ class BitmapFont {
     enum { ALIGN_LEFT, ALIGN_MIDDLE, ALIGN_RIGHT, NUM_ALIGNS };
 
   public:
+    struct PrintProperties {
+        enum class Justify { left, center, right };
+        
+        Justify justification;
+        float width;
+        float height;
+        
+        PrintProperties():justification(Justify::left), width(std::numeric_limits<float>::max()), height(std::numeric_limits<float>::max()) {
+            
+        }
+    };
+    
     static BitmapFont *getInstance() {
         if (nullptr == sBitmapFont)
             sBitmapFont = new BitmapFont();
@@ -91,10 +105,13 @@ class BitmapFont {
     void setCurrentFontName(const std::string &fontName);
 
     NJLIC::Node *printf(NJLIC::Scene *scene, const char *fmt, ...);
+    float getPrintfWidth()const {return mCurrentPrintfWidth;}
 
   protected:
     using Frame = std::map<std::string, int64_t>;
     using FrameVector = std::vector<Frame>;
+    
+    PrintProperties mPrintProperties;
 
   public:
     NJLIC::Node *renderLetter(int ascii, const LetterFrameInfo &charData);

@@ -10,21 +10,24 @@
 
 namespace NJLIC {
 
-    GraphGeometry::GraphGeometry() {}
+    GraphGeometry::GraphGeometry() : mNumSamplesToLoad(1) {}
 
     GraphGeometry::~GraphGeometry() {}
 
     void GraphGeometry::load(Shader *shader, const std::vector<short> &values,
+                             unsigned int numSamplesToLoad,
                              unsigned int numInstances) {
 
+        mNumSamplesToLoad = numSamplesToLoad;
         std::copy(values.begin(), values.end(), std::back_inserter(mValues));
         MeshGeometry::load(shader, "", numInstances);
         setDrawMode(GL_LINE_STRIP);
+        glLineWidth(3);
     }
 
     void GraphGeometry::loadData() {
         auto iter = mValues.begin();
-        auto numberOfDataPoints = 1000;
+        auto numberOfDataPoints = mNumSamplesToLoad;
 
         m_NumberOfIndices = (GLsizei)numberOfDataPoints;
         m_NumberOfVertices = (GLsizei)numberOfDataPoints;
@@ -46,12 +49,12 @@ namespace NJLIC {
                     t.vertex = glm::vec3(x * scale, n * scale, 0);
                     t.texture = glm::vec2(1.0f, 1.0f);
                     t.normal = glm::vec3(0.0f, 0.0f, -1.0f);
-                    t.color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+                    t.color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
                     vertexData[idx] = t;
                     indiceData[idx] = idx;
 
-                    x++;
+                    x += 2;
                     idx++;
                 }
             }
@@ -65,8 +68,6 @@ namespace NJLIC {
             GLuint *indiceData;
         };
 
-        //        TCV tcv = std::for_each(mValues.begin(), mValues.end(),
-        //        TCV(size));
         TCV tcv = std::for_each(iter, iter + numberOfDataPoints,
                                 TCV(numberOfDataPoints));
 
@@ -84,6 +85,7 @@ namespace NJLIC {
         unsigned long indiceInstanceIndex = 0;
         for (unsigned long meshIndex = 0; meshIndex < numberOfInstances();
              meshIndex++) {
+
             for (unsigned long verticeIndex = 0;
                  verticeIndex < numberOfVertices(); verticeIndex++) {
                 m_VertexData[vertexInstanceIndex] =

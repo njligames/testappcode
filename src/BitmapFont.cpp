@@ -165,10 +165,13 @@ BitmapFont::BitmapFont()
     : mCurrentBounds(glm::vec2(std::numeric_limits<float>::max(),
                                std::numeric_limits<float>::max())),
       mCurrentFontName(""), mCurrentPrintf(""),
-      mGeometry(new NJLIC::SpriteGeometry()), mShader(new NJLIC::Shader()) {}
+      mGeometry(new NJLIC::SpriteGeometry()), mShader(new NJLIC::Shader()),
+      mMaterialProperty(new NJLIC::MaterialProperty()), mCurrentPrintfWidth(0) {
+}
 
 BitmapFont::~BitmapFont() {
     //    delete mMainNode;
+    delete mMaterialProperty;
     delete mShader;
     delete mGeometry;
     for (Map::iterator iter = mFontMap.begin(); iter != mFontMap.end();
@@ -228,6 +231,8 @@ bool BitmapFont::load(const std::string &fontName) {
                          fontName.c_str());
 
                 mGeometry->load(mShader, 4096);
+
+                mGeometry->setDiffuseMaterial(mMaterialProperty);
 
                 if (!mGeometry->loadDiffuseMatrial(mShader,
                                                    std::string(buff))) {
@@ -303,6 +308,8 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
 
     float currentX(0.0);
     float currentY(0.0);
+    float currentWidth(0.0);
+    float currentHeight(0.0);
 
     BitmapFontData *bmfd = mFontMap.find(mCurrentFontName)->second;
     FrameVector frames = bmfd->_jsonData.getFrames();
@@ -363,6 +370,7 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
                 nodeVector.push_back(node);
 
                 currentX += (charData.xadvance * scale);
+                currentWidth += (charData.xadvance * scale);
             }
 
         } else {
@@ -378,14 +386,19 @@ NJLIC::Node *BitmapFont::printf(NJLIC::Scene *scene, const char *fmt, ...) {
         }
     }
 
-    float xoffset(currentX / 2.0);
+    mCurrentPrintfWidth = currentWidth;
 
-    for (NodeVector::iterator i = nodeVector.begin(); i != nodeVector.end();
-         i++) {
-        NJLIC::Node *node = *i;
-        glm::vec3 o(node->getOrigin());
-        o.x -= xoffset;
-        node->setOrigin(o);
+    if (BitmapFont::PrintProperties::Justify::center ==
+        mPrintProperties.justification) {
+        float xoffset(currentX / 2.0);
+
+        for (NodeVector::iterator i = nodeVector.begin(); i != nodeVector.end();
+             i++) {
+            NJLIC::Node *node = *i;
+            glm::vec3 o(node->getOrigin());
+            o.x -= xoffset;
+            node->setOrigin(o);
+        }
     }
 
     return mainNode;

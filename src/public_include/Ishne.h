@@ -48,6 +48,8 @@ private:
     
     Map *mMap;
     char *mVarblock;
+    short mMax;
+    short mMin;
 public:
     
     
@@ -66,6 +68,8 @@ public:
     short samplingRate()const;
     
     const Ishne::LeadVector &getValues(const size_t lead_index)const;
+    const short &maxValue()const{return mMax;}
+    const short &minValue()const{return mMin;}
 protected:
     void *load(const std::string &fileName);
     void unload();

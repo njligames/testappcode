@@ -17,7 +17,6 @@
 
 using namespace std;
 
-
 class Graphics {
   private:
     SDL_Window *_window;
@@ -35,10 +34,9 @@ class Graphics {
     }
 };
 
-TestRender::TestRender():mTotalSteps(0) {}
+TestRender::TestRender() : mTotalSteps(0) {}
 
 TestRender::~TestRender(){};
-
 
 static void UpdateFrame(void *param) {
     Graphics *graphics = (Graphics *)param;
@@ -46,7 +44,7 @@ static void UpdateFrame(void *param) {
 }
 
 static void RenderFrame(void *param) {
-    
+
     Graphics *graphics = (Graphics *)param;
     graphics->update();
 }
@@ -62,19 +60,21 @@ static void handleInput(TestRender *renderer) {
             break;
         case SDL_APP_WILLENTERBACKGROUND:
             SDL_Log("SDL_APP_WILLENTERBACKGROUND");
-//#if (defined(__IPHONEOS__) && __IPHONEOS__)
-//            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, NULL,
-//                                           renderer->getGraphics());
-//#endif
+            //#if (defined(__IPHONEOS__) && __IPHONEOS__)
+            //            SDL_iPhoneSetAnimationCallback(state->windows[0], 1,
+            //            NULL,
+            //                                           renderer->getGraphics());
+            //#endif
             break;
         case SDL_APP_DIDENTERFOREGROUND:
             SDL_Log("SDL_APP_DIDENTERFOREGROUND");
 
-//#if (defined(__IPHONEOS__) && __IPHONEOS__)
-//            SDL_iPhoneSetAnimationCallback(state->windows[0], 1, UpdateFrame,
-//                                           renderer->getGraphics());
-//            SDL_iPhoneSetEventPump(SDL_TRUE);
-//#endif
+            //#if (defined(__IPHONEOS__) && __IPHONEOS__)
+            //            SDL_iPhoneSetAnimationCallback(state->windows[0], 1,
+            //            UpdateFrame,
+            //                                           renderer->getGraphics());
+            //            SDL_iPhoneSetEventPump(SDL_TRUE);
+            //#endif
             break;
         }
     }
@@ -181,29 +181,29 @@ void TestRender::TearDown() {
     SDL_GL_DeleteContext(glContext);
 };
 
-const std::string TestRender::currentDateTime()const {
-    time_t     now = time(0);
-    struct tm  tstruct;
-    char       buf[80];
+const std::string TestRender::currentDateTime() const {
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
     tstruct = *localtime(&now);
     // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
     // for more information about date/time format
-//    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    //    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
     strftime(buf, sizeof(buf), "%Y-%m-%e-%H-%M-%S", &tstruct);
-    
-//    std::string s(buf);
-//    std::replace(s.begin(), s.end(), ':', '-');
+
+    //    std::string s(buf);
+    //    std::replace(s.begin(), s.end(), ':', '-');
 
     return buf;
 }
 
-void TestRender::update(double step) {mTotalSteps+=step;}
+void TestRender::update(double step) { mTotalSteps += step; }
 void TestRender::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void TestRender::screenShot()const{
-    
+void TestRender::screenShot() const {
+
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     Uint32 rmask = 0xff000000;
     Uint32 gmask = 0x00ff0000;
@@ -215,37 +215,34 @@ void TestRender::screenShot()const{
     Uint32 bmask = 0x00ff0000;
     Uint32 amask = 0xff000000;
 #endif
-    
+
     int w, h;
     for (int i = 0; i < state->num_windows; ++i) {
         std::string fname("ScreenShot-");
-        fname += currentDateTime() + std::string("-") + std::to_string(i) + std::string(".bmp");
-        
+        fname += currentDateTime() + std::string("-") + std::to_string(i) +
+                 std::string(".bmp");
+
         SDL_Renderer *renderer = state->renderers[i];
         SDL_GetRendererOutputSize(renderer, &w, &h);
         SDL_RendererInfo info;
         SDL_GetRendererInfo(renderer, &info);
-        
+
         SDL_Surface *sshot = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
-        if(nullptr != sshot) {
+        if (nullptr != sshot) {
             SDL_LockSurface(sshot);
-            
-            if(0 == SDL_RenderReadPixels(renderer, NULL, sshot->format->format, sshot->pixels, sshot->pitch))
-            {
+
+            if (0 == SDL_RenderReadPixels(renderer, NULL, sshot->format->format,
+                                          sshot->pixels, sshot->pitch)) {
                 SDL_SaveBMP(sshot, fname.c_str());
-            }else {
+            } else {
                 printf("SDL_Init failed: %s\n", SDL_GetError());
             }
-            
+
             SDL_UnlockSurface(sshot);
             SDL_FreeSurface(sshot);
         }
     }
-    
-    
-    
 }
-
 
 TEST_F(TestRender, basic) {
     bool ret = true;
@@ -253,5 +250,4 @@ TEST_F(TestRender, basic) {
     glClearColor(0.0, 1.0, 0.0, 1.0f);
 
     ASSERT_EQ(true, ret);
-    
 }

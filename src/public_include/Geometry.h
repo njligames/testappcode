@@ -204,6 +204,7 @@ namespace NJLIC {
         void reloadDiffuseMatrial(Shader *shader,
                                   const unsigned char *diffuseFileData,
                                   int width, int height, int channels_in_file);
+        void setDiffuseMaterial(NJLIC::MaterialProperty *materialProperty);
 
         int getDiffuseImageWidth() const {
             return mMaterialProperty->getWidth();

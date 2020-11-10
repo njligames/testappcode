@@ -12,26 +12,56 @@
 #include "BitmapFont.h"
 #include "DebugDrawer.h"
 #include "GraphGeometry.h"
+#include "GraphPlot.h"
 #include "GraphicsPlatform.h"
 #include "MaterialProperty.h"
 
 #include <iostream>
 
 void NJLICSpauldingMedical::loadView(const Ishne &ishne) {
-    //    for(int i = 0; i < ishne.numberOfLeads(); i++) {
-    //        NJLIC::GraphGeometry *g=new NJLIC::GraphGeometry();
-    //        g->load(mShader, ishne.getValues(i));
-    //        mGeometries.push_back(g);
-    //    }
 
-    NJLIC::Node *mGraphNode = new NJLIC::Node();
-    NJLIC::GraphGeometry *mGraphGeometry = new NJLIC::GraphGeometry();
+    NJLIC::MaterialProperty *mMaterialPropertyGraph =
+        new NJLIC::MaterialProperty();
+    NJLIC::MaterialProperty *mMaterialPropertyIndicator =
+        new NJLIC::MaterialProperty();
 
-    mGraphGeometry->load(mShader, ishne.getValues(0), ishne.numberOfLeads());
-    mGraphNode->addGeometry(mGraphGeometry);
-    mScene->addActiveNode(mGraphNode);
-    mGraphNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
-    mScene->getRootNode()->addChildNode(mGraphNode);
+    int width, height, num_components;
+
+    unsigned char *buffer = (unsigned char *)Util::loadImage(
+        "assets/graph_line.jpg", &width, &height, &num_components);
+
+    if (nullptr != buffer) {
+
+        mMaterialPropertyGraph->load(mShader, buffer, width, height,
+                                     num_components);
+
+        free(buffer);
+    }
+
+    buffer = (unsigned char *)Util::loadImage("assets/indicator_line.jpg",
+                                              &width, &height, &num_components);
+
+    if (nullptr != buffer) {
+
+        mMaterialPropertyIndicator->load(mShader, buffer, width, height,
+                                         num_components);
+
+        free(buffer);
+    }
+
+    //    mMaterialPropertyGraph->loadDiffuseMatrial(mShader,
+    //    "assets/graph_line.jpg");
+    //    mMaterialPropertyIndicator->loadDiffuseMatrial(mShader,
+    //    "assets/indicator_line.jpg");
+
+    //    int i = 0;
+    for (int i = 0; i < ishne.numberOfLeads(); i++) {
+
+        NJLIC::GraphPlot *graphPlot = new NJLIC::GraphPlot();
+        graphPlot->init(mShader, mScene, ishne.getValues(i), i,
+                        mMaterialPropertyGraph, mMaterialPropertyIndicator);
+        mGraphNodes.push_back(graphPlot);
+    }
 }
 
 NJLICSpauldingMedical::NJLICSpauldingMedical()
@@ -49,6 +79,9 @@ NJLICSpauldingMedical::~NJLICSpauldingMedical() {
 
 void NJLICSpauldingMedical::update(double step) {
 
+    for (int i = 0; i < mGraphNodes.size(); i++) {
+        mGraphNodes.at(i)->update(step);
+    }
     mScene->update(step);
 
     //    glm::vec3 from(0, 0, 0);
@@ -64,13 +97,16 @@ void NJLICSpauldingMedical::update(double step) {
 }
 
 void NJLICSpauldingMedical::render() const {
+    static size_t sWidth(4000);
+    static size_t sHeight(1080);
     //    printf("render\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glDisable(GL_DEPTH_TEST);
-    NJLIC::BackgroundRenderer::getInstance()->render(1920, 1080);
+    NJLIC::BackgroundRenderer::getInstance()->render(sWidth, sHeight);
     mDebugDrawer->draw();
 
+    glViewport(-sWidth, -sWidth, sWidth << 1, sWidth << 1);
     glEnable(GL_DEPTH_TEST);
     mScene->render();
 }
@@ -96,7 +132,7 @@ void NJLICSpauldingMedical::init(int argc, char *argv[]) {
 
     mScene->addActiveNode(mCameraNode);
     mScene->addActiveCamera(mCamera);
-    mScene->getRootNode()->setOrigin(glm::vec3(0.0f, 0.0f, 1.0f));
+    mScene->getRootNode()->setOrigin(glm::vec3(0.0f, 0.0f, 3.0f));
 
     bool loaded = false;
 
@@ -114,12 +150,6 @@ void NJLICSpauldingMedical::init(int argc, char *argv[]) {
             //            Util::loadFile("assets/models/sprite.obj");
         }
     }
-
-    NJLIC::Node *mTitleNode =
-        BitmapFont::getInstance()->printf(mScene, "%s", "A");
-    mScene->addActiveNode(mTitleNode);
-    mTitleNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
-    mScene->getRootNode()->addChildNode(mTitleNode);
 }
 
 void NJLICSpauldingMedical::unInit() {
@@ -144,9 +174,21 @@ void NJLICSpauldingMedical::keyDown(const std::string &keycodeName,
                                     bool withCapsLock, bool withControl,
                                     bool withShift, bool withAlt,
                                     bool withGui) {}
+
 void NJLICSpauldingMedical::keyUp(const std::string &keycodeName,
                                   bool withCapsLock, bool withControl,
-                                  bool withShift, bool withAlt, bool withGui) {}
+                                  bool withShift, bool withAlt, bool withGui) {
+
+    if ("Right" == keycodeName) {
+        for (int i = 0; i < mGraphNodes.size(); i++) {
+            mGraphNodes.at(i)->scrollRight();
+        }
+    } else if ("Left" == keycodeName) {
+        for (int i = 0; i < mGraphNodes.size(); i++) {
+            mGraphNodes.at(i)->scrollLeft();
+        }
+    }
+}
 
 void NJLICSpauldingMedical::touch(int touchDevId, int pointerFingerId,
                                   int eventType, float x, float y, float dx,

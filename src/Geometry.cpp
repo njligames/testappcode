@@ -127,9 +127,8 @@ namespace NJLIC {
           m_IndexBuffer(0), m_NumberInstances(1), m_Shader(nullptr),
           m_OpacityModifyRGB(false), m_VertexBufferChanged(true),
           m_NormalMatrixBufferChanged(true), m_ModelViewBufferChanged(true),
-          m_ShaderChanged(true), /*mDiffuseTexture(-1),*/ mMaterialProperty(
-              new NJLIC::MaterialProperty()),
-          mFormat(GL_RGBA),
+          m_ShaderChanged(true),
+          /*mDiffuseTexture(-1),*/ mMaterialProperty(nullptr), mFormat(GL_RGBA),
           mDrawMode(
               GL_TRIANGLES) { //},
                               //          mWidth(2), mHeight(2), mChannels(1) {
@@ -152,7 +151,7 @@ namespace NJLIC {
             delete[] m_ModelViewTransformData;
         m_ModelViewTransformData = nullptr;
 
-        delete mMaterialProperty;
+        //        delete mMaterialProperty;
 
         delete[] m_MatrixBufferFullSize;
         m_MatrixBufferFullSize = nullptr;
@@ -393,9 +392,11 @@ namespace NJLIC {
         if (shader && camera) {
             shader->use();
 
-            mMaterialProperty->render();
-            shader->setUniformValue("tDiffuseColor",
-                                    mMaterialProperty->getTextureIndex());
+            if (mMaterialProperty) {
+                mMaterialProperty->render();
+                shader->setUniformValue("tDiffuseColor",
+                                        mMaterialProperty->getTextureIndex());
+            }
 
             camera->render(shader, m_ShaderChanged);
 
@@ -659,8 +660,10 @@ namespace NJLIC {
                                       int width, int height,
                                       int channels_in_file) {
 
-        mMaterialProperty->load(shader, diffuseFileData, width, height,
-                                channels_in_file);
+        if (nullptr != mMaterialProperty) {
+            mMaterialProperty->load(shader, diffuseFileData, width, height,
+                                    channels_in_file);
+        }
     }
 
     bool Geometry::loadDiffuseMatrial(Shader *shader,
@@ -687,12 +690,19 @@ namespace NJLIC {
                                         int width, int height,
                                         int channels_in_file) {
 
-        if (nullptr != diffuseFileData &&
-            width == mMaterialProperty->getWidth() &&
-            height == mMaterialProperty->getHeight()) {
-            mMaterialProperty->reload(shader, diffuseFileData, width, height,
-                                      channels_in_file);
+        if (nullptr != mMaterialProperty) {
+            if (nullptr != diffuseFileData &&
+                width == mMaterialProperty->getWidth() &&
+                height == mMaterialProperty->getHeight()) {
+                mMaterialProperty->reload(shader, diffuseFileData, width,
+                                          height, channels_in_file);
+            }
         }
+    }
+
+    void
+    Geometry::setDiffuseMaterial(NJLIC::MaterialProperty *materialProperty) {
+        mMaterialProperty = materialProperty;
     }
 
     const void *Geometry::getModelViewTransformArrayBufferPtr() const {

@@ -12,7 +12,8 @@
 
 Ishne::Ishne()
     : mData(nullptr), mFileData(nullptr), mFileSize(0), mMap(nullptr),
-      mVarblock(nullptr) {}
+      mVarblock(nullptr), mMax(std::numeric_limits<short>::min()),
+      mMin(std::numeric_limits<short>::max()) {}
 
 Ishne::~Ishne() {
     unload();
@@ -159,6 +160,9 @@ bool Ishne::init(const std::string &fileName) {
                  j++) {
                 short data;
                 memcpy(&data, current_ptr, sizeof(char) * 2); // 522 bytes
+                mMax = std::max(mMax, data);
+                mMin = std::min(mMin, data);
+
                 current_ptr += 2;
                 currentByteCount += 2;
 

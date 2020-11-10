@@ -586,6 +586,7 @@ void main()
     if(material.diffuse.a <= 0.1) {
         discard;
     }
-    gl_FragColor = baseColor;
-//    gl_FragColor = material.diffuse;
+//    gl_FragColor = baseColor;
+    gl_FragColor = material.diffuse;
+//    gl_FragColor = color;
 }

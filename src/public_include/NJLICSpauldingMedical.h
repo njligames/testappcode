@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "Node.h"
 #include "Scene.h"
+#include "GraphPlot.h"
 
 #include <vector>
 
@@ -31,7 +32,7 @@ class NJLICSpauldingMedical : public NJLICGame {
     NJLIC::Camera *mCamera;
     NJLIC::Node *mCameraNode;
     NJLIC::Scene *mScene;
-    std::vector<NJLIC::Node *> mGraphNodes;
+    std::vector<NJLIC::GraphPlot *> mGraphNodes;
     
     void loadView(const Ishne &ishne);
 
