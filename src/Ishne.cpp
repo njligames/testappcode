@@ -9,6 +9,7 @@
 #include "Ishne.h"
 #include <stdio.h>
 #include <vector>
+#include <cstring>
 
 Ishne::Ishne()
     : mData(nullptr), mFileData(nullptr), mFileSize(0), mMap(nullptr),

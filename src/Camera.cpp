@@ -10,6 +10,8 @@
 #include "Node.h"
 #include "Shader.h"
 
+#include <cstring>
+
 namespace NJLIC {
     static inline glm::mat4x4 setFrom4x4Matrix(const float *m) {
         glm::mat4 _m;

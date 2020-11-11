@@ -8,11 +8,12 @@
 
 #include <string>
 #include <map>
+#include <vector>
+#include <limits>
 
 class Ishne {
 public:
     using LeadVector = std::vector<short>;
-//    using SampleVector = std::vector<LeadVector>;
     using Map = std::map<size_t, LeadVector*>;
     using Pair = std::pair<size_t, LeadVector*>;
 private:

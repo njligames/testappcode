@@ -18,6 +18,7 @@
 #include <regex>
 #include <stdexcept>
 #include <string>
+#include <chrono>
 
 #include "glm/glm.hpp"
 
