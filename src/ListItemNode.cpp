@@ -25,44 +25,62 @@ namespace NJLIC {
     }
 
     void ListItemNode::scrollNext(float seconds, int algorithm) {
-        if (glm::length(mDirection) <= 0) {
-            mDirection = (mNextPosition - getOrigin());
-            mCurrentDistance = glm::length(mDirection);
-
-            mTargetPosition = mNextPosition;
-
-            mTotalTime =
-                std::max(seconds, std::numeric_limits<float>::denorm_min()) *
-                17;
+        if (seconds <= 0) {
+            mDirection = glm::vec3(0, 0, 0);
+            setOrigin(mNextPosition);
             mCurrentTime = 0.0;
 
-            mAlgorithm = algorithm;
-            // random number from 0 to 30, inclusively
-            if (algorithm < 0)
-                mAlgorithm = 0;
-            if (algorithm > 30)
-                mAlgorithm = 30;
+            notify();
+        } else {
+            if (glm::length(mDirection) <= 0) {
+                mDirection = (mNextPosition - getOrigin());
+                mCurrentDistance = glm::length(mDirection);
+
+                mTargetPosition = mNextPosition;
+
+                mTotalTime =
+                    std::max(seconds,
+                             std::numeric_limits<float>::denorm_min()) *
+                    17;
+                mCurrentTime = 0.0;
+
+                mAlgorithm = algorithm;
+                // random number from 0 to 30, inclusively
+                if (algorithm < 0)
+                    mAlgorithm = 0;
+                if (algorithm > 30)
+                    mAlgorithm = 30;
+            }
         }
     }
 
     void ListItemNode::scrollPrevious(float seconds, int algorithm) {
-        if (glm::length(mDirection) <= 0) {
-            mDirection = (mPrevPosition - getOrigin());
-            mCurrentDistance = glm::length(mDirection);
-
-            mTargetPosition = mPrevPosition;
-
-            mTotalTime =
-                std::max(seconds, std::numeric_limits<float>::denorm_min()) *
-                17;
+        if (seconds <= 0) {
+            mDirection = glm::vec3(0, 0, 0);
+            setOrigin(mPrevPosition);
             mCurrentTime = 0.0;
 
-            mAlgorithm = algorithm;
-            // random number from 0 to 30, inclusively
-            if (algorithm < 0)
-                mAlgorithm = 0;
-            if (algorithm > 30)
-                mAlgorithm = 30;
+            notify();
+        } else {
+            if (glm::length(mDirection) <= 0) {
+                mDirection = (mPrevPosition - getOrigin());
+                mCurrentDistance = glm::length(mDirection);
+
+                mTargetPosition = mPrevPosition;
+
+                mTotalTime =
+                    std::max(seconds,
+                             std::numeric_limits<float>::denorm_min()) *
+                    17;
+                mCurrentTime = 0.0;
+
+                mAlgorithm = algorithm;
+                // random number from 0 to 30, inclusively
+                if (algorithm < 0)
+                    mAlgorithm = 0;
+                if (algorithm > 30)
+                    mAlgorithm = 30;
+            }
         }
     }
 

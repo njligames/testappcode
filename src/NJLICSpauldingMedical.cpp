@@ -71,7 +71,8 @@ void NJLICSpauldingMedical::loadView(const Ishne &ishne) {
 NJLICSpauldingMedical::NJLICSpauldingMedical()
     : mDebugDrawer(new DebugDrawer), mShader(new NJLIC::Shader()),
       mCamera(new NJLIC::Camera()), mCameraNode(new NJLIC::Node()),
-      mScene(new NJLIC::Scene()), mListNodeItem(new NJLIC::ListItemNode()) {}
+      mScene(new NJLIC::Scene()), mListNodeItem(new NJLIC::ListItemNode()),
+      mIsScrolling(false) {}
 
 NJLICSpauldingMedical::~NJLICSpauldingMedical() {
     delete mScene;
@@ -160,18 +161,22 @@ void NJLICSpauldingMedical::mouse(int button, int eventType, float x, float y,
 void NJLICSpauldingMedical::keyDown(const std::string &keycodeName,
                                     bool withCapsLock, bool withControl,
                                     bool withShift, bool withAlt,
-                                    bool withGui) {}
+                                    bool withGui) {
+    if (!mIsScrolling) {
+        if ("Right" == keycodeName) {
+            mIsScrolling = true;
+            mListNodeItem->scrollNext(0, 0);
+
+        } else if ("Left" == keycodeName) {
+            mIsScrolling = true;
+            mListNodeItem->scrollPrevious(0, 0);
+        }
+    }
+}
 
 void NJLICSpauldingMedical::keyUp(const std::string &keycodeName,
                                   bool withCapsLock, bool withControl,
-                                  bool withShift, bool withAlt, bool withGui) {
-
-    if ("Right" == keycodeName) {
-        mListNodeItem->scrollNext(1, 0);
-    } else if ("Left" == keycodeName) {
-        mListNodeItem->scrollPrevious(1, 0);
-    }
-}
+                                  bool withShift, bool withAlt, bool withGui) {}
 
 void NJLICSpauldingMedical::touch(int touchDevId, int pointerFingerId,
                                   int eventType, float x, float y, float dx,
@@ -206,4 +211,6 @@ void NJLICSpauldingMedical::update(Publisher *who, void *userdata) {
 
     posPrev.x += NJLIC::Geometry::sScale3DTo2D * 200;
     mListNodeItem->setPreviousPosition(posPrev);
+
+    mIsScrolling = false;
 }

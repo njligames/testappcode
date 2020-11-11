@@ -35,6 +35,7 @@ class NJLICSpauldingMedical : public NJLICGame, public Subscriber {
     NJLIC::Scene *mScene;
     
     NJLIC::ListItemNode *mListNodeItem;
+    bool mIsScrolling;
     
     void loadView(const Ishne &ishne);
 
