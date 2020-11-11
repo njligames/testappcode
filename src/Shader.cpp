@@ -30,8 +30,8 @@ namespace NJLIC {
     }
 
     bool Shader::load(const std::string &vertexSource,
-                      const std::string &fragmentSource) //,
-    //              const std::vector<std::string> &attributes)
+                      const std::string &fragmentSource)
+
     {
         GLuint vertShader, fragShader;
 
@@ -80,32 +80,6 @@ namespace NJLIC {
         if (fragShader) {
             glDeleteShader(fragShader);
         }
-
-        //        if (!linkProgram(m_Program)) {
-        //            if (vertShader) {
-        //                glDeleteShader(vertShader);
-        //                vertShader = 0;
-        //            }
-        //            if (fragShader) {
-        //                glDeleteShader(fragShader);
-        //                fragShader = 0;
-        //            }
-        //            if (m_Program) {
-        //                glDeleteProgram(m_Program);
-        //                m_Program = 0;
-        //            }
-        //            return false;
-        //        }
-        //
-        //        if (vertShader) {
-        //            glDetachShader(m_Program, vertShader);
-        //            glDeleteShader(vertShader);
-        //        }
-        //
-        //        if (fragShader) {
-        //            glDetachShader(m_Program, fragShader);
-        //            glDeleteShader(fragShader);
-        //        }
 
         return true;
     }

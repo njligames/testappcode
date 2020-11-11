@@ -22,7 +22,7 @@ class ListItemNode;
         GraphPlot(const GraphPlot &) = delete;
         const GraphPlot &operator=(const GraphPlot &) = delete;
         
-        NJLIC::ListItemNode *mPlot;
+        NJLIC::Node *mPlot;
         NJLIC::Node *mGraphNode;
         NJLIC::Node *mIndicatorNode;
         NJLIC::Node *mTitleNode;
@@ -34,7 +34,7 @@ class ListItemNode;
         GraphPlot();
         virtual ~GraphPlot();
         
-        void init(NJLIC::Shader *shader, NJLIC::Scene *scene, const std::vector<short> &values, const size_t &index, NJLIC::MaterialProperty *materialPropertyGraph, NJLIC::MaterialProperty *materialPropertyIndicator);
+        NJLIC::Node * init(NJLIC::Shader *shader, NJLIC::Scene *scene, const std::vector<short> &values, const size_t &index, NJLIC::MaterialProperty *materialPropertyGraph, NJLIC::MaterialProperty *materialPropertyIndicator);
         void unInit();
         
         void update(float steps);

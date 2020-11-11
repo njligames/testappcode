@@ -14,6 +14,7 @@
 #include "GraphGeometry.h"
 #include "GraphPlot.h"
 #include "GraphicsPlatform.h"
+#include "ListItemNode.h"
 #include "MaterialProperty.h"
 
 #include <iostream>
@@ -49,25 +50,28 @@ void NJLICSpauldingMedical::loadView(const Ishne &ishne) {
         free(buffer);
     }
 
-    //    mMaterialPropertyGraph->loadDiffuseMatrial(mShader,
-    //    "assets/graph_line.jpg");
-    //    mMaterialPropertyIndicator->loadDiffuseMatrial(mShader,
-    //    "assets/indicator_line.jpg");
-
-    //    int i = 0;
     for (int i = 0; i < ishne.numberOfLeads(); i++) {
 
         NJLIC::GraphPlot *graphPlot = new NJLIC::GraphPlot();
-        graphPlot->init(mShader, mScene, ishne.getValues(i), i,
-                        mMaterialPropertyGraph, mMaterialPropertyIndicator);
-        mGraphNodes.push_back(graphPlot);
+        NJLIC::Node *node =
+            graphPlot->init(mShader, mScene, ishne.getValues(i), i,
+                            mMaterialPropertyGraph, mMaterialPropertyIndicator);
+        mListNodeItem->addChildNode(node);
     }
+    mScene->addActiveNode(mListNodeItem);
+    mScene->getRootNode()->addChildNode(mListNodeItem);
+
+    glm::vec3 pos(mListNodeItem->getOrigin());
+    pos.x -= NJLIC::Geometry::sScale3DTo2D * 200;
+    mListNodeItem->setNextPosition(pos);
+
+    mListNodeItem->subscribe(this);
 }
 
 NJLICSpauldingMedical::NJLICSpauldingMedical()
     : mDebugDrawer(new DebugDrawer), mShader(new NJLIC::Shader()),
       mCamera(new NJLIC::Camera()), mCameraNode(new NJLIC::Node()),
-      mScene(new NJLIC::Scene()) {}
+      mScene(new NJLIC::Scene()), mListNodeItem(new NJLIC::ListItemNode()) {}
 
 NJLICSpauldingMedical::~NJLICSpauldingMedical() {
     delete mScene;
@@ -77,24 +81,7 @@ NJLICSpauldingMedical::~NJLICSpauldingMedical() {
     delete mDebugDrawer;
 }
 
-void NJLICSpauldingMedical::update(double step) {
-
-    for (int i = 0; i < mGraphNodes.size(); i++) {
-        mGraphNodes.at(i)->update(step);
-    }
-    mScene->update(step);
-
-    //    glm::vec3 from(0, 0, 0);
-    //    glm::vec3 to(1, 1, 0);
-    //    glm::vec3 color(1, 0, 0);
-
-    //    static bool drew=false;
-    //    if(!drew) {
-    //        mDebugDrawer->drawLine(from, to, color);
-    ////        drew=true;
-    //
-    //    }
-}
+void NJLICSpauldingMedical::update(double step) { mScene->update(step); }
 
 void NJLICSpauldingMedical::render() const {
     static size_t sWidth(4000);
@@ -180,13 +167,9 @@ void NJLICSpauldingMedical::keyUp(const std::string &keycodeName,
                                   bool withShift, bool withAlt, bool withGui) {
 
     if ("Right" == keycodeName) {
-        for (int i = 0; i < mGraphNodes.size(); i++) {
-            mGraphNodes.at(i)->scrollRight();
-        }
+        mListNodeItem->scrollNext(1, 0);
     } else if ("Left" == keycodeName) {
-        for (int i = 0; i < mGraphNodes.size(); i++) {
-            mGraphNodes.at(i)->scrollLeft();
-        }
+        mListNodeItem->scrollPrevious(1, 0);
     }
 }
 
@@ -212,4 +195,15 @@ void NJLICSpauldingMedical::fileDrop(const std::string &fileName) {
 
     loadView(*ishne);
     delete ishne;
+}
+
+void NJLICSpauldingMedical::update(Publisher *who, void *userdata) {
+    glm::vec3 posNext(mListNodeItem->getOrigin());
+    glm::vec3 posPrev(mListNodeItem->getOrigin());
+
+    posNext.x -= NJLIC::Geometry::sScale3DTo2D * 200;
+    mListNodeItem->setNextPosition(posNext);
+
+    posPrev.x += NJLIC::Geometry::sScale3DTo2D * 200;
+    mListNodeItem->setPreviousPosition(posPrev);
 }

@@ -119,26 +119,7 @@ DebugDrawer::~DebugDrawer() {
     glDeleteVertexArrays_NJLIC(1, &linePointVAO);
 
     glDeleteBuffers(1, &linePointVBO);
-
-    //        glDeleteVertexArrays_NJLIC(1, &textVAO);
-    //
-    //        glDeleteBuffers(1, &textVBO);
 }
-
-//    const char *DebugDrawer::getClassName() const
-//    {
-//        return "DebugDrawer";
-//    }
-
-//    s32 DebugDrawer::getType() const
-//    {
-//        return JLI_OBJECT_TYPE_WorldDebugDrawer;
-//    }
-//
-//    DebugDrawer::operator std::string() const
-//    {
-//        return njli::JsonJLI::parse(string_format("%s", FORMATSTRING));
-//    }
 
 void DebugDrawer::beginDraw() { /*newFrameImgui();*/
 }

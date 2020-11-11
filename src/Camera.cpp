@@ -88,11 +88,8 @@ namespace NJLIC {
         glm::vec3 ev(eyeX, eyeY, eyeZ);
         glm::vec3 cv(centerX, centerY, centerZ);
         glm::vec3 uv(upX, upY, upZ);
-        //        glm::vec3 n((ev + -cv).normalized());
         glm::vec3 n(glm::normalize(ev + -cv));
-        //        glm::vec3 u((uv.cross(n).normalized()));
         glm::vec3 u(glm::normalize(glm::cross(uv, n)));
-        //        glm::vec3 v(n.cross(u));
         glm::vec3 v(glm::cross(n, u));
 
         buffer[0] = u.x;
@@ -107,13 +104,10 @@ namespace NJLIC {
         buffer[9] = v.z;
         buffer[10] = n.z;
         buffer[11] = 0.0f;
-        //        buffer[12] = (-u).dot(ev);
         buffer[12] = glm::dot(-u, ev);
 
-        //        buffer[13] = (-v).dot(ev);
         buffer[13] = glm::dot(-v, ev);
 
-        //        buffer[14] = (-n).dot(ev);
         buffer[14] = glm::dot(-n, ev);
 
         buffer[15] = 1.0f;

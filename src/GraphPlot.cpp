@@ -9,64 +9,52 @@
 namespace NJLIC {
     GraphPlot::GraphPlot()
         : mPlot(nullptr), mGraphNode(nullptr), mIndicatorNode(nullptr),
-          mTitleNode(nullptr) {}
+          mTitleNode(nullptr), mGraphGeometry(nullptr),
+          mIndicatorGeometry(nullptr) {}
 
     GraphPlot::~GraphPlot() { unInit(); }
 
-    void GraphPlot::init(NJLIC::Shader *shader, NJLIC::Scene *scene,
-                         const std::vector<short> &values, const size_t &index,
-                         NJLIC::MaterialProperty *materialPropertyGraph,
-                         NJLIC::MaterialProperty *materialPropertyIndicator) {
+    NJLIC::Node *
+    GraphPlot::init(NJLIC::Shader *shader, NJLIC::Scene *scene,
+                    const std::vector<short> &values, const size_t &index,
+                    NJLIC::MaterialProperty *materialPropertyGraph,
+                    NJLIC::MaterialProperty *materialPropertyIndicator) {
 
-        mGraphGeometry = new NJLIC::GraphGeometry();
-
-        mGraphGeometry->load(shader, values, values.size(), 1);
-
-        mIndicatorGeometry = new NJLIC::GraphGeometry();
-
-        std::vector<short> indicator;
-
-        for (int i = 0; i < 50; i++) {
-            indicator.push_back(0);
-        }
-        for (int i = 0; i < 100; i++) {
-            indicator.push_back(300);
-        }
-        for (int i = 0; i < 50; i++) {
-            indicator.push_back(0);
-        }
-        mIndicatorGeometry->load(shader, indicator, indicator.size(), 1);
-
-        float scale(.000237);
+        float scale(Geometry::sScale3DTo2D);
         float y_decrement(scale * 800);
 
         unInit();
 
         float graphYOffset(0.07f);
 
-        mPlot = new NJLIC::ListItemNode();
+        mPlot = new NJLIC::Node();
         mPlot->setOrigin(glm::vec3(0.1, 2.2 - (y_decrement * index), 9.0));
 
-        mGraphNode = new NJLIC::Node();
+        {
+            mGraphGeometry = new NJLIC::GraphGeometry();
+            mGraphGeometry->load(shader, values, values.size(), 1);
 
-        //        mGraphGeometry->loadDiffuseMatrial(shader,
-        //        "assets/graph_line.jpg");
-        mGraphGeometry->setDiffuseMaterial(materialPropertyGraph);
-        mGraphNode->addGeometry(mGraphGeometry);
-        scene->addActiveNode(mGraphNode);
-        mGraphNode->setOrigin(glm::vec3(0.0, graphYOffset, 0.02));
+            mGraphNode = new NJLIC::Node();
+            mGraphGeometry->setDiffuseMaterial(materialPropertyGraph);
+            mGraphNode->addGeometry(mGraphGeometry);
+            scene->addActiveNode(mGraphNode);
+            mGraphNode->setOrigin(glm::vec3(0.0, graphYOffset, 0.0));
+            mPlot->addChildNode(mGraphNode);
+        }
 
-        mPlot->addChildNode(mGraphNode);
+        {
+            std::vector<short> indicator(100);
+            fill_n(indicator.begin() + 1, 100 - 2, 300);
 
-        mIndicatorNode = new NJLIC::Node();
-
-        //        mIndicatorGeometry->loadDiffuseMatrial(shader,
-        //        "assets/indicator_line.jpg");
-        mIndicatorGeometry->setDiffuseMaterial(materialPropertyIndicator);
-        mIndicatorNode->addGeometry(mIndicatorGeometry);
-        scene->addActiveNode(mIndicatorNode);
-        mIndicatorNode->setOrigin(glm::vec3(0.0, graphYOffset, 0.01));
-        mPlot->addChildNode(mIndicatorNode);
+            mIndicatorGeometry = new NJLIC::GraphGeometry();
+            mIndicatorGeometry->load(shader, indicator, indicator.size(), 1);
+            mIndicatorNode = new NJLIC::Node();
+            mIndicatorGeometry->setDiffuseMaterial(materialPropertyIndicator);
+            mIndicatorNode->addGeometry(mIndicatorGeometry);
+            scene->addActiveNode(mIndicatorNode);
+            mIndicatorNode->setOrigin(glm::vec3(
+                0.1, 2.2 - (y_decrement * index) + graphYOffset, 9.0));
+        }
 
         std::string title;
         switch (index) {
@@ -106,7 +94,6 @@ namespace NJLIC {
         case 11:
             title = "V6";
             break;
-
         default:
             title = "<PLACEHOLDER>";
             break;
@@ -114,13 +101,20 @@ namespace NJLIC {
         mTitleNode =
             BitmapFont::getInstance()->printf(scene, "%s", title.c_str());
         scene->addActiveNode(mTitleNode);
-        mTitleNode->setOrigin(glm::vec3(0.0, 0.0, 0.0));
+        mTitleNode->setOrigin(glm::vec3(0.1, 2.2 - (y_decrement * index), 9.0));
         mPlot->addChildNode(mTitleNode);
 
-        scene->getRootNode()->addChildNode(mPlot);
+        scene->getRootNode()->addChildNode(mIndicatorNode);
+        scene->getRootNode()->addChildNode(mTitleNode);
+
+        return mPlot;
     }
 
     void GraphPlot::unInit() {
+        if (nullptr != mGraphGeometry)
+            delete mGraphGeometry;
+        if (nullptr != mIndicatorGeometry)
+            delete mIndicatorGeometry;
         if (nullptr != mTitleNode)
             delete mTitleNode;
         if (nullptr != mIndicatorNode)
@@ -131,9 +125,9 @@ namespace NJLIC {
             delete mPlot;
     }
 
-    void GraphPlot::update(float steps) { mPlot->update(steps); }
+    void GraphPlot::update(float steps) {}
 
-    void GraphPlot::scrollRight() { mPlot->scrollPrevious(1.f, 15); }
+    void GraphPlot::scrollRight() {}
 
-    void GraphPlot::scrollLeft() { mPlot->scrollNext(1.f, 15); }
+    void GraphPlot::scrollLeft() {}
 } // namespace NJLIC

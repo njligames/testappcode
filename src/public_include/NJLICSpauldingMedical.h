@@ -17,6 +17,7 @@
 #include "Node.h"
 #include "Scene.h"
 #include "GraphPlot.h"
+#include "PubSub.h"
 
 #include <vector>
 
@@ -24,7 +25,7 @@ class DebugDrawer;
 
 
 
-class NJLICSpauldingMedical : public NJLICGame {
+class NJLICSpauldingMedical : public NJLICGame, public Subscriber {
     DebugDrawer *mDebugDrawer;
     std::vector<NJLIC::GraphGeometry*> mGeometries;
     
@@ -32,7 +33,8 @@ class NJLICSpauldingMedical : public NJLICGame {
     NJLIC::Camera *mCamera;
     NJLIC::Node *mCameraNode;
     NJLIC::Scene *mScene;
-    std::vector<NJLIC::GraphPlot *> mGraphNodes;
+    
+    NJLIC::ListItemNode *mListNodeItem;
     
     void loadView(const Ishne &ishne);
 
@@ -67,6 +69,8 @@ class NJLICSpauldingMedical : public NJLICGame {
                                      float roll) override;
     
     virtual void fileDrop(const std::string &fileName)override;
+    
+    virtual void update(Publisher *who, void *userdata = 0) override;
     
 };
 

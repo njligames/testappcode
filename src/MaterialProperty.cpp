@@ -130,12 +130,6 @@ namespace NJLIC {
         Util::glErrorCheck();
         glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
         Util::glErrorCheck();
-        //
-        //
-        //        glActiveTexture(GL_TEXTURE0 + getTextureIndex());
-        //        Util::glErrorCheck();
-        //        glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
-        //        Util::glErrorCheck();
     }
 
     int MaterialProperty::getWidth() const { return mWidth; }
@@ -159,27 +153,7 @@ namespace NJLIC {
         assert(nullptr != diffuseFileData);
 
         GLint internalformat = GL_RGBA;
-        //        mFormat = GL_RGBA;
 
-        //                switch (channels_in_file) {
-        //                case 1: {
-        //                    internalformat = GL_LUMINANCE;
-        //                    mFormat = GL_LUMINANCE;
-        //                } break;
-        //
-        //                case 2: {
-        //                    internalformat = GL_LUMINANCE_ALPHA;
-        //                    mFormat = GL_LUMINANCE_ALPHA;
-        //                } break;
-        //                case 3: {
-        //                    internalformat = GL_RGB;
-        //                    mFormat = GL_RGB;
-        //                } break;
-        //                case 4: {
-        //                    internalformat = GL_RGBA;
-        //                    mFormat = GL_RGBA;
-        //                } break;
-        //                }
         // Create a new texture from the camera frame data, display that
         // using the shaders
         glGenTextures(1, &mDiffuseTexture);
@@ -206,110 +180,6 @@ namespace NJLIC {
                      GLsizei(height), 0, GL_RGBA, GL_UNSIGNED_BYTE,
                      diffuseFileData);
         Util::glErrorCheck();
-
-        //    shader->getUniformValue("tDiffuseColor", mDiffuseColor);
-        //    GLint videoFrame = glGetUniformLocation(mProgram, "videoFrame");
-        //    mUniforms[UNIFORM_VIDEOFRAME] = videoFrame;
-
-        //    setupVertexBuffer(mVao, mVertexBuffer, mIndexBuffer);
-
-        //    glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
-        //    Util::glErrorCheck();
-        //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, GLsizei(mWidth),
-        //                    GLsizei(mHeight), mFormat, GL_UNSIGNED_BYTE,
-        //                    buffer);
-        //    Util::glErrorCheck();
-
-        //        free(buffer);
-
-        //        assert(nullptr != diffuseFileData);
-        //
-        //        if(mIsLoaded) {
-        //            return;
-        //        }
-        //        mIsLoaded = true;
-        //
-        //        mWidth=width;
-        //        mHeight=height;
-        //        mChannels=channels_in_file;
-        //
-        //        MaterialProperty::addReference(this);
-        //
-        //
-        //
-        //        GLint internalformat = GL_RGBA;
-        //        //        mFormat = GL_RGBA;
-        //
-        //        //                switch (channels_in_file) {
-        //        //                case 1: {
-        //        //                    internalformat = GL_LUMINANCE;
-        //        //                    mFormat = GL_LUMINANCE;
-        //        //                } break;
-        //        //
-        //        //                case 2: {
-        //        //                    internalformat = GL_LUMINANCE_ALPHA;
-        //        //                    mFormat = GL_LUMINANCE_ALPHA;
-        //        //                } break;
-        //        //                case 3: {
-        //        //                    internalformat = GL_RGB;
-        //        //                    mFormat = GL_RGB;
-        //        //                } break;
-        //        //                case 4: {
-        //        //                    internalformat = GL_RGBA;
-        //        //                    mFormat = GL_RGBA;
-        //        //                } break;
-        //        //                }
-        //
-        ////        glActiveTexture(GL_TEXTURE0 + getTextureIndex());
-        ////
-        ////        // Create a new texture from the camera frame data, display
-        /// that /        // using the shaders /        glGenTextures(1,
-        ///&mDiffuseTexture); /        Util::glErrorCheck();
-        //
-        //        glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
-        //        Util::glErrorCheck();
-        //
-        //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-        //        GL_LINEAR); glTexParameteri(GL_TEXTURE_2D,
-        //        GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        //        // This is necessary for non-power-of-two textures
-        //        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-        //        GL_CLAMP_TO_EDGE); glTexParameteri(GL_TEXTURE_2D,
-        //        GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        //
-        //        // Using BGRA extension to pull in video frame data directly
-        //        // GL_API void GL_APIENTRY glTexImage2D (GLenum target, GLint
-        //        level,
-        //        // GLint internalformat, GLsizei width, GLsizei height, GLint
-        //        // border, GLenum format, GLenum type, const void *pixels);
-        //        //    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width,
-        //        //                 (GLsizei)height, 0, GL_RGBA,
-        //        GL_UNSIGNED_BYTE,
-        //        //                 buffer);
-        //
-        //        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(width),
-        //                     GLsizei(height), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-        //                     diffuseFileData);
-        //        Util::glErrorCheck();
-        //
-        //        //    shader->getUniformValue("tDiffuseColor", mDiffuseColor);
-        //        //    GLint videoFrame = glGetUniformLocation(mProgram,
-        //        "videoFrame");
-        //        //    mUniforms[UNIFORM_VIDEOFRAME] = videoFrame;
-        //
-        //        //    setupVertexBuffer(mVao, mVertexBuffer, mIndexBuffer);
-        //
-        //        //    glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
-        //        //    Util::glErrorCheck();
-        //        //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, GLsizei(mWidth),
-        //        //                    GLsizei(mHeight), mFormat,
-        //        GL_UNSIGNED_BYTE,
-        //        //                    buffer);
-        //        //    Util::glErrorCheck();
-        //
-        //        //        free(buffer);
-        //
-        //        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     bool MaterialProperty::load(Shader *shader,
@@ -346,13 +216,5 @@ namespace NJLIC {
         }
     }
 
-    void MaterialProperty::unLoad() {
-        //    if (-1 != mDiffuseTexture) {
-        //        glDeleteTextures(1, &mDiffuseTexture);
-        //        removeReference(this);
-        //        mIsLoaded = false;
-        //    }
-        //    mDiffuseTexture = -1;
-        removeReference(this);
-    }
+    void MaterialProperty::unLoad() { removeReference(this); }
 } // namespace NJLIC

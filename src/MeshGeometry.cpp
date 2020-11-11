@@ -155,53 +155,6 @@ namespace NJLIC {
             unsigned long offset = instanceIdx * numberOfVertices();
             m_VertexData[offset + verticeIdx].vertex = v;
         }
-
-        //        for (unsigned long vertexIndex = 0;
-        //             vertexIndex < numberOfVertices();
-        //             vertexIndex++)
-        //        {
-        //            m_VertexData[offset + verticeIdx].color = c;
-        //        }
-
-        //        long index = getGeometryIndex(node);
-        //
-        //        if(index >= 0 && m_VertexData)
-        //        {
-        //            bool hidden = node->isHiddenGeometry();
-        //
-        //            glm::vec4 c(node->getColorBase());
-        //
-        //            if(hidden)
-        //            c.setW(0.0f);
-        //
-        //            unsigned long offset = index * numberOfVertices();
-        //            for (unsigned long vertexIndex = 0;
-        //                 vertexIndex < numberOfVertices();
-        //                 vertexIndex++)
-        //            {
-        //                m_VertexData[offset + vertexIndex].color = c;
-        //            }
-        //            enableVertexArrayBufferChanged(true);
-        //        }
-        //
-        //
-        //
-        //        glm::vec3 ret(0,0,0);
-        //
-        //        if(instanceIdx < maxNumberOfInstances() &&
-        //           verticeIdx < numberOfVertices())
-        //        {
-        //            GLsizei idx = (instanceIdx * numberOfVertices());
-        //            idx += (verticeIdx * 1);
-        //
-        //            memcpy(m_triangleBuffer,
-        //                   m_VertexData + idx,
-        //                   sizeof(TexturedColoredVertex) * 12);
-        //
-        //            ret = m_triangleBuffer[0].vertex;
-        //        }
-        //
-        //        return ret;
     }
 
     void MeshGeometry::setVertexColor(const glm::vec4 &v,

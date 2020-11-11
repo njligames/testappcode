@@ -338,40 +338,14 @@ namespace NJLIC {
 
     void Node::resetTransformDirty() { m_TransformDirty = false; }
 
-    void Node::update(float timestep) {
+    void Node::update(float timestep) {}
 
-        //        float mass = 1.0f;
-
-        //        *m_ImpulseForce += *m_GravityForce;
-
-        //        btVector3 acceleration((*m_ImpulseForce) / mass);
-        //
-        //        setVelocity(getVelocity() + acceleration * timestep);
-        //        if(getVelocity().length() > getMaxSpeed())
-        //            setVelocity(getVelocity().normalized() * getMaxSpeed());
-        //
-        //        setOrigin(getTransform().getOrigin() + (*m_CurrentVelocity) *
-        //        timestep);
-        //
-        //        if(m_CurrentVelocity->length() > 0.00000001)
-        //        {
-        //            *m_HeadingVector = m_CurrentVelocity->normalized();
-        //        }
-        //        *m_ImpulseForce = btVector3(0,0,0);
-    }
     void Node::render(Geometry *const geometry) {
         if (geometry) {
             const unsigned long geometryIndex = getGeometryIndex();
 
             if (isTransformDirty())
                 geometry->setTransform(geometryIndex, getWorldTransform());
-
-            //            if(m_ColorTransformDirty)
-            //            {
-            //                geometry->setColorTransform(geometryIndex,
-            //                getColorTransform()); m_ColorTransformDirty =
-            //                false;
-            //            }
 
             if (m_NormalMatrixDirty) {
 

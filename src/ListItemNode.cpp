@@ -73,7 +73,7 @@ namespace NJLIC {
 
             mCurrentTime += timestep;
 
-            float time = linear(mCurrentTime / mTotalTime);
+            float time(0.0);
 
             switch (mAlgorithm) {
             case 0:

@@ -177,6 +177,7 @@ namespace NJLIC {
         friend class Scene;
 
       public:
+        const static float sScale3DTo2D;
         /* members */
         Geometry();
         Geometry(const Geometry &rhs);

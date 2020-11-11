@@ -33,7 +33,7 @@ namespace NJLIC {
         m_NumberOfVertices = (GLsizei)numberOfDataPoints;
 
         struct TCV {
-            TCV(const size_t &s) : scale(.000237) {
+            TCV(const size_t &s) : scale(Geometry::sScale3DTo2D) {
                 x = 0;
                 idx = 0;
                 size = s;
