@@ -85,7 +85,7 @@ NJLICSpauldingMedical::~NJLICSpauldingMedical() {
 void NJLICSpauldingMedical::update(double step) { mScene->update(step); }
 
 void NJLICSpauldingMedical::render() const {
-    static size_t sWidth(4000);
+    static size_t sWidth(1920);
     static size_t sHeight(1080);
     //    printf("render\n");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -94,7 +94,7 @@ void NJLICSpauldingMedical::render() const {
     NJLIC::BackgroundRenderer::getInstance()->render(sWidth, sHeight);
     mDebugDrawer->draw();
 
-    glViewport(-sWidth, -sWidth, sWidth << 1, sWidth << 1);
+    glViewport(-4000, -4000, 4000 << 1, 4000 << 1);
     glEnable(GL_DEPTH_TEST);
     mScene->render();
 }
