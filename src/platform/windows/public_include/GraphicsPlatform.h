@@ -22,9 +22,14 @@
     
     #include <windows.h>
     
-    // #include <GL/glew.h>
+    #include <GL/glew.h>
     #include <GL/GL.h>
     #include <GL/GLU.h>
+
+    #define glGenVertexArrays_NJLIC glGenVertexArrays
+    #define glBindVertexArray_NJLIC glBindVertexArray
+    #define glDeleteVertexArrays_NJLIC glDeleteVertexArrays
+
     
 #elif defined(__GL_3__)
     #include <OpenGL/gl3.h>

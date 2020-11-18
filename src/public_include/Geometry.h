@@ -33,7 +33,17 @@ typedef GLfloat GLfptype;
 #include "MaterialProperty.h"
 
 namespace NJLIC {
+#if defined(__clang__)
+    struct TexturedColoredVertex {
+#elif defined(__GNUC__) || defined(__GNUG__)
     struct __attribute__((aligned(16))) TexturedColoredVertex {
+#elif defined(_MSC_VER)
+    struct __declspec(align(16)) TexturedColoredVertex {
+#else
+    struct TexturedColoredVertex {
+#endif
+//
+    
         static void computeTangentBasis(TexturedColoredVertex *v,
                                         unsigned int numVerts) {
 
