@@ -273,6 +273,8 @@ if(${PROJECT_NAME}_SWIG)
     endif()
 endif()
 
+set(TARGET_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/assets")
+
 add_subdirectory(src/platform)
 
 if(WINDOWS)

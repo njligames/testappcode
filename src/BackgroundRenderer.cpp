@@ -223,7 +223,7 @@ namespace NJLIC {
 
             int width, height, channels_in_file;
             unsigned char *buffer = (unsigned char *)Util::loadImage(
-                "assets_engine/loading.jpg", &width, &height,
+                "assets/loading.jpg", &width, &height,
                 &channels_in_file);
 
             mBufferData = (unsigned char *)Util::loadImage(
